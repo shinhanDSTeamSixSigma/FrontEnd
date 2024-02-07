@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import Header from '../../layouts/Header';
 import styled from 'styled-components';
+import Button from '../../components/Button';
 
 const StyledHeader = styled.header`
   color: black;
@@ -21,7 +22,7 @@ const MainPage = () => {
   return (
     <>
       <Header />
-
+      <Button />
       <StyledHeader>This is Header.</StyledHeader>
       <StyledHeader1>This is Header.</StyledHeader1>
     </>
