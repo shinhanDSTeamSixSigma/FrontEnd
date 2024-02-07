@@ -2,6 +2,7 @@ import { Fragment } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Link } from 'react-router-dom';
+import '../styles/header.css';
 
 const user = {
   name: '토심이',
@@ -10,15 +11,17 @@ const user = {
     'https://ilovecharacter.com/news/data/20230731/p1065542571400847_461_thum.jpg',
 };
 const navigation = [
-  { name: 'Dashboard', href: '#', current: true },
+  { name: '메인', href: '#', current: true },
   {
     name: '농장찾기',
-    href: '/farm-list',
+    href: '/farm',
     current: false,
   },
-  { name: 'Projects', href: '#', current: false },
-  { name: 'Calendar', href: '#', current: false },
-  { name: 'Reports', href: '#', current: false },
+  {
+    name: '작물정보',
+    href: '#',
+    current: false,
+  },
 ];
 const userNavigation = [
   { name: 'Your Profile', href: '#' },
@@ -34,7 +37,7 @@ export default function Header() {
   return (
     <>
       <div className="min-h-full">
-        <Disclosure as="nav" className="bg-gray-800">
+        <Disclosure as="nav" className="bg-white">
           {({ open }) => (
             <>
               <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -42,8 +45,8 @@ export default function Header() {
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
                       <img
-                        className="h-8 w-8"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                        className="h-12 w-15"
+                        src="/img/greenwave_logo.png"
                         alt="Your Company"
                       />
                     </div>
@@ -55,8 +58,8 @@ export default function Header() {
                             key={item.name}
                             className={classNames(
                               item.current
-                                ? 'bg-gray-900 text-white'
-                                : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                ? 'header-click-bg-color text-white'
+                                : 'text-gray-700 hover:bg-gray-700 hover:text-white',
                               'rounded-md px-3 py-2 text-sm font-medium',
                             )}
                             aria-current={item.current ? 'page' : undefined}
@@ -69,15 +72,6 @@ export default function Header() {
                   </div>
                   <div className="hidden md:block">
                     <div className="ml-4 flex items-center md:ml-6">
-                      <button
-                        type="button"
-                        className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                      >
-                        <span className="absolute -inset-1.5" />
-                        <span className="sr-only">View notifications</span>
-                        <BellIcon className="h-6 w-6" aria-hidden="true" />
-                      </button>
-
                       {/* Profile dropdown */}
                       <Menu as="div" className="relative ml-3">
                         <div>
