@@ -21,7 +21,6 @@ const StyledHeader1 = styled.body`
 const MainPage = () => {
   return (
     <>
-      <Header />
       <Button />
       <StyledHeader>This is Header.</StyledHeader>
       <StyledHeader1>This is Header.</StyledHeader1>

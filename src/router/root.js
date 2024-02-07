@@ -1,12 +1,12 @@
 // 필요한 순간까지 컴포넌트를 메모리상으로 올리지 않도록 지연로딩
 import { Suspense, lazy } from 'react';
-
 const { createBrowserRouter } = require('react-router-dom');
 
 // 컴포넌트 처리 끝나기 전 로딩
 const Loading = <div>Loading....</div>;
 const Main = lazy(() => import('../pages/main/MainPage'));
 const Farm = lazy(() => import('../pages/member/farm/FarmListPage'));
+const Layout = lazy(() => import('../layouts/Layout'));
 
 // farmer 16개
 //
@@ -62,17 +62,27 @@ const root = createBrowserRouter([
     path: '',
     element: (
       <Suspense fallback={Loading}>
-        <Main />
+        <Layout />
       </Suspense>
     ),
-  },
-  {
-    path: 'farm-list',
-    element: (
-      <Suspense fallback={Loading}>
-        <Farm />
-      </Suspense>
-    ),
+    children: [
+      {
+        path: '',
+        element: (
+          <Suspense fallback={Loading}>
+            <Main />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'farm-list',
+        element: (
+          <Suspense fallback={Loading}>
+            <Farm />
+          </Suspense>
+        ),
+      },
+    ],
   },
 ]);
 
