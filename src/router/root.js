@@ -52,9 +52,10 @@ const Farm = lazy(() => import('../pages/member/farm/FarmListPage'));
 //
 //
 //
-//
-//
-//
+//포인트 결제 내역
+const PointDetail = lazy(() =>
+  import('../pages/member/mypage/point/PointDetailPage'),
+);
 
 // 기본 라우팅 설정(어떤 경로에 어떤 컴포넌트 줄건지)
 const root = createBrowserRouter([
@@ -71,6 +72,14 @@ const root = createBrowserRouter([
     element: (
       <Suspense fallback={Loading}>
         <Farm />
+      </Suspense>
+    ),
+  },
+  {
+    path: 'point-result',
+    element: (
+      <Suspense fallback={Loading}>
+        <PointDetail />
       </Suspense>
     ),
   },
