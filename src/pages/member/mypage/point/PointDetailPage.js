@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import MyPointBlank from '../../../../components/diary/MyPointBlank';
-import MyPointDetail from '../../../../components/diary/MyPointDetail';
-import MyPoint from '../../../../components/diary/MyPoint';
+import MyPointBlank from '../../../../components/point/MyPointBlank';
+import MyPointDetail from '../../../../components/point/MyPointDetail';
+import MyPoint from '../../../../components/point/MyPoint';
 
 const StyledContainer = styled.div`
   color: black;

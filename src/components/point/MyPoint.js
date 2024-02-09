@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BsExclamationCircle } from 'react-icons/bs';
-import Title from './TitleName';
+import TitleName from './TitleName';
 import Button from '../Button';
 import DropdownButton from './DropDownButton';
-import TitleDivisionLine from './TitleDivisionLine';
+import TitleDivisionLine from '../TitleDivisionLine';
 import DatePicker from 'react-datepicker';
 import styled from 'styled-components';
 import 'react-datepicker/dist/react-datepicker.module.css';
@@ -50,16 +50,27 @@ export default function MyPoint() {
   const marginLeft2 = {
     margin: 'auto 0 auto auto',
   };
-  const date = {
+  const dateCss = {
     marginBottom: '0.5rem',
   };
   const image = {
     margin: 'auto 0.3rem',
   };
+
   const [startDate, setStartDate] = useState(new Date());
+  const [date, setDate] = useState('');
+  const getStringDate = (date) => {
+    let year = date.getFullYear();
+    let month = date.getMonth() + 1;
+
+    if (month < 10) {
+      month = `0${month}`;
+    }
+    return `${year}-${month}`;
+  };
   return (
     <>
-      <Title name="나의 포인트" />
+      <TitleName name="나의 포인트" />
       {/*포인트 총 합계*/}
       <FlexRow style={point}>
         <FlexRow style={pointText}>
@@ -91,14 +102,21 @@ export default function MyPoint() {
         </FlexRow>
       </PointBoxColor>
       {/*날짜 및 필터*/}
-      <FlexRow style={date}>
+      <FlexRow style={dateCss}>
         <CustomDatePicker
           showIcon
           selected={startDate}
-          onChange={(date) => setStartDate(date)}
+          onChange={(date) => {
+            setStartDate(date);
+            setDate(getStringDate(date)); // 클릭한 date 값을 문자열로 변환하여 setDate로 저장
+            console.log('date:', date); // date 값 콘솔에 출력
+            console.log('getStringDate:', getStringDate(date)); // getStringDate 함수 결과 콘솔에 출력
+          }}
           dateFormat="yyyy/MM"
           showMonthYearPicker
           showFullMonthYearPicker
+          value={getStringDate(startDate)} // value prop을 통해 문자열로 변환된 startDate 값을 전달
+          type="date" // type prop을 통해 input type을 지정
         />
         <div style={marginLeft2}>
           <FlexRow>

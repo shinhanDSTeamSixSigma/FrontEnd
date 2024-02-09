@@ -1,5 +1,4 @@
-import { Link } from 'react-router-dom';
-import TextDivisionLine from './TextDivisionLine';
+import TextDivisionLine from '../TextDivisionLine';
 import styled from 'styled-components';
 
 const FlexRow = styled.div`
