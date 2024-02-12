@@ -56,7 +56,7 @@ const DiaryEdit = () => {
   const [content, setContent] = useState('');
 
   const getApi = () => {};
-  const edit = () => {
+  const save = () => {
     if (window.confirm('일기를 수정하시겠습니까?')) {
       getApi();
     }
@@ -94,7 +94,7 @@ const DiaryEdit = () => {
           />
         </Content>
       </StyledContainer>
-      <FullButton name="수정하기" onClick={edit}></FullButton>
+      <FullButton name="수정하기" onClick={save}></FullButton>
     </>
   );
 };

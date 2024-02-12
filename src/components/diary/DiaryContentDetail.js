@@ -69,7 +69,7 @@ const DiaryContentDetail = () => {
           하이하이하이하이 하이하이하이하이
         </div>
         <FlexRow style={displayEnd}>
-          <Link to="crop-diary-edit" /*to={`/edit/${id}`}*/>
+          <Link to="edit" /*to={`/edit/${id}`}*/>
             <TfiPencil />
           </Link>
           <RiDeleteBinLine />

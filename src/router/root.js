@@ -48,6 +48,9 @@ const Farm = lazy(() => import('../pages/member/farm/FarmListPage'));
 //
 //식물 기록-다이어리
 const Diary = lazy(() => import('../pages/member/mypage/diary/DiaryPage'));
+const DiaryRegist = lazy(() =>
+  import('../pages/member/mypage/diary/DiaryRegistPage'),
+);
 const DiaryEdit = lazy(() =>
   import('../pages/member/mypage/diary/DiaryEditPage'),
 );
@@ -89,7 +92,15 @@ const root = createBrowserRouter([
     ),
   },
   {
-    path: 'crop-diary/crop-diary-edit',
+    path: 'crop-diary/regist',
+    element: (
+      <Suspense fallback={Loading}>
+        <DiaryRegist />
+      </Suspense>
+    ),
+  },
+  {
+    path: 'crop-diary/edit',
     element: (
       <Suspense fallback={Loading}>
         <DiaryEdit />

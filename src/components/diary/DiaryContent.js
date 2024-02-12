@@ -15,7 +15,7 @@ const DiaryContent = () => {
       <StyledContainer>
         <DiaryContentDetail />
         <DiaryContentDetail />
-        <Link to="crop-diary-edit" /*to={`/edit/${id}`}*/>
+        <Link to="regist" /*to={`/edit/${id}`}*/>
           <FloatingButton />
         </Link>
       </StyledContainer>

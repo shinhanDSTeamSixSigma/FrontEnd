@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import DiaryDetailTitle from '../../../../components/diary/DiaryDetailTitle';
-import DiaryEdit from '../../../../components/diary/DiaryEdit';
+import DiaryRegist from '../../../../components/diary/DiaryRegist';
 
 const StyledContainer = styled.div`
   color: black;
@@ -14,7 +14,7 @@ const DiaryEditPage = () => {
       <StyledContainer>
         <DiaryDetailTitle />
       </StyledContainer>
-      <DiaryEdit />
+      <DiaryRegist />
     </>
   );
 };
