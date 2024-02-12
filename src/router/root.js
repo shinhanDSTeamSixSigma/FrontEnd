@@ -51,6 +51,8 @@ const Diary = lazy(() => import('../pages/member/mypage/diary/DiaryPage'));
 const DiaryEdit = lazy(() =>
   import('../pages/member/mypage/diary/DiaryEditPage'),
 );
+//농장 결제
+const Pay = lazy(() => import('../pages/member/mypage/point/PayApplyPage'));
 //포인트 결제 내역
 const PointDetail = lazy(() =>
   import('../pages/member/mypage/point/PointDetailPage'),
@@ -87,6 +89,14 @@ const root = createBrowserRouter([
     element: (
       <Suspense fallback={Loading}>
         <DiaryEdit />
+      </Suspense>
+    ),
+  },
+  {
+    path: 'pay',
+    element: (
+      <Suspense fallback={Loading}>
+        <Pay />
       </Suspense>
     ),
   },

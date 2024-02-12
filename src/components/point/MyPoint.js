@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BsExclamationCircle } from 'react-icons/bs';
-import TitleName from './TitleName';
 import Button from '../Button';
 import DropdownButton from './DropDownButton';
 import TitleDivisionLine from '../TitleDivisionLine';
@@ -70,7 +69,6 @@ export default function MyPoint() {
   };
   return (
     <>
-      <TitleName name="나의 포인트" />
       {/*포인트 총 합계*/}
       <FlexRow style={point}>
         <FlexRow style={pointText}>
