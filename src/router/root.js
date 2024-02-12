@@ -46,15 +46,24 @@ const Farm = lazy(() => import('../pages/member/farm/FarmListPage'));
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
+//식물 기록-다이어리
+const Diary = lazy(() => import('../pages/member/mypage/diary/DiaryPage'));
+const DiaryRegist = lazy(() =>
+  import('../pages/member/mypage/diary/DiaryRegistPage'),
+);
+const DiaryEdit = lazy(() =>
+  import('../pages/member/mypage/diary/DiaryEditPage'),
+);
+//농장 결제
+const Pay = lazy(() => import('../pages/member/mypage/point/PayApplyPage'));
+//작물 영수증
+const PaymentDetail = lazy(() =>
+  import('../pages/member/mypage/point/PaymentDetailPage'),
+);
+//포인트 결제 내역
+const PointDetail = lazy(() =>
+  import('../pages/member/mypage/point/PointDetailPage'),
+);
 
 // 기본 라우팅 설정(어떤 경로에 어떤 컴포넌트 줄건지)
 const root = createBrowserRouter([
@@ -71,6 +80,54 @@ const root = createBrowserRouter([
     element: (
       <Suspense fallback={Loading}>
         <Farm />
+      </Suspense>
+    ),
+  },
+  {
+    path: 'crop-diary',
+    element: (
+      <Suspense fallback={Loading}>
+        <Diary />
+      </Suspense>
+    ),
+  },
+  {
+    path: 'crop-diary/regist',
+    element: (
+      <Suspense fallback={Loading}>
+        <DiaryRegist />
+      </Suspense>
+    ),
+  },
+  {
+    path: 'crop-diary/edit',
+    element: (
+      <Suspense fallback={Loading}>
+        <DiaryEdit />
+      </Suspense>
+    ),
+  },
+  {
+    path: 'pay',
+    element: (
+      <Suspense fallback={Loading}>
+        <Pay />
+      </Suspense>
+    ),
+  },
+  {
+    path: 'payment-detail',
+    element: (
+      <Suspense fallback={Loading}>
+        <PaymentDetail />
+      </Suspense>
+    ),
+  },
+  {
+    path: 'point-result',
+    element: (
+      <Suspense fallback={Loading}>
+        <PointDetail />
       </Suspense>
     ),
   },
