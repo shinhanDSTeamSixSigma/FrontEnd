@@ -31,10 +31,14 @@ const Layout = lazy(() => import('../layouts/Layout'));
 //
 //
 // member 24개
-//
-//
-//
-//
+//작물 정보 리스트
+const CropList = lazy(()=> import('../pages/member/dict/CropListPage'));
+//작물 상세
+const CropDetail = lazy(()=> import('../pages/member/dict/CropDetailPage'));
+//문의 목록
+const InquiryList=lazy(()=>import('../pages/member/mypage/inquiry/InquiryListPage'));
+//문의 작성
+const InquiryRegist=lazy(()=>import('../pages/member/mypage/inquiry/InquiryRegistPage'));
 //
 //
 //
@@ -79,6 +83,38 @@ const root = createBrowserRouter([
         element: (
           <Suspense fallback={Loading}>
             <Farm />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'crop-list',
+        element: (
+          <Suspense fallback={Loading}>
+            <CropList />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'crop-detail',
+        element: (
+          <Suspense fallback={Loading}>
+            <CropDetail />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'customer-inquiry',
+        element: (
+          <Suspense fallback={Loading}>
+            <InquiryList />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'customer-inquiry/regist',
+        element: (
+          <Suspense fallback={Loading}>
+            <InquiryRegist />
           </Suspense>
         ),
       },
