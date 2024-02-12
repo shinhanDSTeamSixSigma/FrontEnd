@@ -32,28 +32,10 @@ const CustomDatePicker = styled(DatePicker)`
 `;
 
 export default function MyPoint() {
-  const point = {
-    margin: 'auto 1rem',
-  };
-  const pointText = {
-    alignItems: 'center',
-  };
   const pointResult = {
     fontWeight: '700',
     fontSize: '1.4em',
     marginLeft: '0.5rem',
-  };
-  const marginLeft = {
-    marginLeft: 'auto',
-  };
-  const marginLeft2 = {
-    margin: 'auto 0 auto auto',
-  };
-  const dateCss = {
-    marginBottom: '0.5rem',
-  };
-  const image = {
-    margin: 'auto 0.3rem',
   };
 
   const [startDate, setStartDate] = useState(new Date());
@@ -70,8 +52,8 @@ export default function MyPoint() {
   return (
     <>
       {/*포인트 총 합계*/}
-      <FlexRow style={point}>
-        <FlexRow style={pointText}>
+      <FlexRow style={{ margin: 'auto 1rem' }}>
+        <FlexRow style={{ alignItems: 'center' }}>
           <div className="point-text">
             <img
               className="wallet"
@@ -81,7 +63,7 @@ export default function MyPoint() {
           </div>
           <div style={pointResult}>0원</div>
         </FlexRow>
-        <div style={marginLeft}>
+        <div style={{ marginLeft: 'auto' }}>
           <Button name="충전하기" />
         </div>
       </FlexRow>
@@ -90,7 +72,7 @@ export default function MyPoint() {
         <FlexRow>
           <FlexRow>
             <TextMargin>적립 예정 포인트</TextMargin>
-            <BsExclamationCircle style={image} />
+            <BsExclamationCircle style={{ margin: 'auto 0.3rem' }} />
           </FlexRow>
           <MarginLeft>0 원</MarginLeft>
         </FlexRow>
@@ -100,7 +82,7 @@ export default function MyPoint() {
         </FlexRow>
       </PointBoxColor>
       {/*날짜 및 필터*/}
-      <FlexRow style={dateCss}>
+      <FlexRow style={{ marginBottom: '0.5rem' }}>
         <CustomDatePicker
           showIcon
           selected={startDate}
@@ -116,7 +98,7 @@ export default function MyPoint() {
           value={getStringDate(startDate)} // value prop을 통해 문자열로 변환된 startDate 값을 전달
           type="date" // type prop을 통해 input type을 지정
         />
-        <div style={marginLeft2}>
+        <div style={{ margin: 'auto 0 auto auto' }}>
           <FlexRow>
             <img
               className="filter"

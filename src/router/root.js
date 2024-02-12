@@ -53,6 +53,10 @@ const DiaryEdit = lazy(() =>
 );
 //농장 결제
 const Pay = lazy(() => import('../pages/member/mypage/point/PayApplyPage'));
+//작물 영수증
+const PaymentDetail = lazy(() =>
+  import('../pages/member/mypage/point/PaymentDetailPage'),
+);
 //포인트 결제 내역
 const PointDetail = lazy(() =>
   import('../pages/member/mypage/point/PointDetailPage'),
@@ -97,6 +101,14 @@ const root = createBrowserRouter([
     element: (
       <Suspense fallback={Loading}>
         <Pay />
+      </Suspense>
+    ),
+  },
+  {
+    path: 'payment-detail',
+    element: (
+      <Suspense fallback={Loading}>
+        <PaymentDetail />
       </Suspense>
     ),
   },

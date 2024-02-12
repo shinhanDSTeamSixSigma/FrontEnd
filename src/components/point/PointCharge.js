@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import TitleDetailName from './TitleDetailName';
 import TitleDivisionLine from '../TitleDivisionLine';
 import styled from 'styled-components';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -6,11 +7,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const FlexRow = styled.div`
   display: flex;
   flex-direction: row;
-`;
-const TextCss = styled.div`
-  font-weight: 600;
-  font-size: 1em;
-  margin: 0.3rem auto;
 `;
 const PayCss = styled.div`
   font-weight: 600;
@@ -24,48 +20,16 @@ const FinalPayCss = styled.div`
 `;
 
 const PointCharge = () => {
-  const containerMargin = {
-    margin: '1rem 1rem 2rem 1rem',
-  };
-  const heightMargin = {
-    margin: '3rem auto',
-  };
-  const contentMargin = {
-    margin: '0.5rem 1rem 0.5rem 1rem',
-  };
-  const pointContentMargin = {
-    margin: '-1rem 0.5rem 0.5rem 0.5rem',
-  };
-  const leftMargin = {
-    marginLeft: 'auto',
-  };
-  const autoMargin = {
-    justifyContent: 'center',
-  };
-  const inputCss = {
-    width: '12rem',
-    marginRight: '1rem',
-  };
-  const totalPoint = {
-    fontSize: '1em',
-    color: '#878787',
-  };
-  const buttonCss = {
-    width: '5rem',
-    height: '2.4rem',
-    fontSize: '1em',
-  };
-
   return (
     <>
-      <div>
-        <TextCss>포인트</TextCss>
-        <TitleDivisionLine />
-      </div>
+      <TitleDetailName name="포인트" />
       {/*포인트 결제란*/}
-      <div style={containerMargin}>
-        <FlexRow style={autoMargin}>
-          <div className="input-group mb-3" style={inputCss}>
+      <div style={{ margin: '1rem 1rem 2rem 1rem' }}>
+        <FlexRow style={{ justifyContent: 'center' }}>
+          <div
+            className="input-group mb-3"
+            style={{ width: '12rem', marginRight: '1rem' }}
+          >
             <input
               type="text"
               class="form-control"
@@ -78,13 +42,13 @@ const PointCharge = () => {
           <button
             type="button"
             className="btn btn-outline-secondary"
-            style={buttonCss}
+            style={{ width: '5rem', height: '2.4rem', fontSize: '1em' }}
           >
             충전하기
           </button>
         </FlexRow>
-        <FlexRow style={pointContentMargin}>
-          <FlexRow style={totalPoint}>
+        <FlexRow style={{ margin: '-1rem 0.5rem 0.5rem 0.5rem' }}>
+          <FlexRow style={{ fontSize: '1em', color: '#878787' }}>
             <div>남은 보유 포인트</div>
             <div>2000</div>
             <div>P</div>
@@ -92,11 +56,11 @@ const PointCharge = () => {
         </FlexRow>
       </div>
       {/*총 결제 금액*/}
-      <div style={heightMargin}>
+      <div style={{ margin: '3rem auto' }}>
         <TitleDivisionLine />
-        <FlexRow style={contentMargin}>
+        <FlexRow style={{ margin: '0.5rem 1rem 0.5rem 1rem' }}>
           <PayCss>결제 금액</PayCss>
-          <FlexRow style={leftMargin}>
+          <FlexRow style={{ marginLeft: 'auto' }}>
             <FinalPayCss>0</FinalPayCss>
             <FinalPayCss>원</FinalPayCss>
           </FlexRow>

@@ -7,7 +7,7 @@ const FlexRow = styled.div`
 const ContentMargin = styled.div`
   margin: auto 0;
 `;
-const FarmImage = styled.div`
+const NutrientsImage = styled.div`
   border: 1px solid #f5f5f5;
   background-color: #f5f5f5;
   width: 6.5rem;
@@ -16,7 +16,7 @@ const FarmImage = styled.div`
   border-radius: 0.8rem;
 `;
 
-const CropInfo = () => {
+const NutrientsInfo = () => {
   const farmName = {
     fontWeight: '600',
     fontSize: '0.8em',
@@ -32,12 +32,12 @@ const CropInfo = () => {
   return (
     <>
       <FlexRow style={{ margin: '1rem 1rem 2rem 1rem' }}>
-        <FarmImage />
+        <NutrientsImage />
         <ContentMargin style={{ marginRight: '2rem' }}>
           <div style={farmName}>토심이네 농장</div>
-          <div style={cropName}>봉선화</div>
+          <div style={cropName}>고급 영양제</div>
           <FlexRow style={detailName}>
-            <div>16평</div>|<div>320,000원</div>
+            <div>2,000원</div>
           </FlexRow>
         </ContentMargin>
         <ContentMargin style={{ marginLeft: 'auto' }}>
@@ -50,4 +50,4 @@ const CropInfo = () => {
     </>
   );
 };
-export default CropInfo;
+export default NutrientsInfo;
