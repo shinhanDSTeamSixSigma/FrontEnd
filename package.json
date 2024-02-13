@@ -7,18 +7,15 @@
     "@emotion/styled": "^11.11.0",
     "@headlessui/react": "^1.7.18",
     "@heroicons/react": "^2.1.1",
-    "@mui/icons-material": "^5.15.9",
-    "@mui/material": "^5.15.9",
+    "@mui/icons-material": "^5.15.10",
+    "@mui/material": "^5.15.10",
     "@mui/styled-engine-sc": "^6.0.0-alpha.16",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
-<<<<<<< HEAD
     "axios": "^1.6.7",
-=======
     "bootstrap": "^5.3.2",
     "date-fns": "^3.3.1",
->>>>>>> 00a3ee2dab2976584f2f161b65c52def31da103f
     "headlessui": "^0.0.0",
     "heroicons": "^2.1.1",
     "react": "^18.2.0",

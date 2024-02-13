@@ -1,7 +1,5 @@
 import styled from "styled-components";
-import DropBox from "./DropDown";
 import Button from "../Button";
-import DropDown from "./DropDown";
 
 const StyledContainer = styled.div`
     background-color:white;
@@ -25,7 +23,7 @@ const BoardRegist=(props)=>{
                     src="/img/board/cancel.png"
                     alt="cancel"
                 />
-                <DropDown/>
+        
                 <Button name="등록"></Button>
             
             </FlexRow>

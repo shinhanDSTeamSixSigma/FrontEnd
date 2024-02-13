@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import CropImage from "./CropImage";
+import CropCatebox from "./CropCatebox";
 
 const StyledContainer = styled.div`
     background-color:white;
@@ -14,31 +15,11 @@ const Container = styled.div`
     display:flex;
     align-items:center;
 `
-const Image = styled.div`
-    margin-right:1em;
-    width: 8em;
-    height: 8em;
-    border-radius:0.5rem;
-    background: #F9F7C9;
-`
 const Title = styled.div`
     font-size:1.2em;
     font-weight: 500;
     margin-right: 0.5em;
     
-`
-const CateBox=styled.div`
-    background: #008A82;
-    border-radius:0.3rem;
-    width: 6em;
-    height: 2.8em;
-    color:white;
-    font-size:0.5em;
-    font-weight:400;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
 `
 const GreenText = styled.div`
     margin-top:0.5em;
@@ -58,11 +39,11 @@ const CropSummary =() =>{
         <>
         <StyledContainer>
             <FlexRow>
-            <CropImage/>
+            <CropImage width="8em" height="8em"/>
             <div>
                 <Container>
                     <Title>작물이름</Title>
-                    <CateBox>바질과</CateBox>
+                    <CropCatebox name="바질과"></CropCatebox>
 
                 </Container>
                 <GreenText>요약글</GreenText>

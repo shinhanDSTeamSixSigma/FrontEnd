@@ -104,7 +104,7 @@ const root = createBrowserRouter([
         ),
       },
       {
-        path: 'crop-detail',
+        path: 'crop-detail:id',
         element: (
           <Suspense fallback={Loading}>
             <CropDetail />
