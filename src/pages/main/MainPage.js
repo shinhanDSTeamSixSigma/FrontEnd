@@ -1,6 +1,7 @@
 import StyledHeader from '../../components/StyledHeader';
 import StyledBody from '../../components/StyledBody';
 import MySwiper from '../../components/MySwiper';
+import Button from '../../components/Button';
 const MainPage = () => {
     return (
         <div className="main">
