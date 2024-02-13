@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&family=Nanum+Pen+Script&display=swap');
+
+.App {
+    margin: 1.5rem;
+    font-size: 1.5rem;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-family: 'Nanum Pen Script', cursive;
+}
+body {
+    background-color: #ffffff;
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+    font-family: 'Noto Sans KR';
+    min-height: 70vh;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 50rem;
+}
+#root {
+    background-color: #ffffff;
+    box-shadow: 0px 7px 25px 0px rgba(100, 100, 110, 0.2);
+}
+
+.min-h-full {
+    border-bottom: solid #ffffff;
+    box-shadow: 0px 2px 1px 0 rgba(0, 0, 0, 0.15);
+}
