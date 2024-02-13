@@ -39,6 +39,7 @@ const CropAlbum = lazy(() =>
 );
 // 멤버 마이페이지 - 내 작물
 const MyCrop = lazy(() => import('../pages/member/mypage/MyCropPage'));
+
 //식물 기록-다이어리
 const Diary = lazy(() => import('../pages/member/mypage/diary/DiaryPage'));
 const DiaryRegist = lazy(() =>
@@ -62,17 +63,17 @@ const PointDetail = lazy(() =>
     import('../pages/member/mypage/point/PointDetailPage'),
 );
 //작물 정보 리스트
-// const CropList = lazy(() => import('../pages/member/dict/CropListPage'));
-// //작물 상세
-// const CropDetail = lazy(() => import('../pages/member/dict/CropDetailPage'));
-// //문의 목록
-// const InquiryList = lazy(() =>
-//     import('../pages/member/mypage/inquery/InqueryListPage.js'),
-// );
-// //문의 작성
-// const InquiryRegist = lazy(() =>
-//     import('../pages/member/mypage/inquery/InqueryRegistPage.js'),
-// );
+const CropList = lazy(() => import('../pages/member/dict/CropListPage'));
+//작물 상세
+const CropDetail = lazy(() => import('../pages/member/dict/CropDetailPage'));
+//문의 목록
+const InquiryList = lazy(() =>
+    import('../pages/member/mypage/inquery/InqueryListPage.js'),
+);
+//문의 작성
+const InquiryRegist = lazy(() =>
+    import('../pages/member/mypage/inquery/InqueryRegistPage.js'),
+);
 
 const root = createBrowserRouter([
     // 기본 라우터
@@ -100,22 +101,22 @@ const root = createBrowserRouter([
                     </Suspense>
                 ),
             },
-            // {
-            //     path: 'crop-list',
-            //     element: (
-            //         <Suspense fallback={Loading}>
-            //             <CropList />
-            //         </Suspense>
-            //     ),
-            // },
-            // {
-            //     path: 'crop-detail:id',
-            //     element: (
-            //       <Suspense fallback={Loading}>
-            //         <CropDetail />
-            //       </Suspense>
-            //     ),
-            //   },
+            {
+                path: 'crop-list',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <CropList />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'crop-detail:id',
+                element: (
+                  <Suspense fallback={Loading}>
+                    <CropDetail />
+                  </Suspense>
+                ),
+              },
         ],
     },
 
@@ -127,6 +128,7 @@ const root = createBrowserRouter([
                 <Layout />
             </Suspense>
         ),
+
         children: [
             {
                 path: '',
@@ -257,32 +259,32 @@ const root = createBrowserRouter([
         ],
     },
     // 문의 라우터
-    // {
-    //     path: 'customer-inquiry',
-    //     element: (
-    //         <Suspense fallback={Loading}>
-    //             <Layout />
-    //         </Suspense>
-    //     ),
-    //     children: [
-    //         {
-    //             path: '',
-    //             element: (
-    //                 <Suspense fallback={Loading}>
-    //                     <InquiryList />
-    //                 </Suspense>
-    //             ),
-    //         },
-    //         {
-    //             path: 'regist',
-    //             element: (
-    //                 <Suspense fallback={Loading}>
-    //                     <InquiryRegist />
-    //                 </Suspense>
-    //             ),
-    //         },
-    //     ],
-    // },
+    {
+        path: 'customer-inquiry',
+        element: (
+            <Suspense fallback={Loading}>
+                <Layout />
+            </Suspense>
+        ),
+        children: [
+            {
+                path: '',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <InquiryList />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'regist',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <InquiryRegist />
+                    </Suspense>
+                ),
+            },
+        ],
+    },
 ]);
 
 export default root;
