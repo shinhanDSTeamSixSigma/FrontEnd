@@ -68,11 +68,11 @@ const CropList = lazy(() => import('../pages/member/dict/CropListPage'));
 const CropDetail = lazy(() => import('../pages/member/dict/CropDetailPage'));
 //문의 목록
 const InquiryList = lazy(() =>
-    import('../pages/member/mypage/inquery/InqueryListPage.js'),
+    import('../pages/member/mypage/inquiry/InquiryListPage.js'),
 );
 //문의 작성
 const InquiryRegist = lazy(() =>
-    import('../pages/member/mypage/inquery/InqueryRegistPage.js'),
+    import('../pages/member/mypage/inquiry/InquiryRegistPage.js'),
 );
 
 const root = createBrowserRouter([
