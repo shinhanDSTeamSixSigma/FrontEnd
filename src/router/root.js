@@ -1,148 +1,125 @@
-// 필요한 순간까지 컴포넌트를 메모리상으로 올리지 않도록 지연로딩
 import { Suspense, lazy } from 'react';
-
+import LoadingModal from '../components/LoadingModal';
 const { createBrowserRouter } = require('react-router-dom');
 
-// 컴포넌트 처리 끝나기 전 로딩
-const Loading = <div>Loading....</div>;
+const Loading = <LoadingModal />;
 const Main = lazy(() => import('../pages/main/MainPage'));
 const Farm = lazy(() => import('../pages/member/farm/FarmListPage'));
-
-// farmer 16개
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-// main 4개
-//
-//
-//
-//
-// member 24개
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//식물 기록-다이어리
-const Diary = lazy(() => import('../pages/member/mypage/diary/DiaryPage'));
-const DiaryRegist = lazy(() =>
-  import('../pages/member/mypage/diary/DiaryRegistPage'),
+const Layout = lazy(() => import('../layouts/Layout'));
+const MemberMyPage = lazy(() =>
+    import('../pages/member/mypage/MemberMyPagePage'),
 );
-const DiaryEdit = lazy(() =>
-  import('../pages/member/mypage/diary/DiaryEditPage'),
+const MemberInfoEdit = lazy(() =>
+    import('../pages/member/mypage/MemberInfoPage'),
 );
-//농장 결제
-const Pay = lazy(() => import('../pages/member/mypage/point/PayApplyPage'));
-//작물 영수증
-const PaymentDetail = lazy(() =>
-  import('../pages/member/mypage/point/PaymentDetailPage'),
+const FarmerMyPage = lazy(() =>
+    import('../pages/farmer/mypage/FarmerMyPagePage'),
 );
-//포인트 충전
-const PointCharge = lazy(() =>
-  import('../pages/member/mypage/point/PointChargePage'),
+const FarmerInfoEdit = lazy(() =>
+    import('../pages/farmer/mypage/FarmerInfoPage'),
 );
-//포인트 결제 내역
-const PointDetail = lazy(() =>
-  import('../pages/member/mypage/point/PointDetailPage'),
+const MyFarmList = lazy(() =>
+    import('../pages/member/mypage/farm/MyfarmListPage'),
+);
+const CropStreaming = lazy(() =>
+    import('../pages/member/mypage/streaming/CropStreamingPage'),
 );
 
-// 기본 라우팅 설정(어떤 경로에 어떤 컴포넌트 줄건지)
+const CropAlbum = lazy(() =>
+    import('../pages/member/mypage/streaming/AlbumPage'),
+);
+
+const MyCrop = lazy(() => import('../pages/member/mypage/MyCropPage'));
+
 const root = createBrowserRouter([
-  {
-    path: '',
-    element: (
-      <Suspense fallback={Loading}>
-        <Main />
-      </Suspense>
-    ),
-  },
-  {
-    path: 'farm-list',
-    element: (
-      <Suspense fallback={Loading}>
-        <Farm />
-      </Suspense>
-    ),
-  },
-  {
-    path: 'crop-diary',
-    element: (
-      <Suspense fallback={Loading}>
-        <Diary />
-      </Suspense>
-    ),
-  },
-  {
-    path: 'crop-diary/regist',
-    element: (
-      <Suspense fallback={Loading}>
-        <DiaryRegist />
-      </Suspense>
-    ),
-  },
-  {
-    path: 'crop-diary/edit',
-    element: (
-      <Suspense fallback={Loading}>
-        <DiaryEdit />
-      </Suspense>
-    ),
-  },
-  {
-    path: 'pay',
-    element: (
-      <Suspense fallback={Loading}>
-        <Pay />
-      </Suspense>
-    ),
-  },
-  {
-    path: 'payment-detail',
-    element: (
-      <Suspense fallback={Loading}>
-        <PaymentDetail />
-      </Suspense>
-    ),
-  },
-  {
-    path: 'point-charge',
-    element: (
-      <Suspense fallback={Loading}>
-        <PointCharge />
-      </Suspense>
-    ),
-  },
-  {
-    path: 'point-result',
-    element: (
-      <Suspense fallback={Loading}>
-        <PointDetail />
-      </Suspense>
-    ),
-  },
+
+    // 기본 라우터
+    {
+        path: '',
+        element: (
+            <Suspense fallback={Loading}>
+                <Layout />
+            </Suspense>
+        ),
+        children: [
+            {
+                path: '',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <Main />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'farm-list',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <Farm />
+                    </Suspense>
+                ),
+            },
+        ],
+    },
+
+    // 마이페이지 라우터
+    {
+        path: 'mypage',
+        element: (
+            <Suspense fallback={Loading}>
+                <Layout />
+            </Suspense>
+        ),
+        children: [
+            {
+                path: '',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <MemberMyPage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'info-edit',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <MemberInfoEdit />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'myfarm',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <MyFarmList />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'streaming',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <CropStreaming />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'album',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <CropAlbum />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'mycrop',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <MyCrop />
+                    </Suspense>
+                ),
+            },
+        ],
+    },
 ]);
 
 export default root;
