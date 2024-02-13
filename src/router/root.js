@@ -60,6 +60,10 @@ const Pay = lazy(() => import('../pages/member/mypage/point/PayApplyPage'));
 const PaymentDetail = lazy(() =>
   import('../pages/member/mypage/point/PaymentDetailPage'),
 );
+//포인트 충전
+const PointCharge = lazy(() =>
+  import('../pages/member/mypage/point/PointChargePage'),
+);
 //포인트 결제 내역
 const PointDetail = lazy(() =>
   import('../pages/member/mypage/point/PointDetailPage'),
@@ -120,6 +124,14 @@ const root = createBrowserRouter([
     element: (
       <Suspense fallback={Loading}>
         <PaymentDetail />
+      </Suspense>
+    ),
+  },
+  {
+    path: 'point-charge',
+    element: (
+      <Suspense fallback={Loading}>
+        <PointCharge />
       </Suspense>
     ),
   },
