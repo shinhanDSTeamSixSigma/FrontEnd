@@ -1,11 +1,11 @@
 export default function Footer() {
     return (
-    <div class="bg-white bottom-0 w-full">
+    <div class="bg-[#f3f4f6] bottom-0 w-full">
         <div class="max-w-8xl lg:px-8">
             <div class="md:flex md:justify-between items-center">
             <div class="mb-2 md:mb-0 flex flex-col items-center md:items-start">
-                <div class="flex items-center">
-                    <img src="/img/greenwave_logo.png" class="h-6 me-2" alt="Greenwave Logo" />
+                <div class="mt-2 flex items-center">
+                    <img src="/img/greenwave_logo.png" class="h-8 me-3" alt="Greenwave Logo" />
                     <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"></span>
                 </div>
                     <div class="text-xs md:text-sm text-center md:text-left text-gray-500 dark:text-gray-400 font-medium mt-1">신한DS 금융 SW 아카데미<br/>
@@ -48,7 +48,7 @@ export default function Footer() {
             </div> */}
         </div>
         <hr class="my-1 border-gray-200 sm:mx-auto lg:my-8" />
-        <div class="sm:flex sm:items-center sm:justify-between">
+        <div class="mb-3 sm:flex sm:items-center sm:justify-between">
             <span class="text-xs text-gray-500 sm:text-center dark:text-gray-400">© 2024 Greenwave™. All Rights Reserved.
             </span>
             <div class="flex mt-1 sm:justify-center sm:mt-0">
