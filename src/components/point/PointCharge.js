@@ -1,72 +1,89 @@
-import React, { useState } from 'react';
-import TitleDetailName from './TitleDetailName';
-import TitleDivisionLine from '../TitleDivisionLine';
+import { LiaCcVisa } from 'react-icons/lia';
+import { RiKakaoTalkFill } from 'react-icons/ri';
 import styled from 'styled-components';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import TitleDetailName from '../point/TitleDetailName';
 
 const FlexRow = styled.div`
   display: flex;
   flex-direction: row;
+  margin: 1rem;
+  font-size: 0.9rem;
+  align-items: center;
 `;
-const PayCss = styled.div`
-  font-weight: 600;
+const FlexCol = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 1rem;
+`;
+const ContentMargin = styled.div`
+  margin: 1rem 0.2rem 2rem;
+`;
+const ButtonCss = styled.div`
+  width: 4rem;
+  height: 2.4rem;
   font-size: 1em;
-  margin: auto 0;
-`;
-const FinalPayCss = styled.div`
-  font-weight: 600;
-  font-size: 1.3em;
-  color: #4f6f52;
+  margin: auto 0.5rem 0.5rem;
+  align-items: center;
 `;
 
 const PointCharge = () => {
+  const icon = {
+    fontSize: '2rem',
+    marginRight: '1rem',
+  };
   return (
     <>
-      <TitleDetailName name="포인트" />
-      {/*포인트 결제란*/}
-      <div style={{ margin: '1rem 1rem 2rem 1rem' }}>
-        <FlexRow style={{ justifyContent: 'center' }}>
-          <div
-            className="input-group mb-3"
-            style={{ width: '12rem', marginRight: '1rem' }}
-          >
+      {/*포인트 충전 금액 설정*/}
+      <div style={{ marginTop: '2rem' }}></div>
+      <TitleDetailName name="충전 금액" />
+      <ContentMargin>
+        <ButtonCss type="button" className="btn btn-outline-secondary">
+          1만원
+        </ButtonCss>
+        <ButtonCss type="button" className="btn btn-outline-secondary">
+          3만원
+        </ButtonCss>
+        <ButtonCss type="button" className="btn btn-outline-secondary">
+          5만원
+        </ButtonCss>
+        <ButtonCss type="button" className="btn btn-outline-secondary">
+          7만원
+        </ButtonCss>
+        <ButtonCss type="button" className="btn btn-outline-secondary">
+          10만원
+        </ButtonCss>
+        <ButtonCss type="button" className="btn btn-outline-secondary">
+          50만원
+        </ButtonCss>
+      </ContentMargin>
+      {/*포인트 결제 방식 설정*/}
+      <TitleDetailName name="결제 수단" />
+      <FlexCol>
+        <label className="has-[:checked]:bg-indigo-50 has-[:checked]:text-indigo-900 has-[:checked]:ring-indigo-200 ..">
+          <FlexRow>
+            <LiaCcVisa style={icon} />
+            신용카드
             <input
-              type="text"
-              class="form-control"
-              aria-label="Sizing example input"
-              aria-describedby="inputGroup-sizing-default"
-              placeholder="320,000"
-              disabled
+              type="radio"
+              name="payment-option"
+              className="checked:border-indigo-500 ..."
+              style={{ marginLeft: 'auto' }}
             />
-          </div>
-          <button
-            type="button"
-            className="btn btn-outline-secondary"
-            style={{ width: '5rem', height: '2.4rem', fontSize: '1em' }}
-          >
-            충전하기
-          </button>
-        </FlexRow>
-        <FlexRow style={{ margin: '-1rem 0.5rem 0.5rem 0.5rem' }}>
-          <FlexRow style={{ fontSize: '1em', color: '#878787' }}>
-            <div>남은 보유 포인트</div>
-            <div>2000</div>
-            <div>P</div>
           </FlexRow>
-        </FlexRow>
-      </div>
-      {/*총 결제 금액*/}
-      <div style={{ margin: '3rem auto' }}>
-        <TitleDivisionLine />
-        <FlexRow style={{ margin: '0.5rem 1rem 0.5rem 1rem' }}>
-          <PayCss>결제 금액</PayCss>
-          <FlexRow style={{ marginLeft: 'auto' }}>
-            <FinalPayCss>0</FinalPayCss>
-            <FinalPayCss>원</FinalPayCss>
+        </label>
+        <label className="has-[:checked]:bg-indigo-50 has-[:checked]:text-indigo-900 has-[:checked]:ring-indigo-200 ..">
+          <FlexRow>
+            <RiKakaoTalkFill style={icon} />
+            카카오페이
+            <input
+              type="radio"
+              name="payment-option"
+              className="checked:border-indigo-500 ..."
+              style={{ marginLeft: 'auto' }}
+            />
           </FlexRow>
-        </FlexRow>
-        <TitleDivisionLine />
-      </div>
+        </label>
+      </FlexCol>
     </>
   );
 };

@@ -8,6 +8,7 @@ import DatePicker from 'react-datepicker';
 import styled from 'styled-components';
 import 'react-datepicker/dist/react-datepicker.module.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import MyPointValue from './MyPointValue';
 
 const FlexRow = styled.div`
   display: flex;
@@ -32,12 +33,6 @@ const CustomDatePicker = styled(DatePicker)`
 `;
 
 export default function MyPoint() {
-  const pointResult = {
-    fontWeight: '700',
-    fontSize: '1.4em',
-    marginLeft: '0.5rem',
-  };
-
   const [startDate, setStartDate] = useState(new Date());
   const [date, setDate] = useState('');
   const getStringDate = (date) => {
@@ -51,18 +46,9 @@ export default function MyPoint() {
   };
   return (
     <>
-      {/*포인트 총 합계*/}
-      <FlexRow style={{ margin: 'auto 1rem' }}>
-        <FlexRow style={{ alignItems: 'center' }}>
-          <div className="point-text">
-            <img
-              className="wallet"
-              alt="wallet"
-              src={process.env.PUBLIC_URL + '/img/diary/wallet.png'}
-            />
-          </div>
-          <div style={pointResult}>0원</div>
-        </FlexRow>
+      <FlexRow>
+        {/*포인트 총 합계*/}
+        <MyPointValue />
         <div style={{ marginLeft: 'auto' }}>
           <Button name="충전하기" />
         </div>

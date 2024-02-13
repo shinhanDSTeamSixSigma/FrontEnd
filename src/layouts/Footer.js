@@ -1,6 +1,6 @@
 export default function Footer() {
     return (
-    <div class="bg-white fixed bottom-0 w-full">
+    <div class="bg-white bottom-0 w-full">
         <div class="max-w-8xl lg:px-8">
             <div class="md:flex md:justify-between items-center">
             <div class="mb-2 md:mb-0 flex flex-col items-center md:items-start">
