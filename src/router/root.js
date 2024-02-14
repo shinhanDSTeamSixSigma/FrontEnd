@@ -112,11 +112,11 @@ const root = createBrowserRouter([
             {
                 path: 'crop-detail:id',
                 element: (
-                  <Suspense fallback={Loading}>
-                    <CropDetail />
-                  </Suspense>
+                    <Suspense fallback={Loading}>
+                        <CropDetail />
+                    </Suspense>
                 ),
-              },
+            },
         ],
     },
 
@@ -249,7 +249,7 @@ const root = createBrowserRouter([
                 ),
             },
             {
-                path: 'point-result',
+                path: 'point-detail',
                 element: (
                     <Suspense fallback={Loading}>
                         <PointDetail />

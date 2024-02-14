@@ -11,5 +11,5 @@ export default function Button({ name, widthHeight }) {
     );
 }
 Button.defaultProps = {
-    widthHeight: 'w-16 h-11', // 기본적으로 적용할 widthHeight 값
+    widthHeight: 'w-18 h-11', // 기본적으로 적용할 widthHeight 값
 };
