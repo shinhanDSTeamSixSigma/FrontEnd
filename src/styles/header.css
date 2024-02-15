@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.header-click-bg-color {
+  background-color: #73a9ad;
+}
+.header-hover-bg-color {
+  background-color: #4f6f52;
+}
