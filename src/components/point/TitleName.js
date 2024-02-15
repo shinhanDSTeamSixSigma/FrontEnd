@@ -6,7 +6,7 @@ const TextCss = styled.div`
   margin: 1rem auto;
 `;
 
-export default function Title(props) {
+export default function TitleName(props) {
   return (
     <>
       <TextCss>{props.name}</TextCss>

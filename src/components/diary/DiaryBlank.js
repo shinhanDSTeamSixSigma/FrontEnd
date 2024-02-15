@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Height = styled.div`
@@ -16,7 +15,7 @@ const Position = styled.div`
   font-size: 0.8em;
 `;
 
-const MyPointBlank = () => {
+const DiaryBlank = () => {
   return (
     <>
       <Height>
@@ -28,10 +27,10 @@ const MyPointBlank = () => {
           />
         </PointWalletImg>
         <Position>
-          <div>이용내역이 없습니다.</div>
+          <div>작성된 일지가 없습니다.</div>
         </Position>
       </Height>
     </>
   );
 };
-export default MyPointBlank;
+export default DiaryBlank;
