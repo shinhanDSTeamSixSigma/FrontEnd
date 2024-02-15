@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { BsExclamationCircle } from 'react-icons/bs';
+import axios from 'axios';
 import Button from '../Button';
-import DropdownButton from './DropDownButton';
-import TitleDivisionLine from '../TitleDivisionLine';
-import DatePicker from 'react-datepicker';
 import styled from 'styled-components';
 import 'react-datepicker/dist/react-datepicker.module.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -26,32 +24,54 @@ const MarginLeft = styled.div`
 const TextMargin = styled.div`
     margin: 0.4rem auto 0.4rem 0;
 `;
-const CustomDatePicker = styled(DatePicker)`
-    .react-datepicker__header:not(.react-datepicker__header--has-time-select) {
-        background-color: #80bcbd;
-    }
-`;
 
 export default function MyPoint() {
-    const [startDate, setStartDate] = useState(new Date());
-    const [date, setDate] = useState('');
-    const getStringDate = (date) => {
-        let year = date.getFullYear();
-        let month = date.getMonth() + 1;
+    const [points, setPoint] = useState();
+    const [monthlyCharge, setMonthlyCharge] = useState();
 
-        if (month < 10) {
-            month = `0${month}`;
-        }
-        return `${year}-${month}`;
+    //데이터
+    const [memberNo, setMemberNo] = useState(1); // 추후 변경
+
+    const currentTime = new Date();
+    const year = currentTime.getFullYear();
+    const month = currentTime.getMonth() + 1;
+
+    useEffect(() => {
+        fetchData('http://localhost:8080/pay/total-charge');
+        fetchData('http://localhost:8080/pay/month-charge', { year, month });
+    }, [year, month]);
+
+    const fetchData = (url, params = {}) => {
+        axios
+            .get(url, {
+                params: {
+                    memberNo: memberNo,
+                    ...params,
+                },
+            })
+            .then((res) => {
+                // 총 충전 금액
+                if (url === 'http://localhost:8080/pay/total-charge') {
+                    setPoint(res.data);
+                }
+                // 이번 달 충전 금액
+                if (url === 'http://localhost:8080/pay/month-charge') {
+                    setMonthlyCharge(res.data);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
+
     return (
         <>
             <FlexRow>
                 {/*포인트 총 합계*/}
                 <MyPointValue />
-                <div style={{ marginLeft: 'auto' }}>
+                <Link to="/pay/charge" style={{ marginLeft: 'auto' }}>
                     <Button name="충전하기" />
-                </div>
+                </Link>
             </FlexRow>
             {/*포인트 박스*/}
             <PointBoxColor>
@@ -62,44 +82,13 @@ export default function MyPoint() {
                             style={{ margin: 'auto 0.3rem' }}
                         />
                     </FlexRow>
-                    <MarginLeft>0 원</MarginLeft>
+                    <MarginLeft>{points} 원</MarginLeft>
                 </FlexRow>
                 <FlexRow>
                     <TextMargin>이번달 충전 금액</TextMargin>
-                    <MarginLeft>0 원</MarginLeft>
+                    <MarginLeft>{monthlyCharge} 원</MarginLeft>
                 </FlexRow>
             </PointBoxColor>
-            {/*날짜 및 필터*/}
-            <FlexRow style={{ marginBottom: '0.5rem' }}>
-                <CustomDatePicker
-                    showIcon
-                    selected={startDate}
-                    onChange={(date) => {
-                        setStartDate(date);
-                        setDate(getStringDate(date)); // 클릭한 date 값을 문자열로 변환하여 setDate로 저장
-                        console.log('date:', date); // date 값 콘솔에 출력
-                        console.log('getStringDate:', getStringDate(date)); // getStringDate 함수 결과 콘솔에 출력
-                    }}
-                    dateFormat="yyyy/MM"
-                    showMonthYearPicker
-                    showFullMonthYearPicker
-                    value={getStringDate(startDate)} // value prop을 통해 문자열로 변환된 startDate 값을 전달
-                    type="date" // type prop을 통해 input type을 지정
-                />
-                <div style={{ margin: 'auto 0 auto auto' }}>
-                    <FlexRow>
-                        <img
-                            className="filter"
-                            alt="filter"
-                            src={
-                                process.env.PUBLIC_URL + '/img/diary/filter.png'
-                            }
-                        />
-                        <DropdownButton />
-                    </FlexRow>
-                </div>
-            </FlexRow>
-            <TitleDivisionLine />
         </>
     );
 }

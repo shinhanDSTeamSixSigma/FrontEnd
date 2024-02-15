@@ -233,7 +233,7 @@ const root = createBrowserRouter([
                 ),
             },
             {
-                path: 'payment-detail',
+                path: 'receipt',
                 element: (
                     <Suspense fallback={Loading}>
                         <PaymentDetail />
@@ -241,7 +241,7 @@ const root = createBrowserRouter([
                 ),
             },
             {
-                path: 'point-charge',
+                path: 'charge',
                 element: (
                     <Suspense fallback={Loading}>
                         <PointCharge />
@@ -249,7 +249,7 @@ const root = createBrowserRouter([
                 ),
             },
             {
-                path: 'point-detail',
+                path: 'detail',
                 element: (
                     <Suspense fallback={Loading}>
                         <PointDetail />
