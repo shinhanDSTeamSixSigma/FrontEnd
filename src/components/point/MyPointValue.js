@@ -23,7 +23,7 @@ export default function MyPointValue() {
         fetchData();
     }, []);
 
-    const fetchData = (params = {}) => {
+    const fetchData = () => {
         axios
             .get('http://localhost:8080/pay/current-point', {
                 params: {
