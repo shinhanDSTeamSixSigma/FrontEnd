@@ -19,7 +19,7 @@ export default function MyCropPage() {
                         <span className="text-base ml-3">재배내역</span>
                     </div>
                 </div>
-                <div className="border mt-2 border-[#90C8AC]"></div>
+                <div className="border-1 mt-2 border-[#90C8AC]"></div>
             </StyledHeader>
             <StyledBody>
                 <div className=" h-11 bg-[#C4DFAA] pl-3 leading-10 pt-px">

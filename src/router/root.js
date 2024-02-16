@@ -7,6 +7,9 @@ const Loading = <LoadingModal />;
 const Main = lazy(() => import('../pages/main/MainPage'));
 // 농장 리스트
 const Farm = lazy(() => import('../pages/member/farm/FarmListPage'));
+// 농장 상세
+const FarmEdit = lazy(() => import('../pages/member/farm/FarmDetailPage'));
+
 // 레이아웃
 const Layout = lazy(() => import('../layouts/Layout'));
 // 멤버 마이페이지
@@ -68,11 +71,11 @@ const CropList = lazy(() => import('../pages/member/dict/CropListPage'));
 const CropDetail = lazy(() => import('../pages/member/dict/CropDetailPage'));
 //문의 목록
 const InquiryList = lazy(() =>
-    import('../pages/member/mypage/inquery/InqueryListPage.js'),
+    import('../pages/member/mypage/inquiry/InquiryListPage.js'),
 );
 //문의 작성
 const InquiryRegist = lazy(() =>
-    import('../pages/member/mypage/inquery/InqueryRegistPage.js'),
+    import('../pages/member/mypage/inquiry/InquiryRegistPage.js'),
 );
 
 const root = createBrowserRouter([
@@ -93,14 +96,7 @@ const root = createBrowserRouter([
                     </Suspense>
                 ),
             },
-            {
-                path: 'farm-list',
-                element: (
-                    <Suspense fallback={Loading}>
-                        <Farm />
-                    </Suspense>
-                ),
-            },
+
             {
                 path: 'crop-list',
                 element: (
@@ -112,11 +108,38 @@ const root = createBrowserRouter([
             {
                 path: 'crop-detail:id',
                 element: (
-                  <Suspense fallback={Loading}>
-                    <CropDetail />
-                  </Suspense>
+                    <Suspense fallback={Loading}>
+                        <CropDetail />
+                    </Suspense>
                 ),
-              },
+            },
+        ],
+    },
+    // 농장 라우터
+    {
+        path: 'farm',
+        element: (
+            <Suspense fallback={Loading}>
+                <Layout />
+            </Suspense>
+        ),
+        children: [
+            {
+                path: 'list',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <Farm />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'list/:farmNo',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <FarmEdit />
+                    </Suspense>
+                ),
+            },
         ],
     },
 
