@@ -6,7 +6,7 @@ export default function Paging({ serverData, movePage }) {
                     className="m-2 p-2 w-16 text-center  font-bold text-blue-400 cursor-pointer"
                     onClick={() => movePage({ page: serverData.prevPage })}
                 >
-                    Prev{' '}
+                    이전{' '}
                 </div>
             ) : (
                 <></>
@@ -17,8 +17,8 @@ export default function Paging({ serverData, movePage }) {
                     key={pageNum}
                     className={`m-2 p-2 w-12  text-center rounded shadow-md text-white cursor-pointer ${
                         serverData.current === pageNum
-                            ? 'bg-gray-500'
-                            : 'bg-blue-400'
+                            ? 'bg-[#4F6F52]'
+                            : 'bg-[#80BCBD]'
                     }`}
                     onClick={() => movePage({ page: pageNum })}
                 >
@@ -31,7 +31,7 @@ export default function Paging({ serverData, movePage }) {
                     className="m-2 p-2 w-16 text-center font-bold text-blue-400 cursor-pointer"
                     onClick={() => movePage({ page: serverData.nextPage })}
                 >
-                    Next
+                    다음
                 </div>
             ) : (
                 <></>

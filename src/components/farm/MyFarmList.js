@@ -22,7 +22,8 @@ const initState = {
 export default function MyFarmList() {
     // const [farm, setFarm] = useState(initState);
 
-    const { page, size, moveToList } = useCustomMove();
+    const { page, size, moveToList, moveToRead } = useCustomMove();
+    const navigate = useNavigate();
 
     // useEffect(() => {
     //     getAllList().then((data) => {
@@ -39,15 +40,22 @@ export default function MyFarmList() {
         });
     }, [page, size]);
 
+    const handleFarmItemClick = (farmNo) => {
+        moveToRead(farmNo);
+    };
+
     return (
         <>
-            <StyledHeader>내 농장 목록 </StyledHeader>
+            <StyledHeader>농장 목록 </StyledHeader>
             <StyledBody>
                 <ul className="divide-y divide-gray-200">
                     {serverData.dtoList.map((key, idx) => (
                         <li key={key.farmNo} className="py-4 ">
-                            <Link
-                                to={`/farm/list/${key.farmNo}`}
+                            <div
+                                onClick={() => handleFarmItemClick(key.farmNo)}
+                                style={{ cursor: 'pointer' }}
+                                // to={moveToRead(key.farmNo)}
+                                // to={`/farm/read/${key.farmNo}`}
                                 className="w-full flex"
                             >
                                 {/* <img
@@ -66,7 +74,7 @@ export default function MyFarmList() {
                                         {key.farmContent}
                                     </p>
                                 </div>
-                            </Link>
+                            </div>
                         </li>
                     ))}
                 </ul>

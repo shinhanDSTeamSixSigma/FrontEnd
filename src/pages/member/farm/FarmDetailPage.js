@@ -13,7 +13,6 @@ export default function FarmDetailPage() {
             <StyledHeader>
                 <div className="flex justify-between">
                     <div>test detail {farmNo}</div>
-                    <div></div>
                 </div>
             </StyledHeader>
             <StyledBody>

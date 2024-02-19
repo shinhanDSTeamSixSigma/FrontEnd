@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
-import { getOne } from '../../api/farmApi';
+import { getOne, getListAllFile } from '../../api/farmApi';
 import useCustomMove from '../../hooks/useCustomMove';
 import Button from '../Button';
+import { useParams } from 'react-router-dom';
+import { prefix } from '../../api/farmApi';
+
+const url = `${prefix}`;
 const initState = {
     farmNo: 0,
     farmName: '',
@@ -21,8 +25,10 @@ const initState = {
 export default function FarmRead({ farmNo }) {
     const [farm, setFarm] = useState(initState);
     const { moveToList, moveToModify } = useCustomMove();
+    const [imagePaths, setImagePaths] = useState([]);
+
     const moveToListFunc = () => moveToList();
-    const moveToModifyFunc = () => moveToModify();
+    const moveToModifyFunc = () => moveToModify(farmNo);
 
     useEffect(() => {
         getOne(farmNo).then((data) => {
@@ -31,9 +37,16 @@ export default function FarmRead({ farmNo }) {
         });
     }, [farmNo]);
 
+    useEffect(() => {
+        getListAllFile(farmNo).then((data) => {
+            console.log(data);
+            setImagePaths(data);
+        });
+    }, [farmNo]);
+
     const renderFields = () => {
         return Object.keys(farm).map((key) => {
-            if (key === `tb_member_no`) {
+            if (key === `memberNo` || key === `photos`) {
                 return null;
             }
 
@@ -55,19 +68,33 @@ export default function FarmRead({ farmNo }) {
 
     return (
         <>
-            <div className="border-2 border-sky-200 mt-10 m2 p-4">
-                {renderFields()}
+            <div className="border-2  mt-10 m2 p-4">{renderFields()}</div>
+            <div>
+                {imagePaths ? (
+                    imagePaths.map((imagePath, idx) => (
+                        <img
+                            key={idx}
+                            src={`${url}/${imagePath}`}
+                            alt={`image ${idx}`}
+                        />
+                    ))
+                ) : (
+                    <></>
+                )}
             </div>
-            <Button
-                name={'목록'}
-                widthHeight={'w-20'}
-                moveToListFunc={moveToListFunc}
-            />
-            <Button
-                name={'수정'}
-                widthHeight={'w-20'}
-                moveToModifyFunc={moveToModifyFunc}
-            />
+
+            <div className="flex justify-center">
+                <Button
+                    name={'목록'}
+                    widthHeight={'w-20'}
+                    moveToListFunc={moveToListFunc}
+                />
+                <Button
+                    name={'수정'}
+                    widthHeight={'w-20'}
+                    moveToModifyFunc={moveToModifyFunc}
+                />
+            </div>
         </>
     );
 }

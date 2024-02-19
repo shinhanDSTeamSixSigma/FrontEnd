@@ -23,7 +23,11 @@ export default function Header({ handleModalToggle }) {
 
     const navigation = [
         { name: '메인', href: '/', current: selectedIndex === 0 },
-        { name: '농장찾기', href: '/farm/list', current: selectedIndex === 1 },
+        {
+            name: '농장찾기',
+            href: '/farm/list?page=1&size=10',
+            current: selectedIndex === 1,
+        },
         {
             name: '작물정보',
             href: '/crop-detail',

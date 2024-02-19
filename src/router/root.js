@@ -1,5 +1,5 @@
 import { Suspense, lazy } from 'react';
-import LoadingModal from '../components/LoadingModal';
+import LoadingModal from '../components/modal/LoadingModal.js';
 const { createBrowserRouter } = require('react-router-dom');
 
 const Loading = <LoadingModal />;
@@ -77,7 +77,14 @@ const InquiryList = lazy(() =>
 const InquiryRegist = lazy(() =>
     import('../pages/member/mypage/inquiry/InquiryRegistPage.js'),
 );
-
+// 농장 등록
+const AddFarm = lazy(() =>
+    import('../pages/farmer/mypage/farm/FarmerFarmAddPage'),
+);
+// 농장 수정
+const ModifyFarm = lazy(() =>
+    import('../pages/farmer/mypage/farm/FarmerFarmModifyPage'),
+);
 const root = createBrowserRouter([
     // 기본 라우터
     {
@@ -106,7 +113,7 @@ const root = createBrowserRouter([
                 ),
             },
             {
-                path: 'crop-detail:id',
+                path: 'crop-detail/:id',
                 element: (
                     <Suspense fallback={Loading}>
                         <CropDetail />
@@ -133,10 +140,26 @@ const root = createBrowserRouter([
                 ),
             },
             {
-                path: 'list/:farmNo',
+                path: 'read/:farmNo',
                 element: (
                     <Suspense fallback={Loading}>
                         <FarmEdit />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'regist',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <AddFarm />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'modify/:farmNo',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <ModifyFarm />
                     </Suspense>
                 ),
             },

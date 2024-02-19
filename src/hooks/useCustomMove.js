@@ -1,5 +1,9 @@
 import { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import {
+    createSearchParams,
+    useNavigate,
+    useSearchParams,
+} from 'react-router-dom';
 
 const getNum = (param, defaultValue) => {
     if (!param) {
@@ -19,6 +23,8 @@ export default function useCustomMove() {
     const page = getNum(queryParams.get('page'), 1);
     const size = getNum(queryParams.get('size'), 10);
 
+    const queryDefault = createSearchParams({ page, size }).toString();
+
     const moveToList = (pageParam) => {
         let queryStr = '';
 
@@ -26,9 +32,12 @@ export default function useCustomMove() {
             const pageNum = getNum(pageParam.page, page);
             const sizeNum = getNum(pageParam.size, size);
 
-            queryStr = `?page=${pageNum}&size=${sizeNum}`;
+            queryStr = createSearchParams({
+                page: pageNum,
+                size: sizeNum,
+            }).toString();
         } else {
-            queryStr = `?page=${page}&size=${size}`;
+            queryStr = queryDefault;
         }
 
         navigate({
