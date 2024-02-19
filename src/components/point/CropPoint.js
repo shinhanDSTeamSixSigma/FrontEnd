@@ -31,7 +31,7 @@ const CropPoint = () => {
 
     const fetchData = () => {
         axios
-            .get('http://localhost:8080/pay/crop-point', {
+            .get('http://localhost:8080/receipt/crop-point', {
                 params: {
                     memberNo: memberNo,
                     cropNo: cropNo,
