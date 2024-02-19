@@ -85,6 +85,9 @@ const AddFarm = lazy(() =>
 const ModifyFarm = lazy(() =>
     import('../pages/farmer/mypage/farm/FarmerFarmModifyPage'),
 );
+// 농장 구매
+const PayFarm = lazy(() => import('../pages/member/farm/FarmPayPage.js'));
+
 const root = createBrowserRouter([
     // 기본 라우터
     {
@@ -160,6 +163,14 @@ const root = createBrowserRouter([
                 element: (
                     <Suspense fallback={Loading}>
                         <ModifyFarm />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'pay',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <PayFarm />
                     </Suspense>
                 ),
             },
