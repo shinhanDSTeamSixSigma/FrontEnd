@@ -1,5 +1,6 @@
 import { Suspense, lazy } from 'react';
 import LoadingModal from '../components/LoadingModal';
+import InquiryDetailPage from '../pages/member/mypage/inquiry/InquiryDetailPage.js';
 const { createBrowserRouter } = require('react-router-dom');
 
 const Loading = <LoadingModal />;
@@ -110,7 +111,7 @@ const root = createBrowserRouter([
                 ),
             },
             {
-                path: 'crop-detail:id',
+                path: 'crop-detail/:id',
                 element: (
                   <Suspense fallback={Loading}>
                     <CropDetail />
@@ -268,7 +269,7 @@ const root = createBrowserRouter([
         ),
         children: [
             {
-                path: '',
+                path: ':farmNo',
                 element: (
                     <Suspense fallback={Loading}>
                         <InquiryList />
@@ -276,7 +277,15 @@ const root = createBrowserRouter([
                 ),
             },
             {
-                path: 'regist',
+                path: ':boardNo/detail',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <InquiryDetailPage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: ':farmNo/regist',
                 element: (
                     <Suspense fallback={Loading}>
                         <InquiryRegist />
