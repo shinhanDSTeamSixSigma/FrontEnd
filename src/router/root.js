@@ -74,6 +74,10 @@ const InquiryList = lazy(() =>
 const InquiryRegist = lazy(() =>
     import('../pages/member/mypage/inquiry/InquiryRegistPage.js'),
 );
+//농장 상세 페이지
+const FarmDetailPage = lazy(() =>
+    import('../pages/member/farm/FarmDetailPage.js'),
+);
 
 const root = createBrowserRouter([
     // 기본 라우터
@@ -102,6 +106,14 @@ const root = createBrowserRouter([
                 ),
             },
             {
+                path: 'farm-detail',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <FarmDetailPage />
+                    </Suspense>
+                ),
+            },
+            {
                 path: 'crop-list',
                 element: (
                     <Suspense fallback={Loading}>
@@ -112,11 +124,11 @@ const root = createBrowserRouter([
             {
                 path: 'crop-detail:id',
                 element: (
-                  <Suspense fallback={Loading}>
-                    <CropDetail />
-                  </Suspense>
+                    <Suspense fallback={Loading}>
+                        <CropDetail />
+                    </Suspense>
                 ),
-              },
+            },
         ],
     },
 
