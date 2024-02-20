@@ -210,7 +210,7 @@ const root = createBrowserRouter([
                 ),
             },
             {
-                path: 'edit',
+                path: 'list/:diaryNo',
                 element: (
                     <Suspense fallback={Loading}>
                         <DiaryEdit />

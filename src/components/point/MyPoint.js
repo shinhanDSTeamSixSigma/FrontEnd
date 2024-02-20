@@ -69,7 +69,10 @@ export default function MyPoint() {
             <FlexRow>
                 {/*포인트 총 합계*/}
                 <MyPointValue />
-                <Link to="/pay/charge" style={{ marginLeft: 'auto' }}>
+                <Link
+                    to="/pay/charge"
+                    style={{ marginLeft: 'auto', textDecoration: 'none' }}
+                >
                     <Button name="충전하기" />
                 </Link>
             </FlexRow>

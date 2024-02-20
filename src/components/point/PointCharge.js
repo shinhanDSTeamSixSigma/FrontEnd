@@ -22,7 +22,7 @@ const ContentMargin = styled.div`
 const ButtonCss = styled.div`
     width: 4rem;
     height: 2.4rem;
-    font-size: 1em;
+    font-size: 0.9em;
     margin: auto 0.5rem 0.5rem;
     align-items: center;
 `;
