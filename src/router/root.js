@@ -1,6 +1,6 @@
 import { Suspense, lazy } from 'react';
-import LoadingModal from '../components/LoadingModal';
 import InquiryDetailPage from '../pages/member/mypage/inquiry/InquiryDetailPage.js';
+import LoadingModal from '../components/modal/LoadingModal.js';
 const { createBrowserRouter } = require('react-router-dom');
 
 const Loading = <LoadingModal />;
@@ -8,6 +8,9 @@ const Loading = <LoadingModal />;
 const Main = lazy(() => import('../pages/main/MainPage'));
 // 농장 리스트
 const Farm = lazy(() => import('../pages/member/farm/FarmListPage'));
+// 농장 상세
+const FarmEdit = lazy(() => import('../pages/member/farm/FarmDetailPage'));
+
 // 레이아웃
 const Layout = lazy(() => import('../layouts/Layout'));
 // 멤버 마이페이지
@@ -75,6 +78,26 @@ const InquiryList = lazy(() =>
 const InquiryRegist = lazy(() =>
     import('../pages/member/mypage/inquiry/InquiryRegistPage.js'),
 );
+// 회원가입
+const Signup = lazy(() => import('../pages/Login/RegisterPage.js'));
+
+//로그인
+const Login = lazy(() => import('../pages/Login/LoginPage.js'));
+
+// 온습도통계
+const TemperaturHumidityPage = lazy(() =>
+    import('../pages/main/TemperatureHumidityPage.js'),
+);
+// 농장 등록
+const AddFarm = lazy(() =>
+    import('../pages/farmer/mypage/farm/FarmerFarmAddPage'),
+);
+// 농장 수정
+const ModifyFarm = lazy(() =>
+    import('../pages/farmer/mypage/farm/FarmerFarmModifyPage'),
+);
+// 농장 구매
+const PayFarm = lazy(() => import('../pages/member/farm/FarmPayPage.js'));
 
 const root = createBrowserRouter([
     // 기본 라우터
@@ -94,14 +117,7 @@ const root = createBrowserRouter([
                     </Suspense>
                 ),
             },
-            {
-                path: 'farm-list',
-                element: (
-                    <Suspense fallback={Loading}>
-                        <Farm />
-                    </Suspense>
-                ),
-            },
+
             {
                 path: 'crop-list',
                 element: (
@@ -113,11 +129,62 @@ const root = createBrowserRouter([
             {
                 path: 'crop-detail/:id',
                 element: (
-                  <Suspense fallback={Loading}>
-                    <CropDetail />
-                  </Suspense>
+                    <Suspense fallback={Loading}>
+                        <CropDetail />
+                    </Suspense>
                 ),
-              },
+            },
+        ],
+    },
+    // 농장 라우터
+    {
+        path: 'farm',
+        element: (
+            <Suspense fallback={Loading}>
+                <Layout />
+            </Suspense>
+        ),
+        children: [
+            {
+                path: 'list',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <Farm />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'read/:farmNo',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <FarmEdit />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'regist',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <AddFarm />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'modify/:farmNo',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <ModifyFarm />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'pay',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <PayFarm />
+                    </Suspense>
+                ),
+            },
         ],
     },
 
@@ -132,7 +199,7 @@ const root = createBrowserRouter([
 
         children: [
             {
-                path: '',
+                path: 'memberMypage',
                 element: (
                     <Suspense fallback={Loading}>
                         <MemberMyPage />
@@ -176,6 +243,15 @@ const root = createBrowserRouter([
                 element: (
                     <Suspense fallback={Loading}>
                         <MyCrop />
+                    </Suspense>
+                ),
+            },
+
+            {
+                path: 'temperature',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <TemperaturHumidityPage />
                     </Suspense>
                 ),
             },
@@ -293,6 +369,24 @@ const root = createBrowserRouter([
                 ),
             },
         ],
+    },
+    // 로그인 라우터
+    {
+        path: 'signup',
+        element: (
+            <Suspense fallback={Loading}>
+                <Signup />
+            </Suspense>
+        ),
+    },
+    // 로그인 라우터
+    {
+        path: 'login',
+        element: (
+            <Suspense fallback={Loading}>
+                <Login />
+            </Suspense>
+        ),
     },
 ]);
 
