@@ -28,6 +28,7 @@ export default function Footer() {
                                 사업자등록번호 412-22-1112
                             </span>
                         </div>
+
                     </div>
                 </div>
                 <hr class="mt-2 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
