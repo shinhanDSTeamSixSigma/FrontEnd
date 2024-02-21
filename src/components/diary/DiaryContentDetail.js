@@ -52,8 +52,8 @@ const DiaryContentDetail = () => {
     const diaryListData = () => {
         axios
             .get('http://localhost:8080/diary/list', {
-                memberNo: memberNo,
                 params: {
+                    memberNo: memberNo,
                     cropNo: cropNo,
                 },
             })
