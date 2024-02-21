@@ -1,6 +1,6 @@
 import styled from "styled-components";
 const CateBox=styled.div`
-    background: #008A82;
+    background: #73A9AD;
     border-radius:0.3rem;
     width: 5em;
     height: 2em;

@@ -8,26 +8,47 @@ const StyledContainer = styled.div`
     background-color:white;
     font-size:1em;
     border-radius:0.8rem;
-    margin-left:1.5em;
+    margin: auto 1.5rem auto;
 `;
+const Title=styled.div`
+    font-size:1.2em;
+    font-weight:600;
+    margin-left:1.5rem;
+`
 const CropItemList = styled.div`
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around; /* 항목 간의 공간을 균등하게 배치 */
+    margin-top: 1em;
+  
 `;
 const CropItem = styled.div`
     display:flex;
     flex-direction:column;
     align-items:center;
-    margin-bottom:0.3em;
-    width: 30%;
+    margin-bottom:0.6em;
+    width: 33%;
+    height: 40%;
 `;
 const ItemContent = styled.div`
-    margin-top: 0.5em; 
+    margin-top: 0.3em; 
+    display: flex;
+    justify-content: center;
 `;
+const ImageContainer = styled.div`
+    width: 28vw; /* viewport 너비의 28% */
+    height: 28vw; /* viewport 너비의 28% */
+    max-width: 200px; /* 최대 너비 */
+    max-height: 200px; /* 최대 높이 */
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* 이미지가 컨테이너를 벗어나지 않도록 함 */
+    border-radius: 1em;
+`
 const CropName = styled.div`
     font-size:0.8em;
-    font-weight: 600;
+    font-weight: 500;
 `
 function CropListPage() {
   const [cropList, setCropList] = useState([]);
@@ -35,7 +56,7 @@ function CropListPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8090/api/crop-list");
+        const response = await axios.get("http://192.168.0.51:8090/crop-dict/list");
         setCropList(response.data); // API에서 받아온 작물 목록을 상태에 업데이트
         console.log(response.data);
     } catch (error) {
@@ -49,15 +70,15 @@ function CropListPage() {
   return (
     <StyledContainer>
         
-        <h1>작물정보</h1>
+        <Title>작물정보</Title>
         <CropItemList>
             {cropList.map((crop, index) => (
                 <CropItem key={index}>
                     {/* Link 컴포넌트를 사용하여 해당 작물의 상세 페이지로 이동 */}
                     <Link to={`/crop-detail/${crop.cropDictNo}`}>
-                        <ItemContent>
-                            <CropImage  width="6em" height="6em"src="" alt=""/>
-                        </ItemContent>
+                        <ImageContainer>
+                            <img src={`http://192.168.0.51:8090/img/${crop.image}`} alt="cropImage"  style={{ width: '100%', height: '100%', objectFit: 'cover' }}/>
+                        </ImageContainer>
                         <ItemContent>
                             <CropCatebox name={crop.cropCategoryEntity.cropCateName}></CropCatebox>
                         </ItemContent>

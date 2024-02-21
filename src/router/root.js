@@ -1,4 +1,5 @@
 import { Suspense, lazy } from 'react';
+import InquiryDetailPage from '../pages/member/mypage/inquiry/InquiryDetailPage.js';
 import LoadingModal from '../components/modal/LoadingModal.js';
 const { createBrowserRouter } = require('react-router-dom');
 
@@ -344,7 +345,7 @@ const root = createBrowserRouter([
         ),
         children: [
             {
-                path: '',
+                path: ':farmNo',
                 element: (
                     <Suspense fallback={Loading}>
                         <InquiryList />
@@ -352,7 +353,15 @@ const root = createBrowserRouter([
                 ),
             },
             {
-                path: 'regist',
+                path: ':boardNo/detail',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <InquiryDetailPage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: ':farmNo/regist',
                 element: (
                     <Suspense fallback={Loading}>
                         <InquiryRegist />
