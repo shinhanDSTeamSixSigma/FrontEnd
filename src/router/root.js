@@ -77,6 +77,16 @@ const InquiryList = lazy(() =>
 const InquiryRegist = lazy(() =>
     import('../pages/member/mypage/inquiry/InquiryRegistPage.js'),
 );
+// 회원가입
+const Signup = lazy(() => import('../pages/Login/RegisterPage.js'));
+
+//로그인
+const Login = lazy(() => import('../pages/Login/LoginPage.js'));
+
+// 온습도통계
+const TemperaturHumidityPage = lazy(() =>
+    import('../pages/main/TemperatureHumidityPage.js'),
+);
 // 농장 등록
 const AddFarm = lazy(() =>
     import('../pages/farmer/mypage/farm/FarmerFarmAddPage'),
@@ -188,7 +198,7 @@ const root = createBrowserRouter([
 
         children: [
             {
-                path: '',
+                path: 'memberMypage',
                 element: (
                     <Suspense fallback={Loading}>
                         <MemberMyPage />
@@ -232,6 +242,15 @@ const root = createBrowserRouter([
                 element: (
                     <Suspense fallback={Loading}>
                         <MyCrop />
+                    </Suspense>
+                ),
+            },
+
+            {
+                path: 'temperature',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <TemperaturHumidityPage />
                     </Suspense>
                 ),
             },
@@ -341,6 +360,24 @@ const root = createBrowserRouter([
                 ),
             },
         ],
+    },
+    // 로그인 라우터
+    {
+        path: 'signup',
+        element: (
+            <Suspense fallback={Loading}>
+                <Signup />
+            </Suspense>
+        ),
+    },
+    // 로그인 라우터
+    {
+        path: 'login',
+        element: (
+            <Suspense fallback={Loading}>
+                <Login />
+            </Suspense>
+        ),
     },
 ]);
 
