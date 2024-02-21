@@ -1,5 +1,6 @@
 import { Suspense, lazy } from 'react';
-import LoadingModal from '../components/LoadingModal';
+import InquiryDetailPage from '../pages/member/mypage/inquiry/InquiryDetailPage.js';
+import LoadingModal from '../components/modal/LoadingModal.js';
 const { createBrowserRouter } = require('react-router-dom');
 
 const Loading = <LoadingModal />;
@@ -7,6 +8,9 @@ const Loading = <LoadingModal />;
 const Main = lazy(() => import('../pages/main/MainPage'));
 // 농장 리스트
 const Farm = lazy(() => import('../pages/member/farm/FarmListPage'));
+// 농장 상세
+const FarmEdit = lazy(() => import('../pages/member/farm/FarmDetailPage'));
+
 // 레이아웃
 const Layout = lazy(() => import('../layouts/Layout'));
 // 멤버 마이페이지
@@ -40,13 +44,17 @@ const CropAlbum = lazy(() =>
 // 멤버 마이페이지 - 내 작물
 const MyCrop = lazy(() => import('../pages/member/mypage/MyCropPage'));
 
-//식물 기록-다이어리
+//식물 기록 - 다이어리
 const Diary = lazy(() => import('../pages/member/mypage/diary/DiaryPage'));
 const DiaryRegist = lazy(() =>
     import('../pages/member/mypage/diary/DiaryRegistPage'),
 );
 const DiaryEdit = lazy(() =>
     import('../pages/member/mypage/diary/DiaryEditPage'),
+);
+//식물 기록 - 캘린더
+const DiaryCalendar = lazy(() =>
+    import('../pages/member/mypage/diary/DiaryCalendarPage'),
 );
 //농장 결제
 const Pay = lazy(() => import('../pages/member/mypage/point/PayApplyPage'));
@@ -84,6 +92,16 @@ const Login = lazy(() => import('../pages/Login/LoginPage.js'));
 const TemperaturHumidityPage = lazy(() =>
     import('../pages/main/TemperatureHumidityPage.js'),
 );
+// 농장 등록
+const AddFarm = lazy(() =>
+    import('../pages/farmer/mypage/farm/FarmerFarmAddPage'),
+);
+// 농장 수정
+const ModifyFarm = lazy(() =>
+    import('../pages/farmer/mypage/farm/FarmerFarmModifyPage'),
+);
+// 농장 구매
+const PayFarm = lazy(() => import('../pages/member/farm/FarmPayPage.js'));
 
 const root = createBrowserRouter([
     // 기본 라우터
@@ -103,14 +121,7 @@ const root = createBrowserRouter([
                     </Suspense>
                 ),
             },
-            {
-                path: 'farm-list',
-                element: (
-                    <Suspense fallback={Loading}>
-                        <Farm />
-                    </Suspense>
-                ),
-            },
+
             {
                 path: 'crop-list',
                 element: (
@@ -120,10 +131,62 @@ const root = createBrowserRouter([
                 ),
             },
             {
-                path: 'crop-detail:id',
+                path: 'crop-detail/:id',
                 element: (
                     <Suspense fallback={Loading}>
                         <CropDetail />
+                    </Suspense>
+                ),
+            },
+        ],
+    },
+    // 농장 라우터
+    {
+        path: 'farm',
+        element: (
+            <Suspense fallback={Loading}>
+                <Layout />
+            </Suspense>
+        ),
+        children: [
+            {
+                path: 'list',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <Farm />
+                    </Suspense>
+                ),
+            },
+            {
+
+                path: 'read/:farmNo',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <FarmEdit />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'regist',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <AddFarm />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'modify/:farmNo',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <ModifyFarm />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'pay',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <PayFarm />
                     </Suspense>
                 ),
             },
@@ -201,7 +264,7 @@ const root = createBrowserRouter([
     },
     // 작물 일기 라우터
     {
-        path: 'crop-diary',
+        path: 'diary',
         element: (
             <Suspense fallback={Loading}>
                 <Layout />
@@ -225,10 +288,28 @@ const root = createBrowserRouter([
                 ),
             },
             {
-                path: 'edit',
+                path: 'list/:diaryNo',
                 element: (
                     <Suspense fallback={Loading}>
                         <DiaryEdit />
+                    </Suspense>
+                ),
+            },
+        ],
+    },
+    {
+        path: 'calendar',
+        element: (
+            <Suspense fallback={Loading}>
+                <Layout />
+            </Suspense>
+        ),
+        children: [
+            {
+                path: '',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <DiaryCalendar />
                     </Suspense>
                 ),
             },
@@ -252,7 +333,7 @@ const root = createBrowserRouter([
                 ),
             },
             {
-                path: 'payment-detail',
+                path: 'receipt',
                 element: (
                     <Suspense fallback={Loading}>
                         <PaymentDetail />
@@ -260,7 +341,7 @@ const root = createBrowserRouter([
                 ),
             },
             {
-                path: 'point-charge',
+                path: 'charge',
                 element: (
                     <Suspense fallback={Loading}>
                         <PointCharge />
@@ -268,7 +349,7 @@ const root = createBrowserRouter([
                 ),
             },
             {
-                path: 'point-result',
+                path: 'detail',
                 element: (
                     <Suspense fallback={Loading}>
                         <PointDetail />
@@ -287,7 +368,7 @@ const root = createBrowserRouter([
         ),
         children: [
             {
-                path: '',
+                path: ':farmNo',
                 element: (
                     <Suspense fallback={Loading}>
                         <InquiryList />
@@ -295,7 +376,15 @@ const root = createBrowserRouter([
                 ),
             },
             {
-                path: 'regist',
+                path: ':boardNo/detail',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <InquiryDetailPage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: ':farmNo/regist',
                 element: (
                     <Suspense fallback={Loading}>
                         <InquiryRegist />
