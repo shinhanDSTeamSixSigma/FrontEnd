@@ -3,7 +3,9 @@ import styled from 'styled-components';
 const BodyHeader = styled.header`
     color: black;
     font-size: 20px;
-    margin: 1.5rem 1rem 1.5rem;
+    margin: 1.5rem 1rem 1.5rem 0;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
 `;
 export default function StyledHeader({ children }) {
     return (
