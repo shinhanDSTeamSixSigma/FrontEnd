@@ -1,3 +1,6 @@
+import React, { useState, useEffect } from 'react';
+
+import axios from 'axios';
 import styled from 'styled-components';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { IoIosLogOut } from 'react-icons/io';
@@ -46,11 +49,58 @@ const boxStyle = {
     fontSize: '2rem',
     margin: 'auto',
 };
+
 export default function MemberMyPagePage() {
+    const [userInfo, setUserInfo] = useState({
+        // name: '비회원',
+        // sub: '',
+        // role: '',
+        // memberNo: 34,
+        memberId: '',
+        memberName: '',
+        phone: '',
+        nickname: '비회원',
+        address1: '',
+        address2: '',
+        memberPoint: '',
+        zipcode: '',
+        role: '',
+    });
+
+    useEffect(() => {
+        // 서버에서 사용자 정보 가져오기
+        fetchUserInfo();
+    }, []);
+
+    const fetchUserInfo = () => {
+        axios
+            .get('http://localhost:8090/user', {
+                withCredentials: true,
+            })
+            .then((res) => {
+                setUserInfo(res.data);
+                if (res.data.role !== 'FARMER') {
+                    console.log(res.data.role);
+                    alert('농부만 들어갈 수 있는 페이지 입니다!');
+                    window.location.href = '/';
+                }
+            })
+            .catch((error) => {
+                console.log('데이터 안옴!!!!!!');
+                console.log(error);
+            });
+        // try {
+        //     const response = await axios.get('http://192.168.0.73:8090/user');
+        //     // 서버에서 받은 사용자 정보를 userInfo 상태로 설정
+        //     setUserInfo(response.data);
+        //     console.log(response.data);
+        // } catch (error) {
+        //     console.error('Error fetching user info:', error);
+        // }
+    };
+
     return (
         <>
-            <span className="text-2xl font-black ml-5">마이페이지</span>
-
             <StyledBody>
                 <FlexRow
                     style={{
@@ -69,15 +119,19 @@ export default function MemberMyPagePage() {
                         />
                         <div>
                             <FlexRow>
-                                <div className="text-sm mr-[3px]">토심이</div>
+                                <div className="text-sm mr-[3px]">
+                                    {userInfo.nickname}
+                                </div>
                                 <div className="text-sm">농부님</div>
                             </FlexRow>
-                            <Step style={{ color: '#999999' }}>sk5046</Step>
+                            <Step style={{ color: '#999999' }}>
+                                {userInfo.memberId}
+                            </Step>
                         </div>
                     </FlexRow>
                     <FlexRow>
                         <div className="text-sm mr-[3px]">내 포인트 : </div>
-                        <div className="text-sm">10,000</div>
+                        <div className="text-sm">{userInfo.memberPoint}</div>
                     </FlexRow>
                     <IoSettingsOutline />
                 </FlexRow>

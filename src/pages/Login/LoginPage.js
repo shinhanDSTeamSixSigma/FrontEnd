@@ -14,12 +14,18 @@ const LoginPage = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:8090/login', {
-                email,
-                password,
-            });
-            console.log('Authentication successful:', response.data);
+            const response = await axios.get(
+                'http://localhost:8090/login?email=' +
+                    email +
+                    '&password=' +
+                    password,
+            );
+            console.log('Authentication successful:', response);
             // 인증 성공 시 다음 작업 수행
+            const token = response.data.token;
+            console.log(token);
+
+            document.cookie = 'auth=' + token + ';' + 'path=/';
 
             window.location.href = '/'; // Redirect 방식
         } catch (error) {
@@ -53,23 +59,25 @@ const LoginPage = () => {
                     </div>
 
                     <form onSubmit={handleSubmit}>
-                        <div>
-                            <label>
+                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md mb-4">
+                            <label className="block w-full text-sm font-medium leading-6 text-gray-900 ">
                                 아이디(이메일):
                                 <input
                                     type="email"
                                     value={email}
+                                    placeholder="이메일을 입력하세요"
                                     onChange={(e) => setEmail(e.target.value)}
                                     className="input-field"
                                 />
                             </label>
                         </div>
-                        <div>
-                            <label>
+                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md mb-4">
+                            <label className="block w-full text-sm font-medium leading-6 text-gray-900">
                                 비밀번호:
                                 <input
                                     type="password"
                                     value={password}
+                                    placeholder="비밀번호를 입력하세요"
                                     onChange={(e) =>
                                         setPassword(e.target.value)
                                     }
@@ -85,9 +93,10 @@ const LoginPage = () => {
                                 justifyContent: 'center',
                                 display: 'flex',
                                 paddingTop: '1rem',
+                                fontSize: '1rem',
                             }}
                         >
-                            <Link to="/signup">회원가입 하러가기</Link>
+                            <Link to="/signup">회원가입</Link>
                         </div>
                     </form>
                 </StyledBody>
