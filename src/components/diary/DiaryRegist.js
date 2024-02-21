@@ -63,8 +63,11 @@ const DiaryRegist = () => {
     const [cropBuyDate, setCropBuyDate] = useState(null);
     const [dateDifferenceInDays, setDateDifferenceInDays] = useState(null);
 
+    const [sensorInfo, setSensorInfo] = useState([]);
+
     useEffect(() => {
         getCropBuyDate();
+        sensorInfoData();
     }, [memberNo, cropNo]);
 
     useEffect(() => {
@@ -92,6 +95,25 @@ const DiaryRegist = () => {
         }
     };
 
+    const sensorInfoData = () => {
+        const formattedDiaryDate = new Date(diaryDate);
+
+        axios
+            .get('http://localhost:8080/calendar/sensor-info', {
+                params: {
+                    memberNo: memberNo,
+                    cropNo: cropNo,
+                    diaryDate: formattedDiaryDate,
+                },
+            })
+            .then((res) => {
+                setSensorInfo(res.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
     const calculateDateDifference = () => {
         const today = new Date();
         const differenceInDays = Math.floor(
@@ -102,7 +124,6 @@ const DiaryRegist = () => {
 
     const save = async () => {
         try {
-            // 여기서 필요한 데이터를 정리하여 서버에 전송
             const requestData = {
                 diaryDate: diaryDate,
                 content: content,
@@ -137,31 +158,35 @@ const DiaryRegist = () => {
                         <LuImagePlus />
                     </Height>
                 </Picture>
-                <FlexRow style={{ margin: '0 0.5rem 0.5rem' }}>
-                    <FlexRow style={{ margin: 'auto' }}>
-                        <div
-                            className="d-flex justify-content-end"
-                            style={marginLeft}
-                        >
-                            <FaCircle color="#F97777" style={image} />
-                            <div>온도</div>
-                        </div>
-                        <div
-                            className="d-flex justify-content-end"
-                            style={marginLeft}
-                        >
-                            <FaCircle color="#BACCFD" style={image} />
-                            <div>습도</div>
-                        </div>
-                        <div
-                            className="d-flex justify-content-end"
-                            style={marginLeft}
-                        >
-                            <FaCircle color="#FCC9A7" style={image} />
-                            <div>조도</div>
-                        </div>
+                {sensorInfo.length > 0 && (
+                    <FlexRow style={{ margin: '0 0.5rem 0.5rem' }}>
+                        {sensorInfo.map((data, index) => (
+                            <FlexRow key={index} style={{ margin: 'auto' }}>
+                                <div
+                                    className="d-flex justify-content-end"
+                                    style={marginLeft}
+                                >
+                                    <FaCircle color="#F97777" style={image} />
+                                    <div>{data[1]}°C</div>
+                                </div>
+                                <div
+                                    className="d-flex justify-content-end"
+                                    style={marginLeft}
+                                >
+                                    <FaCircle color="#BACCFD" style={image} />
+                                    <div>{data[2]}%</div>
+                                </div>
+                                <div
+                                    className="d-flex justify-content-end"
+                                    style={marginLeft}
+                                >
+                                    <FaCircle color="#FCC9A7" style={image} />
+                                    <div>{data[3]}lx</div>
+                                </div>
+                            </FlexRow>
+                        ))}
                     </FlexRow>
-                </FlexRow>
+                )}
                 <Content>
                     <textarea
                         placeholder="오늘은 어땠나요?"

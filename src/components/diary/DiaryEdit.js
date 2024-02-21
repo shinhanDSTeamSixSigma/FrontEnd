@@ -59,15 +59,16 @@ const DiaryEdit = () => {
             .get(`http://localhost:8080/diary/list/${diaryNo}`)
             .then((res) => {
                 // buyDate와 diaryDate의 차이를 계산하여 새로운 속성 추가
-                const diaryData = res.data[0];
+                const diaryData = res.data[0][0];
+                const censorData = res.data[0][1];
                 const cropBuyDate = new Date(diaryData.cropEntity.buyDate);
                 const diaryDate = new Date(diaryData.diaryDate);
                 const dateDifferenceInDays = Math.floor(
                     (diaryDate - cropBuyDate) / (1000 * 60 * 60 * 24),
                 );
-
                 setDiaryDetail({
                     ...diaryData,
+                    ...censorData,
                     dateDifferenceInDays: dateDifferenceInDays,
                 });
             })
@@ -118,21 +119,21 @@ const DiaryEdit = () => {
                             style={marginLeft}
                         >
                             <FaCircle color="#F97777" style={image} />
-                            <div>온도</div>
+                            <div>{diaryDetail.thomer}°C</div>
                         </div>
                         <div
                             className="d-flex justify-content-end"
                             style={marginLeft}
                         >
                             <FaCircle color="#BACCFD" style={image} />
-                            <div>습도</div>
+                            <div>{diaryDetail.soilHumid}%</div>
                         </div>
                         <div
                             className="d-flex justify-content-end"
                             style={marginLeft}
                         >
                             <FaCircle color="#FCC9A7" style={image} />
-                            <div>조도</div>
+                            <div>{diaryDetail.lumen}lx</div>
                         </div>
                     </FlexRow>
                 </FlexRow>

@@ -16,19 +16,27 @@ const DiaryContent = () => {
 
     const [memberNo, setMemberNo] = useState(1); // 추후 변경
     const [cropNo, setCropNo] = useState(1); // 추후 변경
-    const [diaryDate, setDiaryDate] = useState(new Date()); // 현재 날짜로 초기화
+    const [diaryDate, setDiaryDate] = useState();
 
     useEffect(() => {
         diaryListData();
     }, [diaryDate]);
 
     const diaryListData = () => {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+
+        const formattedDiaryDate = `${year}-${month}-${day}`;
+
+        console.log(formattedDiaryDate);
         axios
             .get('http://localhost:8080/calendar/list', {
                 params: {
                     memberNo: memberNo,
                     cropNo: cropNo,
-                    diaryDate: diaryDate,
+                    diaryDate: formattedDiaryDate,
                 },
             })
             .then((res) => {
@@ -53,6 +61,7 @@ const DiaryContent = () => {
                     </Link>
                 )}
             </StyledContainer>
+            {console.log('diaryList:', diaryList)}
         </>
     );
 };

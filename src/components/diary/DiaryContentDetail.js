@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { FaCircle } from 'react-icons/fa';
 import { TfiPencil } from 'react-icons/tfi';
@@ -38,14 +39,15 @@ const DiaryContentDetail = () => {
         margin: 'auto 0.1rem',
     };
 
-    const [diaryList, setDiaryList] = useState();
+    const [diaryList, setDiaryList] = useState([]);
 
     const [memberNo, setMemberNo] = useState(1); // 추후 변경
     const [cropNo, setCropNo] = useState(1); // 추후 변경
+    const [diaryDate, setDiaryDate] = useState();
 
     useEffect(() => {
         diaryListData();
-    }, []);
+    }, [memberNo, cropNo]);
 
     const diaryListData = () => {
         axios
@@ -56,19 +58,25 @@ const DiaryContentDetail = () => {
                 },
             })
             .then((res) => {
-                // buyDate와 diaryDate의 차이를 계산하여 새로운 속성 추가
-                const diaryListWithDateDiff = res.data.map((diary) => {
-                    const cropBuyDate = new Date(diary.cropEntity.buyDate);
-                    const diaryDate = new Date(diary.diaryDate);
-                    const dateDifferenceInDays = Math.floor(
-                        (diaryDate - cropBuyDate) / (1000 * 60 * 60 * 24),
-                    );
+                // 2차원 배열의 각 내부 배열에 대해 map을 사용
+                const diaryListWithDateDiff = res.data.map((diaryGroup) =>
+                    diaryGroup.map((diary) => {
+                        const cropEntity = diary.cropEntity || {}; // cropEntity가 없을 경우 빈 객체로 초기화
+                        const cropBuyDate = new Date(cropEntity.buyDate);
+                        const diaryDate = new Date(diary.diaryDate);
+                        const dateDifferenceInDays = Math.abs(
+                            Math.floor(
+                                (diaryDate - cropBuyDate) /
+                                    (1000 * 60 * 60 * 24),
+                            ),
+                        );
 
-                    return {
-                        ...diary,
-                        dateDifferenceInDays: dateDifferenceInDays,
-                    };
-                });
+                        return {
+                            ...diary,
+                            dateDifferenceInDays: dateDifferenceInDays,
+                        };
+                    }),
+                );
 
                 setDiaryList(diaryListWithDateDiff);
             })
@@ -76,6 +84,7 @@ const DiaryContentDetail = () => {
                 console.log(error);
             });
     };
+
     const handleDeleteClick = async (diaryNo) => {
         try {
             // HTTP DELETE 요청 보내기
@@ -93,18 +102,19 @@ const DiaryContentDetail = () => {
         <>
             {diaryList && diaryList.length > 0 ? (
                 diaryList.map((diary, index) => (
-                    <div key={index}>
+                    <div key={'인덱스' + index}>
                         <StyledContainer>
                             <Picture></Picture>
                             <FlexRow style={marginContent}>
                                 <FlexRow style={{ fontWeight: 'bold' }}>
                                     <div>
                                         {new Date(
-                                            diary.diaryDate,
+                                            diary[0].diaryDate,
                                         ).toLocaleDateString()}
                                     </div>
                                     <div>
-                                        ({diary.dateDifferenceInDays}일차)
+                                        ({diary[0].dateDifferenceInDays}
+                                        일차)
                                     </div>
                                 </FlexRow>
                                 <FlexRow style={{ marginLeft: 'auto' }}>
@@ -113,27 +123,27 @@ const DiaryContentDetail = () => {
                                             color="#F97777"
                                             style={image}
                                         />
-                                        <div>온도</div>
+                                        <div>{diary[1].thomer}°C</div>
                                     </div>
                                     <div className="d-flex justify-content-end">
                                         <FaCircle
                                             color="#BACCFD"
                                             style={image}
                                         />
-                                        <div>습도</div>
+                                        <div>{diary[1].soilHumid}%</div>
                                     </div>
                                     <div className="d-flex justify-content-end">
                                         <FaCircle
                                             color="#FCC9A7"
                                             style={image}
                                         />
-                                        <div>조도</div>
+                                        <div>{diary[1].lumen}lx</div>
                                     </div>
                                 </FlexRow>
                             </FlexRow>
                             {/*내용*/}
                             <div className="content" style={marginContent}>
-                                {diary.content}
+                                {diary[0].content}
                             </div>
                             <FlexRow
                                 style={{
@@ -141,12 +151,12 @@ const DiaryContentDetail = () => {
                                     justifyContent: 'end',
                                 }}
                             >
-                                <Link to={`list/${diary.diaryNo}`}>
+                                <Link to={`list/${diary[0].diaryNo}`}>
                                     <TfiPencil />
                                 </Link>
                                 <button
                                     onClick={() =>
-                                        handleDeleteClick(diary.diaryNo)
+                                        handleDeleteClick(diary[0].diaryNo)
                                     }
                                 >
                                     <RiDeleteBinLine />
