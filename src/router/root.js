@@ -44,13 +44,17 @@ const CropAlbum = lazy(() =>
 // 멤버 마이페이지 - 내 작물
 const MyCrop = lazy(() => import('../pages/member/mypage/MyCropPage'));
 
-//식물 기록-다이어리
+//식물 기록 - 다이어리
 const Diary = lazy(() => import('../pages/member/mypage/diary/DiaryPage'));
 const DiaryRegist = lazy(() =>
     import('../pages/member/mypage/diary/DiaryRegistPage'),
 );
 const DiaryEdit = lazy(() =>
     import('../pages/member/mypage/diary/DiaryEditPage'),
+);
+//식물 기록 - 캘린더
+const DiaryCalendar = lazy(() =>
+    import('../pages/member/mypage/diary/DiaryCalendarPage'),
 );
 //농장 결제
 const Pay = lazy(() => import('../pages/member/mypage/point/PayApplyPage'));
@@ -182,7 +186,6 @@ const root = createBrowserRouter([
                 path: 'pay',
                 element: (
                     <Suspense fallback={Loading}>
-
                         <PayFarm />
                     </Suspense>
                 ),
@@ -261,7 +264,7 @@ const root = createBrowserRouter([
     },
     // 작물 일기 라우터
     {
-        path: 'crop-diary',
+        path: 'diary',
         element: (
             <Suspense fallback={Loading}>
                 <Layout />
@@ -285,10 +288,28 @@ const root = createBrowserRouter([
                 ),
             },
             {
-                path: 'edit',
+                path: 'list/:diaryNo',
                 element: (
                     <Suspense fallback={Loading}>
                         <DiaryEdit />
+                    </Suspense>
+                ),
+            },
+        ],
+    },
+    {
+        path: 'calendar',
+        element: (
+            <Suspense fallback={Loading}>
+                <Layout />
+            </Suspense>
+        ),
+        children: [
+            {
+                path: '',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <DiaryCalendar />
                     </Suspense>
                 ),
             },
@@ -312,7 +333,7 @@ const root = createBrowserRouter([
                 ),
             },
             {
-                path: 'payment-detail',
+                path: 'receipt',
                 element: (
                     <Suspense fallback={Loading}>
                         <PaymentDetail />
@@ -320,7 +341,7 @@ const root = createBrowserRouter([
                 ),
             },
             {
-                path: 'point-charge',
+                path: 'charge',
                 element: (
                     <Suspense fallback={Loading}>
                         <PointCharge />
@@ -328,7 +349,7 @@ const root = createBrowserRouter([
                 ),
             },
             {
-                path: 'point-result',
+                path: 'detail',
                 element: (
                     <Suspense fallback={Loading}>
                         <PointDetail />
