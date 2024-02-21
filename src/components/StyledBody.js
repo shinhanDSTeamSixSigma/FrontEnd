@@ -6,7 +6,6 @@ const BodyBody = styled.body`
     font-size: 20px;
     margin-left: 1.5rem;
     margin-right: 1.5rem;
-    padding-top: 1rem;
     padding-bottom: 1rem;
 `;
 
