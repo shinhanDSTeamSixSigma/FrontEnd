@@ -1,3 +1,8 @@
+import FarmRead from '../../../components/farm/FarmRead';
+import StyledHeader from '../../../components/StyledHeader';
+import StyledBody from '../../../components/StyledBody';
+import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
+import Button from '../../../components/Button';
 const farm_detail = {
     name: 'Ted Fox',
     email: 'ted.fox@example.com',
@@ -5,7 +10,7 @@ const farm_detail = {
     selfLike: false,
 };
 
-export default function FarmDetailPage() {
+function FarmDetailPage2() {
     return (
         <>
             {/* 위에 */}
@@ -69,6 +74,25 @@ export default function FarmDetailPage() {
                 {/* 버튼으로 나열 */}
                 {/* 디폴트는 농장 정보 */}
             </div>
+        </>
+    );
+}
+
+
+export default function FarmDetailPage() {
+    const { farmNo } = useParams();
+    const [queryParams] = useSearchParams();
+
+    return (
+        <>
+            <StyledHeader>
+                <div className="flex justify-between">
+                    <div>test detail {farmNo}</div>
+                </div>
+            </StyledHeader>
+            <StyledBody>
+                <FarmRead farmNo={farmNo} />
+            </StyledBody>
         </>
     );
 }

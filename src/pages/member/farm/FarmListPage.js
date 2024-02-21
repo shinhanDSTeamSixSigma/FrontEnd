@@ -1,6 +1,7 @@
+
 import { Link } from 'react-router-dom';
 import FarmTypeAlignList from '../../../components/farm/FarmTypeAlign';
-
+import MyFarmList from '../../../components/farm/MyFarmList';
 const farms = [
     {
         farm_no: 1,
@@ -112,6 +113,9 @@ export default function FarmPage() {
                         <FarmObject farm={farm} />
                     </li>
                 ))}
+            </ul>
+            <ul className="divide-y divide-gray-200">
+                <MyFarmList />
             </ul>
         </>
     );
