@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import DiaryTitle from '../../../../components/diary/DiaryTitle';
-import DiaryContent from '../../../../components/diary/DiaryContent';
+import DiaryCalendar from '../../../../components/diary/DiaryCalendar';
+import CalendarIcon from '../../../../components/diary/CalendarIcon';
 
 const StyledContainer = styled.div`
     color: black;
@@ -8,14 +9,15 @@ const StyledContainer = styled.div`
     margin: auto 1.5rem auto;
 `;
 
-const DiaryPage = () => {
+const DiaryCalendarPage = () => {
     return (
         <>
             <StyledContainer>
                 <DiaryTitle />
+                <DiaryCalendar />
             </StyledContainer>
-            <DiaryContent />
+            <CalendarIcon />
         </>
     );
 };
-export default DiaryPage;
+export default DiaryCalendarPage;
