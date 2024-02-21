@@ -40,10 +40,10 @@ const CropInfo = () => {
                 <FarmImage />
                 <ContentMargin style={{ marginRight: '2rem' }}>
                     <div style={farmName}>토심이네 농장</div>
-                    <div style={cropName}>평 수</div>
                     <FlexRow style={detailName}>
                         {cartItems.map((element, idx) => (
-                            <div key={idx} className="flex">
+                            <div key={idx}>
+                                <div style={cropName}>{element.name}</div>
                                 <div>수량 - {element.quantity} </div>
                                 <div className="ml-2">
                                     금액 - {element.price * element.quantity} 원

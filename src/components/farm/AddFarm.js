@@ -1,5 +1,10 @@
-import { useState } from 'react';
-import { postAdd, farmAddFile } from '../../api/farmApi';
+import { useState, useEffect } from 'react';
+import {
+    postAdd,
+    farmAddFile,
+    getFarmCrop,
+    postFarmCrop,
+} from '../../api/farmApi';
 import useCustomMove from '../../hooks/useCustomMove';
 import ResultModal from '../modal/ResultModal';
 
@@ -28,14 +33,33 @@ const fileInitState = {
     fileManageNo: 0,
 };
 
+const farmCropInitState = {
+    farmNo: 0,
+    cropName: 0,
+};
+
 export default function AddFarm() {
     const [farm, setFarm] = useState({ ...initState });
     const [file, setFile] = useState({ ...fileInitState });
+    const [crop, setCrop] = useState({ ...farmCropInitState }); // 보낼 농작물들
+    const [farmCrop, setFarmCrop] = useState([]); // 가져올 농작물들
 
     const [result, setResult] = useState(null); //농장 결과 상태
     const [fileReuslt, setFileResult] = useState(null); // 파일 결과
 
     const { moveToList } = useCustomMove(); //useCustomMove 활용
+    useEffect(() => {});
+    const handleChangeFarmCrop = (e) => {
+        const { name, value } = e.target;
+        setCrop({ ...crop, [name]: value });
+    };
+    useEffect(() => {
+        getFarmCrop().then((data) => {
+            console.log('test:' + data);
+
+            setFarmCrop(data);
+        });
+    }, []);
 
     const handleChangeFarm = (e) => {
         farm[e.target.name] = e.target.value;
@@ -71,6 +95,14 @@ export default function AddFarm() {
                         console.log(fileReuslt);
                         setFileResult(fileReuslt['FileNO']);
                         setFile({ ...fileInitState });
+                    })
+                    .catch((e) => {
+                        console.error(e);
+                    });
+                postFarmCrop({ farmNo: farmNo, cropName: crop.cropDictNo })
+                    .then((farmCropResuslt) => {
+                        console.log(farmCropResuslt);
+                        setCrop({ ...farmCropInitState });
                     })
                     .catch((e) => {
                         console.error(e);
@@ -288,6 +320,30 @@ export default function AddFarm() {
                                             <option>백합과</option>
                                             <option>오이과</option>
                                             <option>콩과</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className="sm:col-span-3">
+                                    <label
+                                        htmlFor="대표 작물"
+                                        className="block text-sm font-medium leading-6 text-gray-900"
+                                    >
+                                        대표 작물
+                                    </label>
+                                    <div className="mt-2">
+                                        <select
+                                            id="대표 작물"
+                                            name="cropDictNo"
+                                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                                            onChange={handleChangeFarmCrop}
+                                        >
+                                            {farmCrop.map((crop, idx) => (
+                                                <>
+                                                    <option>
+                                                        {crop['cropName']}
+                                                    </option>
+                                                </>
+                                            ))}
                                         </select>
                                     </div>
                                 </div>

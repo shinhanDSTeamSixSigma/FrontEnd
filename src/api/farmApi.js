@@ -34,6 +34,7 @@ export async function getPaging(pageParam) {
 // 등록
 export async function postAdd(farmObj) {
     const res = await axios.post(`${prefix}/register`, farmObj);
+    console.log(farmObj);
 
     return res.data;
 }
@@ -69,5 +70,16 @@ export async function deleteFile(farmNo, fileName) {
     const res = await axios.delete(
         `${prefix}/deleteImage/FARM/${farmNo}/${fileName}`,
     );
+    return res.data;
+}
+// 작물리스트 가져오기
+export async function getFarmCrop() {
+    const res = await axios.get(`${API_SERVER_HOST}/crop-dict/list`);
+    return res.data;
+}
+
+// 농장 작물 등록하기
+export async function postFarmCrop(farmCropObj) {
+    const res = await axios.post(`${prefix}/farmCrop`, farmCropObj);
     return res.data;
 }
