@@ -25,12 +25,8 @@ export default function Search({ isModalOpen, handleCloseModal }) {
                         placeholder="농장을 검색하세요..."
                         required
                     />
-                    <button
-                        type="submit"
-                        className="block w-16 text-white bg-[#80BCBD] hover:bg-[#80BCBD]-900  focus:outline-none  font-medium rounded-lg text-sm px-4 mr-auto"
-                    >
-                        검색
-                    </button>
+
+                    <Button widthHeight={'w-20 h-11'} name={'클릭'} />
                 </div>
             )}
         </StyledHeader>

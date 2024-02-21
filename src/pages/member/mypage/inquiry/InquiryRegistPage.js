@@ -4,13 +4,12 @@ import BoardRegist from "../../../../components/board/BoardRegist";
 const StyledContainer = styled.div`
     background-color:white;
     border-radius:0.6rem;
-    padding:1.3rem;
+    margin:1.5rem;
 `;
 const InquiryRegistPage = () => {
     return(
         <>
         <StyledContainer>
-            <BoardTitle name="문의하기"></BoardTitle>
             <BoardRegist/>
         </StyledContainer>
         </>

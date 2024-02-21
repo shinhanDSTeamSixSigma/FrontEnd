@@ -1,4 +1,4 @@
-import '../styles/loadingModal.css';
+import '../../styles/loadingModal.css';
 
 export default function LoadingModal() {
     return (
