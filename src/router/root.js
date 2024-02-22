@@ -158,7 +158,6 @@ const root = createBrowserRouter([
                 ),
             },
             {
-
                 path: 'read/:farmNo',
                 element: (
                     <Suspense fallback={Loading}>
@@ -183,7 +182,7 @@ const root = createBrowserRouter([
                 ),
             },
             {
-                path: 'pay',
+                path: 'pay/:farmNo',
                 element: (
                     <Suspense fallback={Loading}>
                         <PayFarm />
