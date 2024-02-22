@@ -20,13 +20,10 @@ const FarmImage = styled.div`
     align-items: center; /* 이미지를 수직으로 중앙에 정렬하기 위해 사용 */
     overflow: hidden; /* 이미지가 div를 벗어나지 않도록 함 */
 `;
-
 const url = `${prefix}`;
 
-// props로 받음
+
 const CropInfo = ({ cartItems, myCrop, myFarm }) => {
-    // const location = useLocation();
-    // const { cartItems, totalPrice, myCrop, myFarm } = location.state;
 
     const farmName = {
         fontWeight: '600',
@@ -57,15 +54,16 @@ const CropInfo = ({ cartItems, myCrop, myFarm }) => {
                     <div style={farmName}>{myFarm.farmName}</div>
                     <div>{myCrop && <div>{myCrop.cropName}</div>}</div>
 
-                    <FlexRow style={detailName}>
+                    <FlexRow>
                         {cartItems.map((element, idx) => (
                             <div key={idx}>
                                 <div style={cropName}>{element.name}</div>
-                                {/* <div>수량 - {element.quantity} </div> */}
-                                {/* 번호: 땅은 1, 비료는 2 */}
-                                <div>번호 - {element.optionNumber}</div>
-                                <div className="ml-2">
-                                    금액 - {element.price * element.quantity} 원
+                                <div style={detailName}>
+                                    {(element.price * element.quantity)
+                                        .toString()
+                                        .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                    원
+
                                 </div>
                             </div>
                         ))}
