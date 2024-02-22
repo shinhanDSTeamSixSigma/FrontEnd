@@ -7,6 +7,9 @@ import {
     farmAddFile,
     deleteFile,
     getFarmCrop,
+    putFarmCrop,
+    deleteFarmCrop,
+    postFarmCrop,
 } from '../../api/farmApi';
 import ResultModal from '../modal/ResultModal';
 import useCustomMove from '../../hooks/useCustomMove';
@@ -54,6 +57,7 @@ export default function ModifyFarm({ farmNo, moveList, moveRead }) {
     const [crop, setCrop] = useState({ ...farmCropInitState }); // 보낼 농작물들
     const [farmCrop, setFarmCrop] = useState([]); // 가져올 농작물들
     useEffect(() => {});
+
     const handleChangeFarmCrop = (e) => {
         const { name, value } = e.target;
         setCrop({ ...crop, [name]: value });
@@ -66,6 +70,29 @@ export default function ModifyFarm({ farmNo, moveList, moveRead }) {
         });
     }, []);
 
+    const handleSaveFarmCrop = () => {
+        if (crop) {
+            if (crop.cropDictNo) {
+                // 이미 선택한 작물이 있는 경우, put 요청 보냄
+                putFarmCrop({ farmNo: farmNo, cropName: crop.cropDictNo })
+                    .then((farmCropResult) => {
+                        console.log(farmCropResult);
+                        setCrop(null); // 선택한 작물 초기화
+                    })
+                    .catch((e) => console.error(e));
+            } else {
+                // 작물을 선택하지 않은 경우, post 요청 보냄
+                postFarmCrop({ farmNo: farmNo, cropName: crop.cropDictNo })
+                    .then((farmCropResult) => {
+                        console.log(farmCropResult);
+                        setCrop(null); // 선택한 작물 초기화
+                    })
+                    .catch((e) => console.error(e));
+            }
+        } else {
+            console.log('작물을 선택하세요.'); // 선택한 작물이 없는 경우에 대한 처리
+        }
+    };
     //이동을 위한 기능들
     const { moveToList, moveToRead } = useCustomMove();
     const handleClickModify = () => {
@@ -91,13 +118,23 @@ export default function ModifyFarm({ farmNo, moveList, moveRead }) {
                 .catch((e) => {
                     console.error(e);
                 });
+            putFarmCrop({ farmNo: farmNo, cropName: crop.cropDictNo })
+                .then((farmCropResult) => {
+                    console.log(farmCropResult);
+                    setCrop({ ...farmCropInitState });
+                })
+                .catch((e) => console.error(e));
         });
     };
 
     const handleClickDelete = () => {
         //버튼 클릭시
+        deleteFarmCrop(farmNo).then((data) => {
+            console.log('삭제: ' + data);
+        });
         deleteOne(farmNo).then((data) => {
             console.log('delete result: ' + data);
+
             setResult('삭제완료');
         });
     };

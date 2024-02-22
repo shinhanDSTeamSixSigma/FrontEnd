@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { getOne, getListAllFile } from '../../api/farmApi';
+import { getOne, getListAllFile, getFarmCropAll } from '../../api/farmApi';
 import useCustomMove from '../../hooks/useCustomMove';
 import Button from '../Button';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { prefix } from '../../api/farmApi';
 
 const url = `${prefix}`;
@@ -21,28 +21,53 @@ const initState = {
     farmRating: 0.0,
     reviewCnt: 0,
 };
+const cropInit = {
+    cropCategoryEntity: { cropCateNo: 0, cropCateName: '' },
+    cropContent: '',
+    cropDictNo: 0,
+    cropName: '',
+    effect: '',
+    spring: 0,
+    summer: 0,
+    fall: 0,
+    winter: 0,
+    level: 0,
+    summary: '',
+    term: 0,
+    tip: '',
+    nutrient: '',
+    lowTemp: 0,
+    highTemp: 0,
+};
 
 export default function FarmRead({ farmNo }) {
+    const navigate = useNavigate();
     const [farm, setFarm] = useState(initState);
-    const { moveToList, moveToModify } = useCustomMove();
+    const { moveToList, moveToModify, moveToPay } = useCustomMove();
     const [imagePaths, setImagePaths] = useState([]);
+    const [farmCrop, setFarmCrop] = useState({ ...cropInit });
 
     const moveToListFunc = () => moveToList();
     const moveToModifyFunc = () => moveToModify(farmNo);
 
     useEffect(() => {
         getOne(farmNo).then((data) => {
-            console.log(data);
             setFarm(data);
         });
     }, [farmNo]);
 
     useEffect(() => {
         getListAllFile(farmNo).then((data) => {
-            console.log(data);
             setImagePaths(data);
         });
     }, [farmNo]);
+
+    useEffect(() => {
+        getFarmCropAll(farmNo).then((data) => {
+            setFarmCrop(data.getResult);
+            console.log(data.getResult);
+        });
+    }, []);
 
     const renderFields = () => {
         return Object.keys(farm).map((key) => {
@@ -70,6 +95,16 @@ export default function FarmRead({ farmNo }) {
         <>
             <div className="border-2  mt-10 m2 p-4">{renderFields()}</div>
             <div>
+                <div>
+                    내 농장 작물 카테고리:{' '}
+                    {farmCrop && (
+                        <div>{farmCrop.cropCategoryEntity.cropCateName}</div>
+                    )}
+                </div>
+                <div>
+                    내 농장 작물:
+                    {farmCrop && <div>{farmCrop.cropName}</div>}
+                </div>
                 {imagePaths ? (
                     imagePaths.map((imagePath, idx) => (
                         <img
@@ -94,6 +129,7 @@ export default function FarmRead({ farmNo }) {
                     widthHeight={'w-20'}
                     moveToModifyFunc={moveToModifyFunc}
                 />
+                <button onClick={() => moveToPay(farmNo)}>농장 구매하기</button>
             </div>
         </>
     );

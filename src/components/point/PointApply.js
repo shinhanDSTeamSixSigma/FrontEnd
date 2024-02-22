@@ -19,7 +19,7 @@ const FinalPayCss = styled.div`
     color: #4f6f52;
 `;
 
-const PointApply = () => {
+const PointApply = ({ totalPrice }) => {
     return (
         <>
             <TitleDetailName name="포인트" />
@@ -65,7 +65,7 @@ const PointApply = () => {
                 <FlexRow style={{ margin: '0.5rem 1rem 0.5rem 1rem' }}>
                     <PayCss>결제 금액</PayCss>
                     <FlexRow style={{ marginLeft: 'auto' }}>
-                        <FinalPayCss>0</FinalPayCss>
+                        <FinalPayCss>{totalPrice}</FinalPayCss>
                         <FinalPayCss>원</FinalPayCss>
                     </FlexRow>
                 </FlexRow>

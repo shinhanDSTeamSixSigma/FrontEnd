@@ -55,7 +55,7 @@ export default function AddFarm() {
     };
     useEffect(() => {
         getFarmCrop().then((data) => {
-            console.log('test:' + data);
+            console.log('test:' + JSON.stringify(data));
 
             setFarmCrop(data);
         });
