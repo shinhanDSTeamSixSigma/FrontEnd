@@ -21,7 +21,7 @@ const PaymentDetailPage = () => {
             <CropStatus />
             <StyledContainer>
                 <TitleDetailName name="구매 정보" />
-
+                <CropInfo />
                 <NutrientsInfo />
                 <ChargeDetail />
             </StyledContainer>

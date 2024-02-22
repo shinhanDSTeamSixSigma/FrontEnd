@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
+import { prefix } from '../../api/farmApi';
 
 const FlexRow = styled.div`
     display: flex;
@@ -16,11 +17,9 @@ const FarmImage = styled.div`
     margin-right: 1rem;
     border-radius: 0.8rem;
 `;
+const url = `${prefix}`;
 
-const CropInfo = () => {
-    const location = useLocation(); // useLocation 훅을 사용하여 현재 위치의 정보를 가져옵니다.
-    const { cartItems, totalPrice } = location.state;
-
+const CropInfo = ({ cartItems, myCrop, myFarm }) => {
     const farmName = {
         fontWeight: '600',
         fontSize: '0.8em',
@@ -36,9 +35,19 @@ const CropInfo = () => {
     return (
         <>
             <FlexRow style={{ margin: '1rem 1rem 2rem 1rem' }}>
-                <FarmImage />
+                <FarmImage>
+                    {myCrop && (
+                        <div>
+                            <img
+                                src={`${url}/${myCrop.image}`}
+                                style={{ width: '100%', objectFit: 'cover' }}
+                            />
+                        </div>
+                    )}
+                </FarmImage>
                 <ContentMargin style={{ marginRight: '2rem' }}>
-                    {/*<div style={farmName}>토심이네 농장</div>*/}
+                    <div style={farmName}>{myFarm.farmName}</div>
+                    <div>{myCrop && <div>{myCrop.cropName}</div>}</div>
                     <FlexRow>
                         {cartItems.map((element, idx) => (
                             <div key={idx}>
