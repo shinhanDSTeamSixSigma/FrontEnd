@@ -16,10 +16,15 @@ const FarmImage = styled.div`
     height: 6.5rem;
     margin-right: 1rem;
     border-radius: 0.8rem;
+    display: flex; /* 이미지를 수평으로 정렬하기 위해 flex 사용 */
+    align-items: center; /* 이미지를 수직으로 중앙에 정렬하기 위해 사용 */
+    overflow: hidden; /* 이미지가 div를 벗어나지 않도록 함 */
 `;
 const url = `${prefix}`;
 
+
 const CropInfo = ({ cartItems, myCrop, myFarm }) => {
+
     const farmName = {
         fontWeight: '600',
         fontSize: '0.8em',
@@ -48,6 +53,7 @@ const CropInfo = ({ cartItems, myCrop, myFarm }) => {
                 <ContentMargin style={{ marginRight: '2rem' }}>
                     <div style={farmName}>{myFarm.farmName}</div>
                     <div>{myCrop && <div>{myCrop.cropName}</div>}</div>
+
                     <FlexRow>
                         {cartItems.map((element, idx) => (
                             <div key={idx}>
@@ -57,6 +63,7 @@ const CropInfo = ({ cartItems, myCrop, myFarm }) => {
                                         .toString()
                                         .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                     원
+
                                 </div>
                             </div>
                         ))}

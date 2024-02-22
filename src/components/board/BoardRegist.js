@@ -62,21 +62,22 @@ const BoardRegist=(props)=>{
         navigate(`/customer-inquiry/${farmNo}`); 
     };
 
-    const handelRegister=()=>{
-        console.log("등록 호출 되는지");
+    const handleRegister=()=>{
+        // console.log("등록 호출 되는지");
+        // console.log(content);
         axios.post("http://localhost:8090/board/inquiryRegist",{
             categoryNo:1,
             title:title,
             boardContent:content,
-            created_date: new Date().toISOString(),
-            views:0,
+            createdDate: new Date().toISOString(),
+            views: 0,
             isReplied: false,
-            isDeleted:0, 
+            isDeleted: false, 
             memberNo:1,
             farmNo:50
         }).then((response)=>{
-            alert("게시물이 등록되었습니다.");
-            navigate(`/customer-inquiry/${farmNo}/regist`);
+            alert("문의가 등록되었습니다.");
+            navigate(`/customer-inquiry/${farmNo}`);
         }).catch((error)=>{
             console.error("Error occured while registering the board:", error);
         });
@@ -90,8 +91,8 @@ const BoardRegist=(props)=>{
                 <FlexRow>   
                     <BoardTitle name="문의하기"></BoardTitle>
                     <button 
-                        onClick={handelRegister}
-                        className="block rounded-md bg-[#80BCBD]">등록</button>
+                        onClick={handleRegister}
+                        className="block rounded-md bg-[#80BCBD] text-white text-lg py-1.5 px-3">등록</button>
                 </FlexRow> 
             <FormItem>
                 <input

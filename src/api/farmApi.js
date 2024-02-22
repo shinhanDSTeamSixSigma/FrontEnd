@@ -83,3 +83,22 @@ export async function postFarmCrop(farmCropObj) {
     const res = await axios.post(`${prefix}/farmCrop`, farmCropObj);
     return res.data;
 }
+
+// 농장 작물 가져오기
+export async function getFarmCropAll(farmNo) {
+    const res = await axios.get(`${prefix}/${farmNo}/farmCropGet`);
+    return res.data;
+}
+// 농장 작물 수정하기
+export async function putFarmCrop(farmCropObj) {
+    const res = await axios.put(
+        `${prefix}/${farmCropObj.farmNo}/farmCropModify`,
+        farmCropObj,
+    );
+    return res.data;
+}
+// 농장 작물 삭제하기
+export async function deleteFarmCrop(farmNo) {
+    const res = await axios.delete(`${prefix}/${farmNo}/farmCropDelete`);
+    return res.data;
+}

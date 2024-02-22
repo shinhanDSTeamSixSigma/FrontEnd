@@ -1,15 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import Button from '../Button';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getOne, getFarmCropAll } from '../../api/farmApi';
+import { prefix } from '../../api/farmApi';
 
-export function FarmPay({ setTotalAmount }) {
+const url = `${prefix}`;
+export function FarmPay() {
+    // 장바구니(수량, 가격, 이름)
     const [cartItems, setCartItems] = useState([]);
+    // 총가격
     const [totalPrice, setTotalPrice] = useState(0);
     const navigate = useNavigate();
+    // farmNo(Pathvariable로 받음)
+    const { farmNo } = useParams();
+    // farmNo에 맞는 농장 데이터값 - 객체
+    const [myFarm, setMyFarm] = useState();
+    // farmNo에 맞는 농장의 대표작물의 데이터값 - 객체
+    const [myCrop, setMyCrop] = useState();
 
     useEffect(() => {
         updateTotalPrice();
     }, [cartItems]);
+
+    // 농장 api
+    useEffect(() => {
+        getOne(farmNo).then((result) => {
+            console.log(result);
+            setMyFarm(result);
+        });
+    }, [farmNo]);
+
+    // 농장 대표 작물 api
+    useEffect(() => {
+        getFarmCropAll(farmNo).then((result) => {
+            console.log(result.getResult);
+            setMyCrop(result.getResult);
+        });
+    }, [farmNo]);
 
     const updateTotalPrice = () => {
         let sum = 0;
@@ -19,16 +46,15 @@ export function FarmPay({ setTotalAmount }) {
         setTotalPrice(sum);
     };
 
-    const handleCheckboxChange = (event, name, price) => {
+    // optionNumber - 번호로 나타내기
+    const handleCheckboxChange = (event, optionNumber, name, price) => {
         const isChecked = event.target.checked;
+        const item = { optionNumber, name, price, quantity: 1 }; // 선택한 옵션을 객체
         if (isChecked) {
-            setCartItems((prevItems) => [
-                ...prevItems,
-                { name, price, quantity: 1 },
-            ]);
+            setCartItems((prevItems) => [...prevItems, item]);
         } else {
             setCartItems((prevItems) =>
-                prevItems.filter((item) => item.name !== name),
+                prevItems.filter((item) => item.optionNumber !== optionNumber),
             );
         }
     };
@@ -44,10 +70,18 @@ export function FarmPay({ setTotalAmount }) {
 
     const handlePayment = () => {
         // 결제하기 버튼 클릭 시 실행되는 함수
-        navigate(`/pay`, { state: { totalPrice, cartItems } }); // 페이지 이동 및 상태 전달
+        navigate(`/pay`, { state: { totalPrice, cartItems, myCrop, myFarm } }); // 페이지 이동 및 상태 전달
     };
     return (
         <div>
+            {myFarm && <div>농장이름 - {myFarm.farmName}</div>}
+            {myCrop && <div>작물 - {myCrop.cropName}</div>}
+
+            {myCrop && (
+                <div>
+                    <img src={`${url}/${myCrop.image}`} />
+                </div>
+            )}
             {/* 메뉴 목록 */}
             <div className="menuList">
                 <div className="text-2xl mt-4 mb-3">구매옵션</div>
@@ -57,20 +91,20 @@ export function FarmPay({ setTotalAmount }) {
                         type="checkbox"
                         id="menu1"
                         onChange={(event) =>
-                            handleCheckboxChange(event, '농장 평단가', 50000)
+                            handleCheckboxChange(event, 1, '1평', 50000)
                         }
                     />
-                    <label htmlFor="menu1">농장 평단가 - 50,000원</label>
+                    <label htmlFor="menu1">1평 - 50,000원</label>
                 </div>
                 <div className="menu border-2">
                     <input
                         type="checkbox"
                         id="menu2"
                         onChange={(event) =>
-                            handleCheckboxChange(event, '비료', 10000)
+                            handleCheckboxChange(event, 2, '비료', 10000)
                         }
                     />
-                    <label htmlFor="menu2">비료 - 10,000원</label>
+                    <label htmlFor="menu2">비료 - 5,000원</label>
                 </div>
             </div>
 

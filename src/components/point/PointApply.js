@@ -133,6 +133,7 @@ const PointApply = () => {
                         <FinalPayCss>
                             {isOff ? totalPrice.toLocaleString('ko-KR') : '0'}
                         </FinalPayCss>
+
                         <FinalPayCss>원</FinalPayCss>
                     </FlexRow>
                 </FlexRow>
