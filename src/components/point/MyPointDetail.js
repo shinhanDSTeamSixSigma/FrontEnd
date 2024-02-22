@@ -154,7 +154,7 @@ const MyPointDetail = () => {
                                 }}
                             >
                                 {getTextBasedOnChargeValue(point[3])}
-                                {point[1]}
+                                {point[1].toLocaleString('ko-KR')}
                             </TextMargin>
                         </FlexRow>
                         <TextDivisionLine />

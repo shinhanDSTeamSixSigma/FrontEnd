@@ -15,4 +15,6 @@ export default function FullButton({ name, onClick }) {
             </button>
         </>
     );
+
+
 }

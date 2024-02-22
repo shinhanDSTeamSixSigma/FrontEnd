@@ -7,25 +7,25 @@ import NutrientsInfo from '../../../../components/point/NutrientsInfo';
 import CropStatus from '../../../../components/point/CropStatus';
 
 const StyledContainer = styled.div`
-  color: black;
-  font-size: 0.8em;
-  margin: auto 1.5rem auto;
+    color: black;
+    font-size: 0.8em;
+    margin: auto 1.5rem auto;
 `;
 
 const PaymentDetailPage = () => {
-  return (
-    <>
-      <StyledContainer>
-        <TitleName name="작물 영수증" />
-      </StyledContainer>
-      <CropStatus />
-      <StyledContainer>
-        <TitleDetailName name="구매 정보" />
-        <CropInfo />
-        <NutrientsInfo />
-        <ChargeDetail />
-      </StyledContainer>
-    </>
-  );
+    return (
+        <>
+            <StyledContainer>
+                <TitleName name="작물 영수증" />
+            </StyledContainer>
+            <CropStatus />
+            <StyledContainer>
+                <TitleDetailName name="구매 정보" />
+                <CropInfo />
+                <NutrientsInfo />
+                <ChargeDetail />
+            </StyledContainer>
+        </>
+    );
 };
 export default PaymentDetailPage;
