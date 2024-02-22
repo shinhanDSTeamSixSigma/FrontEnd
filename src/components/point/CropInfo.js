@@ -35,29 +35,22 @@ const CropInfo = () => {
     };
     return (
         <>
-            {/* 어떤 농장인지만 가져오면됩니다 */}
             <FlexRow style={{ margin: '1rem 1rem 2rem 1rem' }}>
                 <FarmImage />
                 <ContentMargin style={{ marginRight: '2rem' }}>
-                    <div style={farmName}>토심이네 농장</div>
-                    <FlexRow style={detailName}>
+                    {/*<div style={farmName}>토심이네 농장</div>*/}
+                    <FlexRow>
                         {cartItems.map((element, idx) => (
                             <div key={idx}>
                                 <div style={cropName}>{element.name}</div>
-                                <div>수량 - {element.quantity} </div>
-                                <div className="ml-2">
-                                    금액 - {element.price * element.quantity} 원
+                                <div style={detailName}>
+                                    {(element.price * element.quantity)
+                                        .toString()
+                                        .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                    원
                                 </div>
                             </div>
                         ))}
-                        {/* {cartItems.forEach(
-                            (item, idx) =>
-                                (
-                                    <div>
-                                        {item.name} - {item.quantity}평
-                                    </div>
-                                ) | <p>금액: {item.price * item.quantity}원</p>,
-                        )} */}
                     </FlexRow>
                 </ContentMargin>
                 <ContentMargin style={{ marginLeft: 'auto' }}>
@@ -69,7 +62,6 @@ const CropInfo = () => {
                         ))}
                     </FlexRow>
                 </ContentMargin>
-                {/* 총금액 - {totalPrice} 원 */}
             </FlexRow>
         </>
     );
