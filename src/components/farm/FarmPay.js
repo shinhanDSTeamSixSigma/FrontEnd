@@ -28,6 +28,7 @@ export function FarmPay() {
     const [myFarm, setMyFarm] = useState();
     // farmNo에 맞는 농장의 대표작물의 데이터값 - 객체
     const [myCrop, setMyCrop] = useState();
+    console.log(myFarm);
 
     useEffect(() => {
         updateTotalPrice();
@@ -101,9 +102,7 @@ export function FarmPay() {
 
             <TitleDivisionLine></TitleDivisionLine>
 
-            {/* {myCrop && <div>작물 - {myCrop.cropName}</div>}
-
-            {myCrop && <div>{<img src={`${url}/${myCrop.image}`} />}</div>} */}
+            {/*myCrop && <div>{<img src={`${url}/${myCrop.image}`} />}</div>} */}
 
             {/* 여기부터 수정함 */}
             <FlexRow style={{ paddingTop: '1rem', paddingBottom: '1rem' }}>
@@ -118,10 +117,20 @@ export function FarmPay() {
                         style={{ width: '130px', marginRight: '1rem' }} // 사진 크기 조정
                     />
                 </div>
+                {/* 
+                <div className="menu border-2">
+                    <input
+                        type="checkbox"
+                        id="menu2"
+                        onChange={(event) =>
+                            handleCheckboxChange(event, 2, '비료', 5000)
+                        }
+                    />
+                    <label htmlFor="menu2">비료 - 5,000원</label> */}
 
                 <div>
                     <FlexRow style={{ fontWeight: 'bold' }}>
-                        <div> 작물 - 바질 </div>
+                        {myCrop && <div>작물 - {myCrop.cropName}</div>}
                     </FlexRow>
                     {/* 메뉴 목록 */}
                     <div className="menuList">
