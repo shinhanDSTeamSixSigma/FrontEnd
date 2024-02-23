@@ -6,7 +6,6 @@ export default function FarmerFarmModifyPage() {
 
     return (
         <>
-            <div className="p-4 w-full bg-white">수정</div>
             <ModifyFarm farmNo={farmNo} />
         </>
     );

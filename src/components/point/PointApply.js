@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import TitleDetailName from './TitleDetailName';
 import TitleDivisionLine from '../TitleDivisionLine';
 import styled from 'styled-components';
@@ -20,6 +22,64 @@ const FinalPayCss = styled.div`
 `;
 
 const PointApply = () => {
+    const navigate = useNavigate();
+
+    const location = useLocation(); // useLocation 훅을 사용하여 현재 위치의 정보를 가져옵니다.
+    const { totalPrice } = location.state;
+
+    const [points, setPoint] = useState(0);
+    const [memberNo, setMemberNo] = useState(1); // 추후 변경
+
+    //버튼 토글 상태
+    const [isOff, setIsOff] = useState(true);
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = () => {
+        axios
+            .get('http://localhost:8080/pay/current-point', {
+                params: {
+                    memberNo: memberNo,
+                },
+            })
+            .then((res) => {
+                setPoint(res.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
+    const handleMinusPoint = () => {
+        if (totalPrice > points) {
+            alert('포인트가 부족합니다. 충전이 필요합니다.');
+            return;
+        }
+
+        setPoint((current) => current - totalPrice);
+        setIsOff(false);
+
+        // // 페이지 이동 및 상태 전달
+        // navigate(`/pay`, {
+        //     state: {
+        //         payItems: {
+        //             status: 0,
+        //             cropNo: 7,
+        //             cropNickname: '당근',
+        //             dicNo: 1,
+        //             farmNo: 1,
+        //         },
+        //         totalPrice,
+        //     },
+        // });
+    };
+    const handlePlusPoint = () => {
+        setPoint((current) => current + totalPrice);
+        setIsOff(true);
+    };
+
     return (
         <>
             <TitleDetailName name="포인트" />
@@ -35,11 +95,16 @@ const PointApply = () => {
                             class="form-control"
                             aria-label="Sizing example input"
                             aria-describedby="inputGroup-sizing-default"
-                            placeholder="0"
+                            placeholder={
+                                isOff ? '0' : totalPrice.toLocaleString('ko-KR')
+                            }
                             disabled
                         />
                     </div>
                     <button
+                        onClick={() =>
+                            isOff ? handleMinusPoint() : handlePlusPoint()
+                        }
                         type="button"
                         className="btn btn-outline-secondary"
                         style={{
@@ -53,8 +118,8 @@ const PointApply = () => {
                 </FlexRow>
                 <FlexRow style={{ margin: '-1rem 0.5rem 0.5rem 0.5rem' }}>
                     <FlexRow style={{ fontSize: '1em', color: '#878787' }}>
-                        <div>남은 보유 포인트</div>
-                        <div>2000</div>
+                        <div>보유 포인트</div>
+                        <div>{points.toLocaleString('ko-KR')}</div>
                         <div>P</div>
                     </FlexRow>
                 </FlexRow>
@@ -65,7 +130,10 @@ const PointApply = () => {
                 <FlexRow style={{ margin: '0.5rem 1rem 0.5rem 1rem' }}>
                     <PayCss>결제 금액</PayCss>
                     <FlexRow style={{ marginLeft: 'auto' }}>
-                        <FinalPayCss>0</FinalPayCss>
+                        <FinalPayCss>
+                            {isOff ? totalPrice.toLocaleString('ko-KR') : '0'}
+                        </FinalPayCss>
+
                         <FinalPayCss>원</FinalPayCss>
                     </FlexRow>
                 </FlexRow>
