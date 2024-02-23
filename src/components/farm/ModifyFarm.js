@@ -199,15 +199,11 @@ export default function ModifyFarm({ farmNo, moveList, moveRead }) {
                 <form>
                     <div className="space-y-12">
                         <div className="border-b border-gray-900/10 pb-12">
-                            <h2 className="text-base font-semibold leading-7 text-gray-900">
+                            <h1 className="text-xl font-semibold leading-7 text-gray-900">
                                 농장 수정
-                            </h2>
-                            <p className="mt-1 text-sm leading-6 text-gray-600">
-                                작성하신 내용은 농장 소개에 공개적으로 보이는
-                                내용입니다.
-                            </p>
+                            </h1>
 
-                            <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                            <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                                 <div className="sm:col-span-4">
                                     <label
                                         htmlFor="농장이름"
@@ -272,11 +268,11 @@ export default function ModifyFarm({ farmNo, moveList, moveRead }) {
                                 <div class="flex items-center justify-center w-full">
                                     <label
                                         for="dropzone-file"
-                                        class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                                        class="flex flex-col items-center justify-center w-full h-48 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
                                     >
-                                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                        <div class="flex flex-col items-center justify-center pt-3 pb-4">
                                             <svg
-                                                class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+                                                class="w-6 h-6 mb-3 text-gray-500 dark:text-gray-400"
                                                 aria-hidden="true"
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 fill="none"
@@ -303,8 +299,8 @@ export default function ModifyFarm({ farmNo, moveList, moveRead }) {
                                         </div>
                                         <input
                                             id="dropzone-file"
-                                            type={'file'}
-                                            className="hidden"
+                                            type="file"
+                                            class="hidden"
                                             onChange={handleChangeFile}
                                             multiple={true}
                                         />
@@ -488,7 +484,7 @@ export default function ModifyFarm({ farmNo, moveList, moveRead }) {
 
     return (
         <>
-            <div className="border-2 border-sky-200 mt-10 m-2 p-4">
+            <div className=" border-2  mt-10 m-2 p-4">
                 {result ? (
                     <ResultModal
                         title={'처리결과'}
