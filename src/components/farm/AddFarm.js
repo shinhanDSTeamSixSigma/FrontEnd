@@ -4,6 +4,7 @@ import {
     farmAddFile,
     getFarmCrop,
     postFarmCrop,
+    getMemberNo,
 } from '../../api/farmApi';
 import useCustomMove from '../../hooks/useCustomMove';
 import ResultModal from '../modal/ResultModal';
@@ -24,7 +25,7 @@ const initState = {
     farmCategory: '',
     farmRating: 0.0,
     reviewCnt: 0,
-    memberNo: 29,
+    memberNo: 0,
 };
 
 const fileInitState = {
@@ -43,11 +44,33 @@ export default function AddFarm() {
     const [file, setFile] = useState({ ...fileInitState });
     const [crop, setCrop] = useState({ ...farmCropInitState }); // 보낼 농작물들
     const [farmCrop, setFarmCrop] = useState([]); // 가져올 농작물들
+    const [memberData, setMemberData] = useState();
 
     const [result, setResult] = useState(null); //농장 결과 상태
     const [fileReuslt, setFileResult] = useState(null); // 파일 결과
 
     const { moveToList } = useCustomMove(); //useCustomMove 활용
+
+    useEffect(() => {
+        // 서버에서 사용자 정보 가져오기
+        getMemberNo()
+            .then((res) => {
+                setMemberData(res);
+                console.log(res);
+
+                console.log('멤버데이터 ', JSON.stringify(res.memberNo));
+                if (res.role !== 'FARMER') {
+                    console.log(res.role);
+                    alert('농부만 들어갈 수 있는 페이지 입니다!');
+                    window.location.href = '/';
+                }
+            })
+            .catch((error) => {
+                console.log('데이터 안옴!!!!!!');
+                console.error(error);
+            });
+    }, []);
+
     useEffect(() => {});
     const handleChangeFarmCrop = (e) => {
         const { name, value } = e.target;
@@ -55,7 +78,7 @@ export default function AddFarm() {
     };
     useEffect(() => {
         getFarmCrop().then((data) => {
-            console.log('test:' + data);
+            console.log('test:' + JSON.stringify(data));
 
             setFarmCrop(data);
         });
@@ -73,7 +96,7 @@ export default function AddFarm() {
     };
 
     const fileData = { ...file };
-    const farmData = { ...farm };
+    const farmData = { ...farm, memberNo: memberData.memberNo };
 
     const handleClickAdd = () => {
         postAdd(farmData)
@@ -126,15 +149,15 @@ export default function AddFarm() {
                 <form>
                     <div className="space-y-12">
                         <div className="border-b border-gray-900/10 pb-12">
-                            <h2 className="text-base font-semibold leading-7 text-gray-900">
+                            <h1 className="text-xl font-semibold leading-7 text-gray-900">
                                 농장 정보
-                            </h2>
-                            <p className="mt-1 text-sm leading-6 text-gray-600">
+                            </h1>
+                            <p className="mt-2 text-sm leading-6 text-gray-600">
                                 작성하신 내용은 농장 소개에 공개적으로 보이는
                                 내용입니다.
                             </p>
 
-                            <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                            <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                                 <div className="sm:col-span-4">
                                     <label
                                         htmlFor="농장이름"
@@ -199,11 +222,11 @@ export default function AddFarm() {
                                 <div class="flex items-center justify-center w-full">
                                     <label
                                         for="dropzone-file"
-                                        class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                                        class="flex flex-col items-center justify-center w-full h-48 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
                                     >
-                                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                        <div class="flex flex-col items-center justify-center pt-3 pb-4">
                                             <svg
-                                                class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+                                                class="w-6 h-6 mb-3 text-gray-500 dark:text-gray-400"
                                                 aria-hidden="true"
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 fill="none"
@@ -230,8 +253,8 @@ export default function AddFarm() {
                                         </div>
                                         <input
                                             id="dropzone-file"
-                                            type={'file'}
-                                            className="hidden"
+                                            type="file"
+                                            class="hidden"
                                             onChange={handleChangeFile}
                                             multiple={true}
                                         />

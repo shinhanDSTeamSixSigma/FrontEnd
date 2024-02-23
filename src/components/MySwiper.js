@@ -42,31 +42,52 @@ export default function MySwiper() {
                 className="mySwiper"
             >
                 <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-1.jpg" />
+                    <img
+                        src={process.env.PUBLIC_URL + `/img/farmImage6.png`}
+                        alt=""
+                    />
                 </SwiperSlide>
                 <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-2.jpg" />
+                    <img
+                        src={process.env.PUBLIC_URL + `/img/farmImage1.png`}
+                        alt=""
+                    />
                 </SwiperSlide>
                 <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-3.jpg" />
+                    <img
+                        src={process.env.PUBLIC_URL + `/img/farmImage2.png`}
+                        alt=""
+                    />
                 </SwiperSlide>
                 <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-4.jpg" />
+                    <img
+                        src={process.env.PUBLIC_URL + `/img/farmImage3.png`}
+                        alt=""
+                    />
                 </SwiperSlide>
                 <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-5.jpg" />
+                    <img
+                        src={process.env.PUBLIC_URL + `/img/farmImage7.png`}
+                        alt=""
+                    />
                 </SwiperSlide>
                 <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-6.jpg" />
+                    <img
+                        src={process.env.PUBLIC_URL + `/img/farmImage8.png`}
+                        alt=""
+                    />
                 </SwiperSlide>
                 <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-7.jpg" />
+                    <img
+                        src={process.env.PUBLIC_URL + `/img/farmImage9.png`}
+                        alt=""
+                    />
                 </SwiperSlide>
                 <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-8.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-9.jpg" />
+                    <img
+                        src={process.env.PUBLIC_URL + `/img/farmImage10.png`}
+                        alt=""
+                    />
                 </SwiperSlide>
             </Swiper>
         </>

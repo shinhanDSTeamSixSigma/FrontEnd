@@ -26,8 +26,8 @@ const TextMargin = styled.div`
 `;
 
 export default function MyPoint() {
-    const [points, setPoint] = useState();
-    const [monthlyCharge, setMonthlyCharge] = useState();
+    const [points, setPoint] = useState(0);
+    const [monthlyCharge, setMonthlyCharge] = useState(0);
 
     //데이터
     const [memberNo, setMemberNo] = useState(1); // 추후 변경
@@ -85,11 +85,11 @@ export default function MyPoint() {
                             style={{ margin: 'auto 0.3rem' }}
                         />
                     </FlexRow>
-                    <MarginLeft>{points} 원</MarginLeft>
+                    <MarginLeft>{points.toLocaleString()} 원</MarginLeft>
                 </FlexRow>
                 <FlexRow>
                     <TextMargin>이번달 충전 금액</TextMargin>
-                    <MarginLeft>{monthlyCharge} 원</MarginLeft>
+                    <MarginLeft>{monthlyCharge.toLocaleString()} 원</MarginLeft>
                 </FlexRow>
             </PointBoxColor>
         </>

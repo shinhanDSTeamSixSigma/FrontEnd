@@ -14,7 +14,7 @@ export default function MyPointValue() {
         marginLeft: '0.5rem',
     };
 
-    const [points, setPoint] = useState();
+    const [points, setPoint] = useState(0);
 
     //데이터
     const [memberNo, setMemberNo] = useState(1); // 추후 변경
@@ -51,7 +51,9 @@ export default function MyPointValue() {
                             }
                         />
                     </div>
-                    <div style={pointResult}>{points} 원</div>
+                    <div style={pointResult}>
+                        {points.toLocaleString('ko-KR')} 원
+                    </div>
                 </FlexRow>
             </FlexRow>
         </>
