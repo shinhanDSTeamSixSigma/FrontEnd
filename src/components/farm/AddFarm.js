@@ -4,6 +4,7 @@ import {
     farmAddFile,
     getFarmCrop,
     postFarmCrop,
+    getMemberNo,
 } from '../../api/farmApi';
 import useCustomMove from '../../hooks/useCustomMove';
 import ResultModal from '../modal/ResultModal';
@@ -24,7 +25,7 @@ const initState = {
     farmCategory: '',
     farmRating: 0.0,
     reviewCnt: 0,
-    memberNo: 29,
+    memberNo: 0,
 };
 
 const fileInitState = {
@@ -43,11 +44,33 @@ export default function AddFarm() {
     const [file, setFile] = useState({ ...fileInitState });
     const [crop, setCrop] = useState({ ...farmCropInitState }); // 보낼 농작물들
     const [farmCrop, setFarmCrop] = useState([]); // 가져올 농작물들
+    const [memberData, setMemberData] = useState();
 
     const [result, setResult] = useState(null); //농장 결과 상태
     const [fileReuslt, setFileResult] = useState(null); // 파일 결과
 
     const { moveToList } = useCustomMove(); //useCustomMove 활용
+
+    useEffect(() => {
+        // 서버에서 사용자 정보 가져오기
+        getMemberNo()
+            .then((res) => {
+                setMemberData(res);
+                console.log(res);
+
+                console.log('멤버데이터 ', JSON.stringify(res.memberNo));
+                if (res.role !== 'FARMER') {
+                    console.log(res.role);
+                    alert('농부만 들어갈 수 있는 페이지 입니다!');
+                    window.location.href = '/';
+                }
+            })
+            .catch((error) => {
+                console.log('데이터 안옴!!!!!!');
+                console.error(error);
+            });
+    }, []);
+
     useEffect(() => {});
     const handleChangeFarmCrop = (e) => {
         const { name, value } = e.target;
@@ -73,7 +96,7 @@ export default function AddFarm() {
     };
 
     const fileData = { ...file };
-    const farmData = { ...farm };
+    const farmData = { ...farm, memberNo: memberData.memberNo };
 
     const handleClickAdd = () => {
         postAdd(farmData)
