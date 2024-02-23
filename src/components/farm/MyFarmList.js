@@ -43,7 +43,47 @@ export default function MyFarmList() {
     const handleFarmItemClick = (farmNo) => {
         moveToRead(farmNo);
     };
-
+    function FarmObject(props) {
+        return (
+            <div className="d-flex shadow border rounded w-full">
+                <div className="ml-3">
+                    <div>
+                        <h2 className="text-xl font-bold text-gray-900">
+                            {props.farm.farmName}
+                        </h2>
+                    </div>
+                    <div className="d-flex bd-highlight mt-1">
+                        {/*<p className="text-sm text-gray-500">
+                            {props.farm.farm_rating}
+        </p>*/}
+                        <p className="text-lg">⭐</p>
+                        <p className="mt-1 font-bold">
+                            {props.farm.farmRating}
+                        </p>{' '}
+                        <p className="mt-2 ml-1 text-sm">
+                            ({props.farm.farmOrderNum})
+                        </p>
+                        <p className="ml-2 mr-2 mt-1 text-sm">|</p>
+                        <p className="mt-1 text-sm">
+                            경력 {props.farm.farmCareer}년
+                        </p>
+                        <p className="ml-2 mr-2 mt-1 text-sm">|</p>
+                        <p className="mt-1 text-sm">{props.farm.farmAddress}</p>
+                    </div>
+                    <div>
+                        <p className="text-sm text-gray-500 mt-3">
+                            {props.farm.farmContent}
+                        </p>
+                    </div>
+                </div>
+                <img
+                    className="w-25 h-25 rounded flex-shrink-1 bd-highlight ms-auto shadows mt-2 mb-2 mr-2 ml-2"
+                    src={props.farm.image}
+                    alt=""
+                />
+            </div>
+        );
+    }
     return (
         <>
             <StyledHeader>농장 목록 </StyledHeader>
@@ -63,9 +103,9 @@ export default function MyFarmList() {
                                 src={farm[key['img']]}
                                 alt="일단 비우기"
                             /> */}
-                                <div className="font-extrabold text-2xl ">
+                                {/*<div className="font-extrabold text-2xl ">
                                     {idx + 1}
-                                </div>
+                        </div>
                                 <div className="ml-5">
                                     <p className="text-xl font-medium text-gray-900">
                                         {key.farmName}
@@ -73,7 +113,8 @@ export default function MyFarmList() {
                                     <p className="text-xs text-gray-500">
                                         {key.farmContent}
                                     </p>
-                                </div>
+                                </div>*/}
+                                <FarmObject farm={key} />
                             </div>
                         </li>
                     ))}
