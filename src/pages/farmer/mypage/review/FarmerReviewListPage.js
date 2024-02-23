@@ -27,13 +27,13 @@ const FlexRowGap=styled.div`
     color:#878787;
 `;
 const Totalcnt=styled.div`
-    font-size: 1rem;
+    font-size: 0.8rem;
     font-weight:500;
     color:#878787;
     margin: 0 0 0 0.5rem;
 `
 const AvgRating=styled.div`
-    font-size:1.2rem;
+    font-size:1rem;
     font-weight:600;
     color:#878787;
     margin:0 0.5rem;
@@ -109,12 +109,12 @@ const FarmerReviewListPage = () => {
                         <BoardTitle name="농부 리뷰" />
                     </TitleContainer>
                         <AvgRating>{(averageRating).toFixed(1)}</AvgRating>
-                        <StarRating rating={averageRating.toFixed(1)} size='1.5rem' ></StarRating>
+                        <StarRating rating={averageRating.toFixed(1)} size='1rem' ></StarRating>
                     
                     <Totalcnt>({totalReviews})</Totalcnt>
                 </FlexRow>
                 <Link to={`/farm/review/${farmNo}/regist`}>
-                    <Button name="리뷰하기" widthHeight= 'w-18 h-10'/>
+                    <Button name="작성" widthHeight= 'w-14 h-8'/>
                 </Link>
             </FlexRow>
             

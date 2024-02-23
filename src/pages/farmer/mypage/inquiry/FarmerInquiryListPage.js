@@ -14,6 +14,7 @@ const StyledContainer = styled.div`
 const FlexRow=styled.div`
     display:flex;
     flex-direction:row;
+    align-items: center;
     justify-content: space-between;
     margin:0.5rem 1rem 1rem 0;
 `;
@@ -110,7 +111,7 @@ const FarmerInquiryListPage = () => {
                     <Totalcnt>총 {totalInquiries}개의 문의</Totalcnt>
                 </FlexRow>
                 <Link to={`/farm/inquiry/${farmNo}/regist`}>
-                    <Button name="문의하기" widthHeight= 'w-18 h-10'/>
+                    <Button name="작성" widthHeight= 'w-14 h-8'/>
                 </Link>
             </FlexRow>
             

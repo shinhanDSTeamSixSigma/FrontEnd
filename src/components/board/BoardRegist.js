@@ -17,6 +17,7 @@ const FlexRow = styled.div`
     flex-direction:row;
     justify-content: space-between;
     align-items:center;
+    margin:0 1rem 1rem 0;
 `;
 
 export const FormItem = styled.div`
@@ -109,7 +110,7 @@ const BoardRegist = ({ title: initialTitle, content: initialContent, boardNo, is
                 <BoardTitle name={isEdit ? "문의 수정하기" : "문의하기"} />
                 <button
                     onClick={handleRegisterOrUpdate}
-                    className="block rounded-md bg-[#80BCBD] text-white text-lg py-1.5 px-3">
+                    className="block rounded-md bg-[#80BCBD] text-white text-lg py-1 px-2.5">
                     {isEdit ? "수정" : "등록"}
                 </button>
             </FlexRow>
