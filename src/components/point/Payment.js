@@ -27,8 +27,8 @@ const Payment = () => {
         //IMP.request_pay(param, callback);
         IMP.request_pay(
             {
-                pg: 'html5_inicis.INIBillTst',
-                //pg: 'kakaopay',
+                //pg: 'html5_inicis.INIBillTst',
+                pg: 'kakaopay',
                 pay_method: 'card',
                 merchant_uid: new Date().getTime() + '-' + memberNo,
                 name: '포인트 충전',
@@ -43,7 +43,7 @@ const Payment = () => {
             },
             function (res) {
                 console.log(res);
-            } /*
+            },
             async (rsp) => {
                 try {
                     const responseData = await axios.post(
@@ -81,7 +81,7 @@ const Payment = () => {
                     console.error('Error while verifying payment:', error);
                     alert('결제 실패');
                 }
-            },*/,
+            },
         );
     };
 
