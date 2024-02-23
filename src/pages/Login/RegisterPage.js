@@ -7,8 +7,9 @@ const RegisterPage = () => {
     const [error, setError] = useState(null); // 에러 상태 추가
     const handleSubmit = (formData) => {
         axios
-            .post('http://localhost:8090/register', formData)
+            .post('http://192.168.0.73:8090/register', formData)
             .then((response) => {
+                document.cookie = 'auth = 1; path = /';
                 console.log('Registration successful:', response.data);
 
                 window.location.href = '/login'; // Redirect 방식
@@ -40,7 +41,13 @@ const RegisterPage = () => {
                 </div>
             )}
             <LoginForm onSubmit={handleSubmit} />
-            <div style={{ justifyContent: 'center', display: 'flex' }}>
+            <div
+                style={{
+                    justifyContent: 'center',
+                    display: 'flex',
+                    paddingBottom: '3rem',
+                }}
+            >
                 <Link to="/login">이미 회원이신가요? 로그인</Link>
             </div>
             {/* "/login" 페이지로 이동하는 링크 */}

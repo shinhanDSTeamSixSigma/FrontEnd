@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import BoardTitle from "../../../../components/board/BoardTitle";
 import BoardRegist from "../../../../components/board/BoardRegist";
 const StyledContainer = styled.div`
     background-color:white;

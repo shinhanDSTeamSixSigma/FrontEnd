@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { MdVisibility } from 'react-icons/md';
-import { IoArrowBackSharp, IoTrophy } from 'react-icons/io5';
-import axios, { AxiosHeaders } from "axios";
+import { IoArrowBackSharp } from 'react-icons/io5';
+import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 const StyledContainer = styled.div`
@@ -80,6 +80,7 @@ const InquiryTitle = styled.h3`
     font-size: 1.2rem;
     font-weight: bold;
     margin-left: 1rem;
+    margin-top:2rem;
 `;
 const CommentContent=styled.div`
     font-size : 1.1rem;
@@ -88,27 +89,23 @@ const CommentContent=styled.div`
 `
 const CommentElse=styled.div`
     margin:0.5rem 0 1rem 1rem;
+
     color:#878787;
-`
-const NoComment=styled.div`
-    color: #4F6F52;
-    font-size : 1.1rem;
-    font-weight: 600;
-    text-align: center;
-    margin:4rem 0 4rem 0;
 `
 export const BackButton = styled(IoArrowBackSharp)`
   color: var(--color-textgrey);
   cursor: pointer;
 `;
-const InquiryDetailPage =()=>{
+const FarmerInquiryDetailPage =()=>{
     const { boardNo } = useParams();
     const [inquiryDetail, setInquiryDetail] = useState(null);
+    const [commentContent, setCommentContent] = useState("");
     const [commentList, setCommentList] = useState(null);
     const isCommentListEmpty = !commentList || commentList.length === 0;
     
     console.log(isCommentListEmpty);
     const navigate = useNavigate();
+
     const fetchInquiryDetail = async () => {
     try {
         const response = await axios.get(`http://localhost:8090/board/detail/${boardNo}`);
@@ -154,20 +151,23 @@ const InquiryDetailPage =()=>{
     const handleBack = () => {
         navigate(-1); // 뒤로 가기
     };
-    const handleEdit = () => {
-        // 수정 폼으로 이동
-        navigate(`/inquiry/${boardNo}/edit`);
-    };
-    const handleDelete = async()=>{
+    
+    const handleCommentSubmit = async () =>{
         try{
-            await axios.delete(`http://localhost:8090/board/inquiryDelete/${boardNo}`);
-            alert("문의가 삭제되었습니다.");
-            navigate(-1);
-        }catch(error){
-            console.log("Error deleting inquiry:", error);
+            await axios.post(`http://localhost:8090/board/${boardNo}/comment`, {
+                content:commentContent,
+                memberNo: 1,
+                commentDate:new Date().toISOString()               
+            });
+            alert("답변이 등록되었습니다.");
+            // 답변이 등록되면 문의 상세 페이지를 다시 불러옵니다.
+            fetchInquiryDetail();
+            // 답변을 등록한 후에 textarea 내용을 초기화합니다.
+            setCommentContent("");
+        } catch (error) {
+            console.error("Error submitting answer:", error);
         }
     };
-    
     const handleCommentList = async ()=>{
         try {
             const response = await axios.get(`http://localhost:8090/board/${boardNo}/commentlist`);
@@ -197,30 +197,36 @@ const InquiryDetailPage =()=>{
                 <ViewsContainer>
                     <MdVisibility style={{ marginRight: '0.5rem' }} /> {/* Icon component */}
                     <div>{inquiryDetail && inquiryDetail.views}</div>
-                </ViewsContainer>
-                
+                </ViewsContainer>                
             </FlexRowGap>
             <DivLine/>
             <Content>{inquiryDetail && inquiryDetail.boardContent}</Content>
             <DivLine/>
-            <Buttons>
-                <button 
-                    onClick={handleEdit}
-                    className="block rounded-md bg-[#80BCBD] text-white text-lg py-1.5 px-3">수정</button>
-                <button 
-                    onClick={handleDelete}
-                    className="block rounded-md bg-[#D9D9D9] text-white text-lg py-1.5 px-3">삭제</button>
-            </Buttons>
 
             {isCommentListEmpty ? (
-            // 답변 목록이 비어있을 때
-                <>
-                <NoComment>아직 답변이 없습니다.</NoComment>
+                // 답변 목록이 비어있을 때
+                <>        
+                <FormItem>
+                    <textarea
+                        value={commentContent}
+                            onChange={(e) => setCommentContent(e.target.value)}
+                            placeholder="답변을 입력해 주세요"
+                    ></textarea>
+                </FormItem>
+                <Buttons>
+                    <button 
+                        onClick={handleCommentSubmit}
+                        className="block rounded-md bg-[#80BCBD] text-white text-lg py-1.5 px-3">등록</button>
+                    <button 
+                        // onClick={handleRegister}
+                        className="block rounded-md bg-[#D9D9D9] text-white text-lg py-1.5 px-3">취소</button>
+                </Buttons>
               </>
                 ) : (
-                // 답변 목록이 비어있지 않을 때
+                // 답변 목록이 비어있지 않을 때 답변목록
                 <>
                     <CommentList commentList={commentList} />
+                   
                 </>
             )}
             
@@ -228,4 +234,4 @@ const InquiryDetailPage =()=>{
         </>
     )
 };
-export default InquiryDetailPage;
+export default FarmerInquiryDetailPage;
