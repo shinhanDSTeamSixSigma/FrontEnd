@@ -56,7 +56,7 @@ function CropListPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://192.168.0.51:8090/crop-dict/list");
+        const response = await axios.get("http://localhost:8090/crop-dict/list");
         setCropList(response.data); // API에서 받아온 작물 목록을 상태에 업데이트
         console.log(response.data);
     } catch (error) {
@@ -77,7 +77,7 @@ function CropListPage() {
                     {/* Link 컴포넌트를 사용하여 해당 작물의 상세 페이지로 이동 */}
                     <Link to={`/crop-detail/${crop.cropDictNo}`}>
                         <ImageContainer>
-                            <img src={`http://192.168.0.51:8090/img/${crop.image}`} alt="cropImage"  style={{ width: '100%', height: '100%', objectFit: 'cover' }}/>
+                            <img src={`http://localhost:8090/img/${crop.image}`} alt="cropImage"  style={{ width: '100%', height: '100%', objectFit: 'cover' }}/>
                         </ImageContainer>
                         <ItemContent>
                             <CropCatebox name={crop.cropCategoryEntity.cropCateName}></CropCatebox>
