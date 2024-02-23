@@ -28,6 +28,7 @@ export function FarmPay() {
     const [myFarm, setMyFarm] = useState();
     // farmNo에 맞는 농장의 대표작물의 데이터값 - 객체
     const [myCrop, setMyCrop] = useState();
+    console.log(myFarm);
 
     useEffect(() => {
         updateTotalPrice();
@@ -119,6 +120,17 @@ export function FarmPay() {
                     />
                 </div>
 
+                <div className="menu border-2">
+                    <input
+                        type="checkbox"
+                        id="menu2"
+                        onChange={(event) =>
+                            handleCheckboxChange(event, 2, '비료', 5000)
+                        }
+                    />
+                    <label htmlFor="menu2">비료 - 5,000원</label>
+
+
                 <div>
                     <FlexRow style={{ fontWeight: 'bold' }}>
                         <div> 작물 - 바질 </div>
@@ -141,6 +153,7 @@ export function FarmPay() {
                             <label htmlFor="menu1">1평 - 50,000원</label>
                         </div>
                     </div>
+
                 </div>
             </FlexRow>
 

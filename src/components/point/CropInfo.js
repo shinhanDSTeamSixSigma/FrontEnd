@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { useLocation } from 'react-router-dom';
 import { prefix } from '../../api/farmApi';
 
 const FlexRow = styled.div`
@@ -10,8 +9,6 @@ const ContentMargin = styled.div`
     margin: auto 0;
 `;
 const FarmImage = styled.div`
-    border: 1px solid #f5f5f5;
-    background-color: #f5f5f5;
     width: 6.5rem;
     height: 6.5rem;
     margin-right: 1rem;
@@ -22,9 +19,7 @@ const FarmImage = styled.div`
 `;
 const url = `${prefix}`;
 
-
 const CropInfo = ({ cartItems, myCrop, myFarm }) => {
-
     const farmName = {
         fontWeight: '600',
         fontSize: '0.8em',
@@ -52,18 +47,18 @@ const CropInfo = ({ cartItems, myCrop, myFarm }) => {
                 </FarmImage>
                 <ContentMargin style={{ marginRight: '2rem' }}>
                     <div style={farmName}>{myFarm.farmName}</div>
-                    <div>{myCrop && <div>{myCrop.cropName}</div>}</div>
-
+                    <div style={cropName}>
+                        {myCrop && <div>{myCrop.cropName}</div>}
+                    </div>
                     <FlexRow>
                         {cartItems.map((element, idx) => (
                             <div key={idx}>
-                                <div style={cropName}>{element.name}</div>
+                                <div style={detailName}>{element.name}</div>
                                 <div style={detailName}>
                                     {(element.price * element.quantity)
                                         .toString()
                                         .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                     원
-
                                 </div>
                             </div>
                         ))}
