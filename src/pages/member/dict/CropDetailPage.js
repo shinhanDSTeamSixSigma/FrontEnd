@@ -82,7 +82,7 @@ const CropDetailPage = () => {
     useEffect(() => {
         const fetchCropDetail = async () => {
         try {
-            const response = await axios.get(`http://192.168.0.51:8090/crop-dict/detail/${id}`);
+            const response = await axios.get(`http://localhost:8090/crop-dict/detail/${id}`);
             setCropDetail(response.data); // API에서 받아온 작물 상세 정보를 상태에 업데이트
             console.log(response.data);
             console.log(id);
@@ -108,7 +108,7 @@ const CropDetailPage = () => {
             <StyledContainer>
             <FlexRow>
             <ImageContainer>
-                <img src={`http://192.168.0.51:8090/img/${cropDetail && cropDetail.image}`} alt="cropImage"  style={{ width: '100%', height: '100%', objectFit: 'cover' }}/>
+                <img src={`http://localhost:8090/img/${cropDetail && cropDetail.image}`} alt="cropImage"  style={{ width: '100%', height: '100%', objectFit: 'cover' }}/>
             </ImageContainer>
             <SummaryText>
                 <Container>

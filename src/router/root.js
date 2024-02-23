@@ -1,6 +1,11 @@
 import { Suspense, lazy } from 'react';
 import InquiryDetailPage from '../pages/member/mypage/inquiry/InquiryDetailPage.js';
 import LoadingModal from '../components/modal/LoadingModal.js';
+import FarmerInquiryListPage from '../pages/farmer/mypage/inquiry/FarmerInquiryListPage.js';
+import FarmerInquiryDetailPage from '../pages/farmer/mypage/inquiry/FarmerInquiryDetailPage.js';
+import FarmerInquiryRegistPage from '../pages/farmer/mypage/inquiry/FarmerInquiryRegistPage.js';
+import FarmerReviewListPage from '../pages/farmer/mypage/review/FarmerReviewListPage.js';
+import FarmerReviewDetail from '../pages/farmer/mypage/review/FarmerReviewDetail.js';
 const { createBrowserRouter } = require('react-router-dom');
 
 const Loading = <LoadingModal />;
@@ -39,7 +44,7 @@ const CropStreaming = lazy(() =>
 );
 // 멤버 마이페이지 - 작물 앨범
 const CropAlbum = lazy(() =>
-    import('../pages/member/mypage/streaming/AlbumPage'),
+    import('../pages/member/mypage/diary/AlbumPage.js'),
 );
 // 멤버 마이페이지 - 내 작물
 const MyCrop = lazy(() => import('../pages/member/mypage/MyCropPage'));
@@ -74,13 +79,47 @@ const PointDetail = lazy(() =>
 const CropList = lazy(() => import('../pages/member/dict/CropListPage'));
 //작물 상세
 const CropDetail = lazy(() => import('../pages/member/dict/CropDetailPage'));
-//문의 목록
+//사용자 마이페이지 문의목록
 const InquiryList = lazy(() =>
-    import('../pages/member/mypage/inquiry/InquiryListPage.js'),
+    import('../pages/member/mypage/inquiry/InquiryListPage'),
+);
+//사용자 마이페이지 문의 상세
+const InquiryDetail = lazy(() =>
+    import('../pages/member/mypage/inquiry/InquiryDetailPage'),
+);
+//사용자 마이페이지 문의 수정
+const InquiryEdit = lazy(() =>
+    import('../pages/member/mypage/inquiry/InquiryEdit'),
+);
+
+//사용자 마이페이지 리뷰목록
+const ReviewList = lazy(() =>
+    import('../pages/member/mypage/review/ReviewListPage.js'),
+);
+//사용자 마이페이지 리뷰상세
+const ReviewDetail = lazy(() =>
+    import('../pages/member/mypage/review/ReviewDetail.js'),
+);
+//사용자 마이페이지 리뷰수정
+const ReviewEdit = lazy(() =>
+    import('../pages/member/mypage/review/ReviewEdit.js'),
+);
+//문의 목록
+const FarmerInquiryList = lazy(() =>
+    import('../pages/farmer/mypage/inquiry/FarmerInquiryListPage.js'),
 );
 //문의 작성
-const InquiryRegist = lazy(() =>
-    import('../pages/member/mypage/inquiry/InquiryRegistPage.js'),
+const FarmerInquiryRegist = lazy(() =>
+    import('../pages/farmer/mypage/inquiry/FarmerInquiryRegistPage.js'),
+);
+
+//리뷰목록
+const FarmerReviewList = lazy(() =>
+    import('../pages/farmer/mypage/review/FarmerReviewListPage.js'),
+);
+//리뷰작성
+const FarmerReviewRegist = lazy(() =>
+    import('../pages/farmer/mypage/review/FarmerReviewRegist.js'),
 );
 // 회원가입
 const Signup = lazy(() => import('../pages/Login/RegisterPage.js'));
@@ -186,6 +225,54 @@ const root = createBrowserRouter([
                 element: (
                     <Suspense fallback={Loading}>
                         <PayFarm />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'review/:farmNo',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <FarmerReviewList />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'review/:reviewNo/detail',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <FarmerReviewDetail />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'review/:farmNo/regist',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <FarmerReviewRegist />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'inquiry/:farmNo',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <FarmerInquiryListPage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'inquiry/:boardNo/detail',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <FarmerInquiryDetailPage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'inquiry/:farmNo/regist',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <FarmerInquiryRegistPage />
                     </Suspense>
                 ),
             },
@@ -357,9 +444,9 @@ const root = createBrowserRouter([
             },
         ],
     },
-    // 문의 라우터
+    //마이페이지 문의 라우터
     {
-        path: 'customer-inquiry',
+        path: 'inquiry',
         element: (
             <Suspense fallback={Loading}>
                 <Layout />
@@ -367,7 +454,7 @@ const root = createBrowserRouter([
         ),
         children: [
             {
-                path: ':farmNo',
+                path: ':memberNo',
                 element: (
                     <Suspense fallback={Loading}>
                         <InquiryList />
@@ -378,15 +465,50 @@ const root = createBrowserRouter([
                 path: ':boardNo/detail',
                 element: (
                     <Suspense fallback={Loading}>
-                        <InquiryDetailPage />
+                        <InquiryDetail />
                     </Suspense>
                 ),
             },
             {
-                path: ':farmNo/regist',
+                path: ':boardNo/edit',
                 element: (
                     <Suspense fallback={Loading}>
-                        <InquiryRegist />
+                        <InquiryEdit />
+                    </Suspense>
+                ),
+            },
+        ],
+    },
+    //마이페이지 리뷰 라우터
+    {
+        path: 'review',
+        element: (
+            <Suspense fallback={Loading}>
+                <Layout />
+            </Suspense>
+        ),
+        children: [
+            {
+                path: ':memberNo',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <ReviewList />
+                    </Suspense>
+                ),
+            },
+            {
+                path: ':reviewNo/detail',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <ReviewDetail />
+                    </Suspense>
+                ),
+            },
+            {
+                path: ':reviewNo/edit',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <ReviewEdit />
                     </Suspense>
                 ),
             },

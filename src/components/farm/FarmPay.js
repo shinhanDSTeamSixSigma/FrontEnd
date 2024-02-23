@@ -4,7 +4,18 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { getOne, getFarmCropAll } from '../../api/farmApi';
 import { prefix } from '../../api/farmApi';
 
+import styled from 'styled-components';
+import TitleDivisionLine from '../TitleDivisionLine';
+
 const url = `${prefix}`;
+
+const FlexRow = styled.div`
+    // row로 붙여주는 느낌
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+`;
+
 export function FarmPay() {
     // 장바구니(수량, 가격, 이름)
     const [cartItems, setCartItems] = useState([]);
@@ -73,30 +84,40 @@ export function FarmPay() {
         // 결제하기 버튼 클릭 시 실행되는 함수
         navigate(`/pay`, { state: { totalPrice, cartItems, myCrop, myFarm } }); // 페이지 이동 및 상태 전달
     };
+
     return (
         <div>
-            {myFarm && <div>농장이름 - {myFarm.farmName}</div>}
-            {myCrop && <div>작물 - {myCrop.cropName}</div>}
-
-            {myCrop && (
-                <div>
-                    <img src={`${url}/${myCrop.image}`} />
+            {myFarm && (
+                <div
+                    style={{
+                        fontWeight: 'bold',
+                        textAlign: 'center',
+                        paddingBottom: '1rem',
+                        fontSize: '1.5rem',
+                    }}
+                >
+                    {myFarm.farmName}
                 </div>
             )}
-            {/* 메뉴 목록 */}
-            <div className="menuList">
-                <div className="text-2xl mt-4 mb-3">구매옵션</div>
-                {/* 여기에 메뉴 목록을 표시하는 코드 추가 */}
-                <div className="menu border-2 mb-1">
-                    <input
-                        type="checkbox"
-                        id="menu1"
-                        onChange={(event) =>
-                            handleCheckboxChange(event, 1, '1평', 50000)
+
+            <TitleDivisionLine></TitleDivisionLine>
+
+            {/*myCrop && <div>{<img src={`${url}/${myCrop.image}`} />}</div>} */}
+
+            {/* 여기부터 수정함 */}
+            <FlexRow style={{ paddingTop: '1rem', paddingBottom: '1rem' }}>
+                <div>
+                    <img
+                        className="cropImage"
+                        alt="crop"
+                        src={
+                            process.env.PUBLIC_URL +
+                            '/img/memberMypage/NoFarm.png'
                         }
+                        style={{ width: '130px', marginRight: '1rem' }} // 사진 크기 조정
                     />
-                    <label htmlFor="menu1">1평 - 50,000원</label>
                 </div>
+                {/* 
                 <div className="menu border-2">
                     <input
                         type="checkbox"
@@ -105,9 +126,34 @@ export function FarmPay() {
                             handleCheckboxChange(event, 2, '비료', 5000)
                         }
                     />
-                    <label htmlFor="menu2">비료 - 5,000원</label>
+                    <label htmlFor="menu2">비료 - 5,000원</label> */}
+
+                <div>
+                    <FlexRow style={{ fontWeight: 'bold' }}>
+                        {myCrop && <div>작물 - {myCrop.cropName}</div>}
+                    </FlexRow>
+                    {/* 메뉴 목록 */}
+                    <div className="menuList">
+                        <div className="text-xl mt-2 mb-3">농장 평수</div>
+                        {/* 여기에 메뉴 목록을 표시하는 코드 추가 */}
+                        <div
+                            className="menu border-2  mb-1"
+                            style={{ borderRadius: '8px' }}
+                        >
+                            <input
+                                type="checkbox"
+                                id="menu1"
+                                onChange={(event) =>
+                                    handleCheckboxChange(event, 1, '1평', 50000)
+                                }
+                            />
+                            <label htmlFor="menu1">1평 - 50,000원</label>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </FlexRow>
+
+            <TitleDivisionLine></TitleDivisionLine>
 
             {/* 장바구니 내용 표시 */}
             <div id="rightmenus">
@@ -144,11 +190,6 @@ export function FarmPay() {
                     총 금액: {totalPrice}원
                 </div>
                 <div>
-                    <Button
-                        name={'결제하기'}
-                        widthHeight={'w-20'}
-                        onClick={() => handlePayment()}
-                    />
                     <button
                         onClick={handlePayment}
                         className="w-20 bg-[#80BCBD] block rounded-md "
