@@ -44,7 +44,7 @@ const CropStreaming = lazy(() =>
 );
 // 멤버 마이페이지 - 작물 앨범
 const CropAlbum = lazy(() =>
-    import('../pages/member/mypage/streaming/AlbumPage'),
+    import('../pages/member/mypage/diary/AlbumPage.js'),
 );
 // 멤버 마이페이지 - 내 작물
 const MyCrop = lazy(() => import('../pages/member/mypage/MyCropPage'));
@@ -80,18 +80,30 @@ const CropList = lazy(() => import('../pages/member/dict/CropListPage'));
 //작물 상세
 const CropDetail = lazy(() => import('../pages/member/dict/CropDetailPage'));
 //사용자 마이페이지 문의목록
-const InquiryList = lazy(()=> import('../pages/member/mypage/inquiry/InquiryListPage'));
+const InquiryList = lazy(() =>
+    import('../pages/member/mypage/inquiry/InquiryListPage'),
+);
 //사용자 마이페이지 문의 상세
-const InquiryDetail = lazy(()=>import ('../pages/member/mypage/inquiry/InquiryDetailPage'));
+const InquiryDetail = lazy(() =>
+    import('../pages/member/mypage/inquiry/InquiryDetailPage'),
+);
 //사용자 마이페이지 문의 수정
-const InquiryEdit = lazy(()=>import ('../pages/member/mypage/inquiry/InquiryEdit'));
+const InquiryEdit = lazy(() =>
+    import('../pages/member/mypage/inquiry/InquiryEdit'),
+);
 
 //사용자 마이페이지 리뷰목록
-const ReviewList = lazy(()=>import('../pages/member/mypage/review/ReviewListPage.js'))
+const ReviewList = lazy(() =>
+    import('../pages/member/mypage/review/ReviewListPage.js'),
+);
 //사용자 마이페이지 리뷰상세
-const ReviewDetail = lazy(()=>import('../pages/member/mypage/review/ReviewDetail.js'))
+const ReviewDetail = lazy(() =>
+    import('../pages/member/mypage/review/ReviewDetail.js'),
+);
 //사용자 마이페이지 리뷰수정
-const ReviewEdit = lazy(()=>import('../pages/member/mypage/review/ReviewEdit.js'))
+const ReviewEdit = lazy(() =>
+    import('../pages/member/mypage/review/ReviewEdit.js'),
+);
 //문의 목록
 const FarmerInquiryList = lazy(() =>
     import('../pages/farmer/mypage/inquiry/FarmerInquiryListPage.js'),
@@ -101,13 +113,13 @@ const FarmerInquiryRegist = lazy(() =>
     import('../pages/farmer/mypage/inquiry/FarmerInquiryRegistPage.js'),
 );
 
-//리뷰목록 
-const FarmerReviewList = lazy(()=>
-    import('../pages/farmer/mypage/review/FarmerReviewListPage.js')
+//리뷰목록
+const FarmerReviewList = lazy(() =>
+    import('../pages/farmer/mypage/review/FarmerReviewListPage.js'),
 );
 //리뷰작성
-const FarmerReviewRegist = lazy(()=>
-import('../pages/farmer/mypage/review/FarmerReviewRegist.js')
+const FarmerReviewRegist = lazy(() =>
+    import('../pages/farmer/mypage/review/FarmerReviewRegist.js'),
 );
 // 회원가입
 const Signup = lazy(() => import('../pages/Login/RegisterPage.js'));
@@ -185,7 +197,6 @@ const root = createBrowserRouter([
                 ),
             },
             {
-
                 path: 'read/:farmNo',
                 element: (
                     <Suspense fallback={Loading}>
@@ -210,7 +221,7 @@ const root = createBrowserRouter([
                 ),
             },
             {
-                path: 'pay',
+                path: 'pay/:farmNo',
                 element: (
                     <Suspense fallback={Loading}>
                         <PayFarm />
@@ -457,7 +468,7 @@ const root = createBrowserRouter([
                         <InquiryDetail />
                     </Suspense>
                 ),
-            },   
+            },
             {
                 path: ':boardNo/edit',
                 element: (
@@ -465,7 +476,7 @@ const root = createBrowserRouter([
                         <InquiryEdit />
                     </Suspense>
                 ),
-            },          
+            },
         ],
     },
     //마이페이지 리뷰 라우터
@@ -500,7 +511,7 @@ const root = createBrowserRouter([
                         <ReviewEdit />
                     </Suspense>
                 ),
-            },            
+            },
         ],
     },
     // 로그인 라우터

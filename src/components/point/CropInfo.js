@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useLocation } from 'react-router-dom';
+import { prefix } from '../../api/farmApi';
 
 const FlexRow = styled.div`
     display: flex;
@@ -9,18 +9,17 @@ const ContentMargin = styled.div`
     margin: auto 0;
 `;
 const FarmImage = styled.div`
-    border: 1px solid #f5f5f5;
-    background-color: #f5f5f5;
     width: 6.5rem;
     height: 6.5rem;
     margin-right: 1rem;
     border-radius: 0.8rem;
+    display: flex; /* 이미지를 수평으로 정렬하기 위해 flex 사용 */
+    align-items: center; /* 이미지를 수직으로 중앙에 정렬하기 위해 사용 */
+    overflow: hidden; /* 이미지가 div를 벗어나지 않도록 함 */
 `;
+const url = `${prefix}`;
 
-const CropInfo = () => {
-    const location = useLocation(); // useLocation 훅을 사용하여 현재 위치의 정보를 가져옵니다.
-    const { cartItems, totalPrice } = location.state;
-
+const CropInfo = ({ cartItems, myCrop, myFarm }) => {
     const farmName = {
         fontWeight: '600',
         fontSize: '0.8em',
@@ -35,29 +34,34 @@ const CropInfo = () => {
     };
     return (
         <>
-            {/* 어떤 농장인지만 가져오면됩니다 */}
             <FlexRow style={{ margin: '1rem 1rem 2rem 1rem' }}>
-                <FarmImage />
+                <FarmImage>
+                    {myCrop && (
+                        <div>
+                            <img
+                                src={`${url}/${myCrop.image}`}
+                                style={{ width: '100%', objectFit: 'cover' }}
+                            />
+                        </div>
+                    )}
+                </FarmImage>
                 <ContentMargin style={{ marginRight: '2rem' }}>
-                    <div style={farmName}>토심이네 농장</div>
-                    <FlexRow style={detailName}>
+                    <div style={farmName}>{myFarm.farmName}</div>
+                    <div style={cropName}>
+                        {myCrop && <div>{myCrop.cropName}</div>}
+                    </div>
+                    <FlexRow>
                         {cartItems.map((element, idx) => (
                             <div key={idx}>
-                                <div style={cropName}>{element.name}</div>
-                                <div>수량 - {element.quantity} </div>
-                                <div className="ml-2">
-                                    금액 - {element.price * element.quantity} 원
+                                <div style={detailName}>{element.name}</div>
+                                <div style={detailName}>
+                                    {(element.price * element.quantity)
+                                        .toString()
+                                        .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                    원
                                 </div>
                             </div>
                         ))}
-                        {/* {cartItems.forEach(
-                            (item, idx) =>
-                                (
-                                    <div>
-                                        {item.name} - {item.quantity}평
-                                    </div>
-                                ) | <p>금액: {item.price * item.quantity}원</p>,
-                        )} */}
                     </FlexRow>
                 </ContentMargin>
                 <ContentMargin style={{ marginLeft: 'auto' }}>
@@ -69,7 +73,6 @@ const CropInfo = () => {
                         ))}
                     </FlexRow>
                 </ContentMargin>
-                {/* 총금액 - {totalPrice} 원 */}
             </FlexRow>
         </>
     );
