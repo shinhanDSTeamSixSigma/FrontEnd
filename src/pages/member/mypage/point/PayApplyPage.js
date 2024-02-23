@@ -7,7 +7,6 @@ import TitleDetailName from '../../../../components/point/TitleDetailName';
 import CropInfo from '../../../../components/point/CropInfo';
 import FullButton from '../../../../components/FullButton';
 import PointApply from '../../../../components/point/PointApply';
-import { useLocation } from 'react-router-dom';
 const StyledContainer = styled.div`
     color: black;
     font-size: 0.8em;
@@ -95,7 +94,6 @@ const PayApplyPage = () => {
                 <PointApply />
             </StyledContainer>
             <FullButton name="결제하기" onClick={handleButtonClick} />
-
         </>
     );
 };
