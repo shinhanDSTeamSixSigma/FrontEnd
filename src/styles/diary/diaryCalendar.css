@@ -1,0 +1,24 @@
+@charset "utf-8";
+
+.fc {
+    font-size: 0.5em;
+}
+.fc-day a {
+    color: black;
+}
+.calendar-container {
+    margin-top: 1rem; /* 상단 마진 값 조절 */
+}
+/* 일요일 날짜: 빨간색 */
+.fc-day-sun a {
+    color: #f97777;
+}
+/* 토요일 날짜: 파란색 */
+.fc-day-sat a {
+    color: blue;
+}
+
+/* 이벤트 이모지 가운데 정렬 */
+.fc-direction-ltr {
+    text-align: center;
+}

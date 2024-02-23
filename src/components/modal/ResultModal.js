@@ -1,31 +1,36 @@
+import { Fragment, useRef, useState } from 'react';
+import { Dialog, Transition } from '@headlessui/react';
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+
 export default function ResultModal({ title, content, callbackFnc }) {
     return (
         <div
-            className={`fixed top-0 left-0 z-[1055] flex h-full w-full  justify-center bg-black bg-opacity-20`}
+            className={`overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full`}
             onClick={() => {
                 if (callbackFnc) {
                     callbackFnc();
                 }
             }}
         >
-            <div className="absolute bg-white shadow dark:bg-gray-700 opacity-100 w-1/4 rounded  mt-10 mb-10 px-6 min-w-[600px]">
-                <div className="justify-center bg-warning-400 mt-6 mb-6 text-2xl border-b-4 border-gray-500">
-                    {title}
-                </div>
-                <div className="text-4xl  border-orange-400 border-b-4 pt-4 pb-4">
-                    {content}
-                </div>
-                <div className="justify-end flex ">
-                    <button
-                        className="rounded bg-blue-500 mt-4 mb-4 px-6 pt-4 pb-4 text-lg text-white"
-                        onClick={() => {
-                            if (callbackFnc) {
-                                callbackFnc();
-                            }
-                        }}
-                    >
-                        닫기
-                    </button>
+            <div className="relative p-4 w-full max-w-md max-h-full mt-20">
+                <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                    <div className="p-4 md:p-5 text-center">
+                        <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                            {title} - {content}
+                        </h3>
+                        <button
+                            data-modal-hide="popup-modal"
+                            type="button"
+                            className="text-white bg-[#80BCBD] hover:bg-[#AAD9BB] focus:ring-4 focus:outline-none  font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
+                            onClick={() => {
+                                if (callbackFnc) {
+                                    callbackFnc();
+                                }
+                            }}
+                        >
+                            확인
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

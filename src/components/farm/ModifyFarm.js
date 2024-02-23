@@ -6,6 +6,10 @@ import {
     getListAllFile,
     farmAddFile,
     deleteFile,
+    getFarmCrop,
+    putFarmCrop,
+    deleteFarmCrop,
+    postFarmCrop,
 } from '../../api/farmApi';
 import ResultModal from '../modal/ResultModal';
 import useCustomMove from '../../hooks/useCustomMove';
@@ -37,6 +41,11 @@ const fileInitState = {
     fileManageNo: 0,
 };
 
+const farmCropInitState = {
+    farmNo: 0,
+    cropName: 0,
+};
+
 export default function ModifyFarm({ farmNo, moveList, moveRead }) {
     const [farm, setFarm] = useState({ ...initState });
     const [file, setFile] = useState({ ...fileInitState });
@@ -45,6 +54,45 @@ export default function ModifyFarm({ farmNo, moveList, moveRead }) {
     const [result, setResult] = useState(null);
     const [fileReuslt, setFileResult] = useState(null); // 파일 결과
     const fileData = { ...file };
+    const [crop, setCrop] = useState({ ...farmCropInitState }); // 보낼 농작물들
+    const [farmCrop, setFarmCrop] = useState([]); // 가져올 농작물들
+    useEffect(() => {});
+
+    const handleChangeFarmCrop = (e) => {
+        const { name, value } = e.target;
+        setCrop({ ...crop, [name]: value });
+    };
+    useEffect(() => {
+        getFarmCrop().then((data) => {
+            console.log('test:' + data);
+
+            setFarmCrop(data);
+        });
+    }, []);
+
+    const handleSaveFarmCrop = () => {
+        if (crop) {
+            if (crop.cropDictNo) {
+                // 이미 선택한 작물이 있는 경우, put 요청 보냄
+                putFarmCrop({ farmNo: farmNo, cropName: crop.cropDictNo })
+                    .then((farmCropResult) => {
+                        console.log(farmCropResult);
+                        setCrop(null); // 선택한 작물 초기화
+                    })
+                    .catch((e) => console.error(e));
+            } else {
+                // 작물을 선택하지 않은 경우, post 요청 보냄
+                postFarmCrop({ farmNo: farmNo, cropName: crop.cropDictNo })
+                    .then((farmCropResult) => {
+                        console.log(farmCropResult);
+                        setCrop(null); // 선택한 작물 초기화
+                    })
+                    .catch((e) => console.error(e));
+            }
+        } else {
+            console.log('작물을 선택하세요.'); // 선택한 작물이 없는 경우에 대한 처리
+        }
+    };
     //이동을 위한 기능들
     const { moveToList, moveToRead } = useCustomMove();
     const handleClickModify = () => {
@@ -70,13 +118,23 @@ export default function ModifyFarm({ farmNo, moveList, moveRead }) {
                 .catch((e) => {
                     console.error(e);
                 });
+            putFarmCrop({ farmNo: farmNo, cropName: crop.cropDictNo })
+                .then((farmCropResult) => {
+                    console.log(farmCropResult);
+                    setCrop({ ...farmCropInitState });
+                })
+                .catch((e) => console.error(e));
         });
     };
 
     const handleClickDelete = () => {
         //버튼 클릭시
+        deleteFarmCrop(farmNo).then((data) => {
+            console.log('삭제: ' + data);
+        });
         deleteOne(farmNo).then((data) => {
             console.log('delete result: ' + data);
+
             setResult('삭제완료');
         });
     };
@@ -141,15 +199,11 @@ export default function ModifyFarm({ farmNo, moveList, moveRead }) {
                 <form>
                     <div className="space-y-12">
                         <div className="border-b border-gray-900/10 pb-12">
-                            <h2 className="text-base font-semibold leading-7 text-gray-900">
+                            <h1 className="text-xl font-semibold leading-7 text-gray-900">
                                 농장 수정
-                            </h2>
-                            <p className="mt-1 text-sm leading-6 text-gray-600">
-                                작성하신 내용은 농장 소개에 공개적으로 보이는
-                                내용입니다.
-                            </p>
+                            </h1>
 
-                            <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                            <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                                 <div className="sm:col-span-4">
                                     <label
                                         htmlFor="농장이름"
@@ -214,11 +268,11 @@ export default function ModifyFarm({ farmNo, moveList, moveRead }) {
                                 <div class="flex items-center justify-center w-full">
                                     <label
                                         for="dropzone-file"
-                                        class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                                        class="flex flex-col items-center justify-center w-full h-48 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
                                     >
-                                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                        <div class="flex flex-col items-center justify-center pt-3 pb-4">
                                             <svg
-                                                class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+                                                class="w-6 h-6 mb-3 text-gray-500 dark:text-gray-400"
                                                 aria-hidden="true"
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 fill="none"
@@ -245,8 +299,8 @@ export default function ModifyFarm({ farmNo, moveList, moveRead }) {
                                         </div>
                                         <input
                                             id="dropzone-file"
-                                            type={'file'}
-                                            className="hidden"
+                                            type="file"
+                                            class="hidden"
                                             onChange={handleChangeFile}
                                             multiple={true}
                                         />
@@ -361,6 +415,30 @@ export default function ModifyFarm({ farmNo, moveList, moveRead }) {
                                         </select>
                                     </div>
                                 </div>
+                                <div className="sm:col-span-3">
+                                    <label
+                                        htmlFor="대표 작물"
+                                        className="block text-sm font-medium leading-6 text-gray-900"
+                                    >
+                                        대표 작물
+                                    </label>
+                                    <div className="mt-2">
+                                        <select
+                                            id="대표 작물"
+                                            name="cropDictNo"
+                                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                                            onChange={handleChangeFarmCrop}
+                                        >
+                                            {farmCrop.map((crop, idx) => (
+                                                <>
+                                                    <option>
+                                                        {crop['cropName']}
+                                                    </option>
+                                                </>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
 
                                 <div className="col-span-full">
                                     <label
@@ -406,7 +484,7 @@ export default function ModifyFarm({ farmNo, moveList, moveRead }) {
 
     return (
         <>
-            <div className="border-2 border-sky-200 mt-10 m-2 p-4">
+            <div className=" border-2  mt-10 m-2 p-4">
                 {result ? (
                     <ResultModal
                         title={'처리결과'}
