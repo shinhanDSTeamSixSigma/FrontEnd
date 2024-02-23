@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import TitleDetailName from './TitleDetailName';
 import TitleDivisionLine from '../TitleDivisionLine';
@@ -21,17 +21,12 @@ const FinalPayCss = styled.div`
     color: #4f6f52;
 `;
 
-const PointApply = () => {
-    const navigate = useNavigate();
-
+const PointApply = ({ isOff, onToggle }) => {
     const location = useLocation(); // useLocation 훅을 사용하여 현재 위치의 정보를 가져옵니다.
     const { totalPrice } = location.state;
 
     const [points, setPoint] = useState(0);
     const [memberNo, setMemberNo] = useState(1); // 추후 변경
-
-    //버튼 토글 상태
-    const [isOff, setIsOff] = useState(true);
 
     useEffect(() => {
         fetchData();
@@ -59,25 +54,13 @@ const PointApply = () => {
         }
 
         setPoint((current) => current - totalPrice);
-        setIsOff(false);
-
-        // // 페이지 이동 및 상태 전달
-        // navigate(`/pay`, {
-        //     state: {
-        //         payItems: {
-        //             status: 0,
-        //             cropNo: 7,
-        //             cropNickname: '당근',
-        //             dicNo: 1,
-        //             farmNo: 1,
-        //         },
-        //         totalPrice,
-        //     },
-        // });
+        //setIsOff(false);
+        onToggle(false);
     };
     const handlePlusPoint = () => {
         setPoint((current) => current + totalPrice);
-        setIsOff(true);
+        //setIsOff(true);
+        onToggle(true);
     };
 
     return (
