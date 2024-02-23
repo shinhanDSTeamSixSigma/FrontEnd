@@ -21,6 +21,26 @@ const initState = {
     farmRating: 0.0,
     reviewCnt: 0,
 };
+
+const cropInit = {
+    cropCategoryEntity: { cropCateNo: 0, cropCateName: '' },
+    cropContent: '',
+    cropDictNo: 0,
+    cropName: '',
+    effect: '',
+    spring: 0,
+    summer: 0,
+    fall: 0,
+    winter: 0,
+    level: 0,
+    summary: '',
+    term: 0,
+    tip: '',
+    nutrient: '',
+    lowTemp: 0,
+    highTemp: 0,
+};
+
 function whenShareClick() {
     alert('공유버튼 진행중');
 }
@@ -107,8 +127,6 @@ function FarmDetailPage2(farm) {
         </>
     );
 }
-
-
 
 export default function FarmRead({ farmNo }) {
     const navigate = useNavigate();
