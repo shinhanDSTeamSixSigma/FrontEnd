@@ -52,10 +52,6 @@ const boxStyle = {
 
 export default function MemberMyPagePage() {
     const [userInfo, setUserInfo] = useState({
-        // name: '비회원',
-        // sub: '',
-        // role: '',
-        // memberNo: 34,
         memberId: '',
         memberName: '',
         phone: '',
@@ -84,19 +80,30 @@ export default function MemberMyPagePage() {
                     alert('농부만 들어갈 수 있는 페이지 입니다!');
                     window.location.href = '/';
                 }
+                // 사용자 정보를 가져온 후 농작물 정보를 가져옴
+                fetchCrops();
             })
             .catch((error) => {
                 console.log('데이터 안옴!!!!!!');
-                console.log(error);
+                console.error(error);
             });
-        // try {
-        //     const response = await axios.get('http://192.168.0.73:8090/user');
-        //     // 서버에서 받은 사용자 정보를 userInfo 상태로 설정
-        //     setUserInfo(response.data);
-        //     console.log(response.data);
-        // } catch (error) {
-        //     console.error('Error fetching user info:', error);
-        // }
+    };
+
+    const [crops, setCrops] = useState([]);
+
+    const fetchCrops = () => {
+        axios
+            .get(`http://localhost:8090/crops`, {
+                withCredentials: true,
+            })
+            .then((res) => {
+                setCrops(res.data);
+                console.log(res.data);
+            })
+            .catch((error) => {
+                console.log('농작물 정보를 가져오는 데 실패했습니다.');
+                console.error(error);
+            });
     };
 
     return (
@@ -135,7 +142,6 @@ export default function MemberMyPagePage() {
                     </FlexRow>
                     <IoSettingsOutline />
                 </FlexRow>
-
                 <div
                     style={{
                         width: '100%',
@@ -162,7 +168,6 @@ export default function MemberMyPagePage() {
                         <IoChevronForwardOutline color="#C4C4C4" />
                     </FlexRow>
                 </div>
-
                 <hr
                     style={{
                         marginTop: '1rem',
@@ -170,7 +175,6 @@ export default function MemberMyPagePage() {
                         color: '#90C8AC',
                     }}
                 ></hr>
-
                 <FlexRow style={{ justifyContent: 'space-evenly' }}>
                     <Box>
                         <IoHomeOutline style={boxStyle} color="#73A9AD" />
@@ -206,10 +210,10 @@ export default function MemberMyPagePage() {
                             }}
                             className="text-xs"
                         >
-                            문의 관리
+                            후기 관리
                         </Step>
                     </Box>
-                    <Box>
+                    {/* <Box>
                         <PiNotePencilLight style={boxStyle} color="#73A9AD" />
                         <Step
                             style={{
@@ -220,7 +224,7 @@ export default function MemberMyPagePage() {
                         >
                             문의 관리
                         </Step>
-                    </Box>
+                    </Box> */}
                 </FlexRow>
                 <hr
                     style={{
@@ -229,9 +233,7 @@ export default function MemberMyPagePage() {
                         color: '#90C8AC',
                     }}
                 ></hr>
-
                 <Growing></Growing>
-
                 <hr
                     style={{
                         marginTop: '1rem',
@@ -240,8 +242,7 @@ export default function MemberMyPagePage() {
                     }}
                 ></hr>
 
-                <Nowing></Nowing>
-
+                {crops.length !== 0 && <Nowing crops={crops}></Nowing>}
                 <hr
                     style={{
                         marginTop: '1rem',
@@ -250,7 +251,7 @@ export default function MemberMyPagePage() {
                     }}
                 ></hr>
 
-                <NoFarm></NoFarm>
+                {crops.length === 0 && <NoFarm></NoFarm>}
             </StyledBody>
         </>
     );
