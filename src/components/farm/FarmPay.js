@@ -102,9 +102,7 @@ export function FarmPay() {
 
             <TitleDivisionLine></TitleDivisionLine>
 
-            {/* {myCrop && <div>작물 - {myCrop.cropName}</div>}
-
-            {myCrop && <div>{<img src={`${url}/${myCrop.image}`} />}</div>} */}
+            {/*myCrop && <div>{<img src={`${url}/${myCrop.image}`} />}</div>} */}
 
             {/* 여기부터 수정함 */}
             <FlexRow style={{ paddingTop: '1rem', paddingBottom: '1rem' }}>
@@ -119,7 +117,7 @@ export function FarmPay() {
                         style={{ width: '130px', marginRight: '1rem' }} // 사진 크기 조정
                     />
                 </div>
-
+                {/* 
                 <div className="menu border-2">
                     <input
                         type="checkbox"
@@ -128,12 +126,11 @@ export function FarmPay() {
                             handleCheckboxChange(event, 2, '비료', 5000)
                         }
                     />
-                    <label htmlFor="menu2">비료 - 5,000원</label>
-
+                    <label htmlFor="menu2">비료 - 5,000원</label> */}
 
                 <div>
                     <FlexRow style={{ fontWeight: 'bold' }}>
-                        <div> 작물 - 바질 </div>
+                        {myCrop && <div>작물 - {myCrop.cropName}</div>}
                     </FlexRow>
                     {/* 메뉴 목록 */}
                     <div className="menuList">
@@ -153,7 +150,6 @@ export function FarmPay() {
                             <label htmlFor="menu1">1평 - 50,000원</label>
                         </div>
                     </div>
-
                 </div>
             </FlexRow>
 
