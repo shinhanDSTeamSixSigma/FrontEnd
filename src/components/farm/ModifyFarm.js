@@ -10,6 +10,7 @@ import {
     putFarmCrop,
     deleteFarmCrop,
     postFarmCrop,
+    getFarmCropAll,
 } from '../../api/farmApi';
 import ResultModal from '../modal/ResultModal';
 import useCustomMove from '../../hooks/useCustomMove';
@@ -32,7 +33,6 @@ const initState = {
     farmCategory: '',
     farmRating: 0.0,
     reviewCnt: 0,
-    memberNo: 28,
 };
 
 const fileInitState = {
@@ -56,6 +56,7 @@ export default function ModifyFarm({ farmNo, moveList, moveRead }) {
     const fileData = { ...file };
     const [crop, setCrop] = useState({ ...farmCropInitState }); // 보낼 농작물들
     const [farmCrop, setFarmCrop] = useState([]); // 가져올 농작물들
+    const [myfarmCrop, setMyFarmCrop] = useState();
     useEffect(() => {});
 
     const handleChangeFarmCrop = (e) => {
@@ -64,9 +65,15 @@ export default function ModifyFarm({ farmNo, moveList, moveRead }) {
     };
     useEffect(() => {
         getFarmCrop().then((data) => {
-            console.log('test:' + data);
+            console.log('작물 사전:' + JSON.stringify(data));
 
             setFarmCrop(data);
+        });
+    }, []);
+    useEffect(() => {
+        getFarmCropAll(farmNo).then((data) => {
+            console.log('등록한 농장 작물:' + JSON.stringify(data));
+            setMyFarmCrop(data.getResult);
         });
     }, []);
 
@@ -149,7 +156,7 @@ export default function ModifyFarm({ farmNo, moveList, moveRead }) {
 
     useEffect(() => {
         getOne(farmNo).then((data) => {
-            console.log(data);
+            console.log('농장' + JSON.stringify(data));
             setFarm(data);
         });
     }, [farmNo]);
@@ -202,6 +209,10 @@ export default function ModifyFarm({ farmNo, moveList, moveRead }) {
                             <h1 className="text-xl font-semibold leading-7 text-gray-900">
                                 농장 수정
                             </h1>
+                            <p className="mt-2 text-sm leading-6 text-gray-600">
+                                현재 작성 페이지는 농장에 대한 정보를 수정하는
+                                내용입니다.
+                            </p>
 
                             <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                                 <div className="sm:col-span-4">
@@ -220,6 +231,7 @@ export default function ModifyFarm({ farmNo, moveList, moveRead }) {
                                                 className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                                                 placeholder="토심농장"
                                                 onChange={handleChangeFarm}
+                                                value={farm['farmName']}
                                             />
                                         </div>
                                     </div>
@@ -241,6 +253,7 @@ export default function ModifyFarm({ farmNo, moveList, moveRead }) {
                                                 className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                                                 placeholder="유기농 당근 농장"
                                                 onChange={handleChangeFarm}
+                                                value={farm['farmContent']}
                                             />
                                         </div>
                                     </div>
@@ -259,7 +272,7 @@ export default function ModifyFarm({ farmNo, moveList, moveRead }) {
                                             name="farmDescription"
                                             rows={3}
                                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                            defaultValue={''}
+                                            value={farm['farmDescription']}
                                             onChange={handleChangeFarm}
                                         />
                                     </div>
@@ -346,6 +359,7 @@ export default function ModifyFarm({ farmNo, moveList, moveRead }) {
                                             id="농장번호"
                                             name="farmPhone"
                                             type="text"
+                                            value={farm['farmPhone']}
                                             onChange={handleChangeFarm}
                                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         />
@@ -361,6 +375,7 @@ export default function ModifyFarm({ farmNo, moveList, moveRead }) {
                                     <div className="mt-2">
                                         <input
                                             id="농부 경력"
+                                            value={farm['farmCareer']}
                                             name="farmCareer"
                                             type="text"
                                             onChange={handleChangeFarm}
@@ -381,6 +396,7 @@ export default function ModifyFarm({ farmNo, moveList, moveRead }) {
                                             id="농장 평 수"
                                             name="farmSize"
                                             type="text"
+                                            value={farm['farmSize']}
                                             onChange={handleChangeFarm}
                                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         />
@@ -398,6 +414,7 @@ export default function ModifyFarm({ farmNo, moveList, moveRead }) {
                                         <select
                                             id="농장 카테고리"
                                             name="farmCategory"
+                                            value={farm['farmCategory']}
                                             autoComplete="country-name"
                                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
                                             onChange={handleChangeFarm}
@@ -429,6 +446,10 @@ export default function ModifyFarm({ farmNo, moveList, moveRead }) {
                                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
                                             onChange={handleChangeFarmCrop}
                                         >
+                                            <option selected disabled hidden>
+                                                {myfarmCrop &&
+                                                    myfarmCrop.cropName}
+                                            </option>
                                             {farmCrop.map((crop, idx) => (
                                                 <>
                                                     <option>
@@ -452,6 +473,7 @@ export default function ModifyFarm({ farmNo, moveList, moveRead }) {
                                             type="text"
                                             name="farmAddress"
                                             id="농장 주소"
+                                            value={farm['farmAddress']}
                                             onChange={handleChangeFarm}
                                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         />
@@ -469,6 +491,7 @@ export default function ModifyFarm({ farmNo, moveList, moveRead }) {
                                             type="text"
                                             name="farmConnect"
                                             id="연락 가능 시간"
+                                            value={farm['farmConnect']}
                                             onChange={handleChangeFarm}
                                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         />
