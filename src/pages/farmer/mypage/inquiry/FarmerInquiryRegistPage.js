@@ -1,19 +1,17 @@
 import styled from "styled-components";
-import ReviewRegist from "../../../../components/board/ReviewRegist";
+import BoardRegist from "../../../../components/board/BoardRegist";
 const StyledContainer = styled.div`
     background-color:white;
     border-radius:0.6rem;
     margin:1.5rem;
 `;
-
-const FarmerReviewRegist=()=>{
-  
+const FarmerInquiryRegistPage = () => {
     return(
         <>
         <StyledContainer>
-            <ReviewRegist/>
+            <BoardRegist/>
         </StyledContainer>
         </>
-    )
+    );
 };
-export default FarmerReviewRegist;
+export default FarmerInquiryRegistPage;

@@ -18,13 +18,17 @@ const PayApplyPage = () => {
     const location = useLocation(); // 현재 위치
     const { cartItems, totalPrice, myCrop, myFarm } = location.state;
 
+    //버튼 토글 상태
+    const [isOff, setIsOff] = useState(true);
+
     const [memberNo, setMemberNo] = useState(1); // 추후 변경
+    const [cropNo, setCropNo] = useState(1); // 추후 변경
 
     const handleButtonClick = async () => {
         try {
             let requestData;
             let apiUrl;
-            let status = 0; //1: 땅, 2: 비료
+            let status = cartItems[0].optionNumber; //1: 땅, 2: 비료
 
             // 어떤 작업을 할지를 동적으로 결정
             if (status === 2) {
@@ -34,7 +38,7 @@ const PayApplyPage = () => {
                     changeCause: 4, // 영양제 구매
 
                     memberNo: memberNo,
-                    cropNo: 1, //payItems.cropNo,
+                    cropNo: cropNo,
                 };
                 apiUrl = 'http://localhost:8080/pay/register-point';
             } else if (status === 1) {
@@ -42,11 +46,11 @@ const PayApplyPage = () => {
                 const cropResponse = await axios.post(
                     'http://localhost:8080/pay/register-crop',
                     {
-                        cropNickname: '당근',
+                        cropNickname: myCrop.cropName,
                         cropState: 2,
                         memberNo: memberNo,
-                        dictNo: 7,
-                        farmNo: 1,
+                        dictNo: myCrop.cropDictNo,
+                        farmNo: myFarm.farmNo,
                     },
                 );
 
@@ -91,9 +95,17 @@ const PayApplyPage = () => {
                     myCrop={myCrop}
                     myFarm={myFarm}
                 />
-                <PointApply />
+                <PointApply isOff={isOff} onToggle={setIsOff} />
             </StyledContainer>
-            <FullButton name="결제하기" onClick={handleButtonClick} />
+            <FullButton
+                name="결제하기"
+                onClick={() =>
+                    isOff
+                        ? alert('포인트 사용을 선택해주세요.')
+                        : handleButtonClick()
+                }
+            />
+
         </>
     );
 };
