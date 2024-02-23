@@ -75,8 +75,9 @@ export default function Header({ handleModalToggle }) {
                                                     (item, index) => (
                                                         <Link
                                                             to={item.href}
-                                                            //key값이 겹치니까 index사용해서 안겹치게 수정해야함!!!!!
-                                                            key={item.name}
+                                                            key={
+                                                                'namer' + index
+                                                            } /*이거 이름 중복돼서 수정! */
                                                             onClick={() =>
                                                                 handleItemClick(
                                                                     index,
@@ -229,7 +230,7 @@ export default function Header({ handleModalToggle }) {
                                         <>
                                             <Link
                                                 to={item.href}
-                                                key={item.name}
+                                                key={'asdf' + index}
                                                 onClick={() =>
                                                     handleItemClick(index)
                                                 } // 항목을 클릭하면 해당 인덱스로 업데이트하는 함수 호출

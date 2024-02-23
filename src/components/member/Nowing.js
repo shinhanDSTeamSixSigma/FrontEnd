@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const FlexRow = styled.div`
     // row로 붙여주는 느낌
@@ -30,51 +31,93 @@ const Box = styled.div`
     flex-direction: column;
 `;
 
-const Nowing = () => {
+// D + () 값을 나타내기 위한 날짜 차이 계산
+const calculateDaysSince = (startDate) => {
+    const oneDay = 24 * 60 * 60 * 1000; // 하루의 밀리초 수
+    const currentDate = new Date(); // 현재 날짜
+    const daysDiff = Math.round((currentDate - new Date(startDate)) / oneDay); // 두 날짜 사이의 일 수
+    return daysDiff;
+};
+
+const Nowing = ({ crops }) => {
+    const navigate = useNavigate();
+
+    const handleClick = (crop) => {
+        // 클릭된 버튼의 cropNo를 사용하여 이동
+        navigate('/mypage/temperature', { state: { crop } });
+    };
+
     return (
         <>
-            <FlexRow
-                style={{
-                    justifyContent: 'space-between',
-                }}
-            >
-                <FlexRow>
-                    <Box>
-                        <img
-                            className="step"
-                            alt="1step"
-                            src={
-                                process.env.PUBLIC_URL +
-                                '/img/memberMypage/1step.png'
-                            }
-                            style={{ width: '5rem', height: '5rem' }}
-                        />
-                    </Box>
-                    <div style={{ marginLeft: '1rem' }}>
-                        <div>쑥쑥이</div>
-                        <FlexRowBasic>
-                            <div className="text-sm">D+</div>
-                            <div className="text-sm">25</div>
-                        </FlexRowBasic>
-                        <FlexRowBasic style={{ fontSize: '0.6rem' }}>
-                            <div>2024/10/1</div>
-                            <div> ~ 재배중</div>
-                        </FlexRowBasic>
+            {crops.map((crop, index) => (
+                <FlexRow
+                    key={index}
+                    style={{
+                        justifyContent: 'space-between',
+                        marginBottom: '1rem',
+                    }}
+                >
+                    <FlexRow>
+                        <Box>
+                            <img
+                                className="step"
+                                alt="step"
+                                src={
+                                    crop.cropState === 1
+                                        ? process.env.PUBLIC_URL +
+                                          '/img/memberMypage/1step.png'
+                                        : crop.cropState === 2
+                                        ? process.env.PUBLIC_URL +
+                                          '/img/memberMypage/2step.png'
+                                        : crop.cropState === 3
+                                        ? process.env.PUBLIC_URL +
+                                          '/img/memberMypage/3step.png'
+                                        : crop.cropState === 4
+                                        ? process.env.PUBLIC_URL +
+                                          '/img/memberMypage/4step.png'
+                                        : null // 또는 다른 이미지 경로 또는 값
+                                }
+                                style={{ width: '5rem', height: '5rem' }}
+                            />
+                        </Box>
+
+                        <div style={{ marginLeft: '1rem' }}>
+                            <div>{crop.cropNickname}</div>
+                            <FlexRowBasic>
+                                <div className="text-sm">D+</div>
+                                <div className="text-sm">
+                                    {calculateDaysSince(crop.createdDate)}
+                                </div>
+                            </FlexRowBasic>
+                            <FlexRowBasic style={{ fontSize: '0.6rem' }}>
+                                <div>
+                                    {new Date(
+                                        crop.createdDate,
+                                    ).toLocaleDateString()}
+                                </div>
+                                <div> ~ 재배중</div>
+                            </FlexRowBasic>
+                        </div>
+                    </FlexRow>
+
+                    <div>
+                        <div>
+                            <button className="flex-none rounded-md ml-2 bg-[#D5F0C1] px-2 py-1 text-xs shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 mt-2">
+                                현재 밥값
+                            </button>
+                        </div>
+                        <div key={crop.cropNo}>
+                            <button
+                                onClick={() => handleClick(crop)}
+                                className="flex-none rounded-full bg-[#F5F0BB] px-3.5 py-2.5 text-base shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 mt-2"
+                            >
+                                <b>{crop.cropNickname}</b>
+                                (이)는 지금?
+                            </button>
+                        </div>
                     </div>
                 </FlexRow>
-                <div>
-                    <div>
-                        <button className="flex-none rounded-md bg-[#D5F0C1] px-2 py-1 text-xs shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 mt-2">
-                            00이 밥값
-                        </button>
-                    </div>
-                    <div>
-                        <button className="flex-none rounded-full bg-[#F5F0BB] px-3.5 py-2.5 text-base shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 mt-2">
-                            <b>쑥쑥이</b>는 지금?
-                        </button>
-                    </div>
-                </div>
-            </FlexRow>
+            ))}
         </>
     );
 };
