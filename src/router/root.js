@@ -1,6 +1,11 @@
 import { Suspense, lazy } from 'react';
 import InquiryDetailPage from '../pages/member/mypage/inquiry/InquiryDetailPage.js';
 import LoadingModal from '../components/modal/LoadingModal.js';
+import FarmerInquiryListPage from '../pages/farmer/mypage/inquiry/FarmerInquiryListPage.js';
+import FarmerInquiryDetailPage from '../pages/farmer/mypage/inquiry/FarmerInquiryDetailPage.js';
+import FarmerInquiryRegistPage from '../pages/farmer/mypage/inquiry/FarmerInquiryRegistPage.js';
+import FarmerReviewListPage from '../pages/farmer/mypage/review/FarmerReviewListPage.js';
+import FarmerReviewDetail from '../pages/farmer/mypage/review/FarmerReviewDetail.js';
 const { createBrowserRouter } = require('react-router-dom');
 
 const Loading = <LoadingModal />;
@@ -44,13 +49,17 @@ const CropAlbum = lazy(() =>
 // 멤버 마이페이지 - 내 작물
 const MyCrop = lazy(() => import('../pages/member/mypage/MyCropPage'));
 
-//식물 기록-다이어리
+//식물 기록 - 다이어리
 const Diary = lazy(() => import('../pages/member/mypage/diary/DiaryPage'));
 const DiaryRegist = lazy(() =>
     import('../pages/member/mypage/diary/DiaryRegistPage'),
 );
 const DiaryEdit = lazy(() =>
     import('../pages/member/mypage/diary/DiaryEditPage'),
+);
+//식물 기록 - 캘린더
+const DiaryCalendar = lazy(() =>
+    import('../pages/member/mypage/diary/DiaryCalendarPage'),
 );
 //농장 결제
 const Pay = lazy(() => import('../pages/member/mypage/point/PayApplyPage'));
@@ -70,13 +79,35 @@ const PointDetail = lazy(() =>
 const CropList = lazy(() => import('../pages/member/dict/CropListPage'));
 //작물 상세
 const CropDetail = lazy(() => import('../pages/member/dict/CropDetailPage'));
+//사용자 마이페이지 문의목록
+const InquiryList = lazy(()=> import('../pages/member/mypage/inquiry/InquiryListPage'));
+//사용자 마이페이지 문의 상세
+const InquiryDetail = lazy(()=>import ('../pages/member/mypage/inquiry/InquiryDetailPage'));
+//사용자 마이페이지 문의 수정
+const InquiryEdit = lazy(()=>import ('../pages/member/mypage/inquiry/InquiryEdit'));
+
+//사용자 마이페이지 리뷰목록
+const ReviewList = lazy(()=>import('../pages/member/mypage/review/ReviewListPage.js'))
+//사용자 마이페이지 리뷰상세
+const ReviewDetail = lazy(()=>import('../pages/member/mypage/review/ReviewDetail.js'))
+//사용자 마이페이지 리뷰수정
+const ReviewEdit = lazy(()=>import('../pages/member/mypage/review/ReviewEdit.js'))
 //문의 목록
-const InquiryList = lazy(() =>
-    import('../pages/member/mypage/inquiry/InquiryListPage.js'),
+const FarmerInquiryList = lazy(() =>
+    import('../pages/farmer/mypage/inquiry/FarmerInquiryListPage.js'),
 );
 //문의 작성
-const InquiryRegist = lazy(() =>
-    import('../pages/member/mypage/inquiry/InquiryRegistPage.js'),
+const FarmerInquiryRegist = lazy(() =>
+    import('../pages/farmer/mypage/inquiry/FarmerInquiryRegistPage.js'),
+);
+
+//리뷰목록 
+const FarmerReviewList = lazy(()=>
+    import('../pages/farmer/mypage/review/FarmerReviewListPage.js')
+);
+//리뷰작성
+const FarmerReviewRegist = lazy(()=>
+import('../pages/farmer/mypage/review/FarmerReviewRegist.js')
 );
 // 회원가입
 const Signup = lazy(() => import('../pages/Login/RegisterPage.js'));
@@ -154,7 +185,6 @@ const root = createBrowserRouter([
                 ),
             },
             {
-
                 path: 'read/:farmNo',
                 element: (
                     <Suspense fallback={Loading}>
@@ -179,11 +209,58 @@ const root = createBrowserRouter([
                 ),
             },
             {
-                path: 'pay',
+                path: 'pay/:farmNo',
                 element: (
                     <Suspense fallback={Loading}>
-
                         <PayFarm />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'review/:farmNo',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <FarmerReviewList />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'review/:reviewNo/detail',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <FarmerReviewDetail />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'review/:farmNo/regist',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <FarmerReviewRegist />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'inquiry/:farmNo',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <FarmerInquiryListPage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'inquiry/:boardNo/detail',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <FarmerInquiryDetailPage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'inquiry/:farmNo/regist',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <FarmerInquiryRegistPage />
                     </Suspense>
                 ),
             },
@@ -261,7 +338,7 @@ const root = createBrowserRouter([
     },
     // 작물 일기 라우터
     {
-        path: 'crop-diary',
+        path: 'diary',
         element: (
             <Suspense fallback={Loading}>
                 <Layout />
@@ -285,10 +362,28 @@ const root = createBrowserRouter([
                 ),
             },
             {
-                path: 'edit',
+                path: 'list/:diaryNo',
                 element: (
                     <Suspense fallback={Loading}>
                         <DiaryEdit />
+                    </Suspense>
+                ),
+            },
+        ],
+    },
+    {
+        path: 'calendar',
+        element: (
+            <Suspense fallback={Loading}>
+                <Layout />
+            </Suspense>
+        ),
+        children: [
+            {
+                path: '',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <DiaryCalendar />
                     </Suspense>
                 ),
             },
@@ -312,7 +407,7 @@ const root = createBrowserRouter([
                 ),
             },
             {
-                path: 'payment-detail',
+                path: 'receipt',
                 element: (
                     <Suspense fallback={Loading}>
                         <PaymentDetail />
@@ -320,7 +415,7 @@ const root = createBrowserRouter([
                 ),
             },
             {
-                path: 'point-charge',
+                path: 'charge',
                 element: (
                     <Suspense fallback={Loading}>
                         <PointCharge />
@@ -328,7 +423,7 @@ const root = createBrowserRouter([
                 ),
             },
             {
-                path: 'point-result',
+                path: 'detail',
                 element: (
                     <Suspense fallback={Loading}>
                         <PointDetail />
@@ -337,9 +432,9 @@ const root = createBrowserRouter([
             },
         ],
     },
-    // 문의 라우터
+    //마이페이지 문의 라우터
     {
-        path: 'customer-inquiry',
+        path: 'inquiry',
         element: (
             <Suspense fallback={Loading}>
                 <Layout />
@@ -347,7 +442,7 @@ const root = createBrowserRouter([
         ),
         children: [
             {
-                path: ':farmNo',
+                path: ':memberNo',
                 element: (
                     <Suspense fallback={Loading}>
                         <InquiryList />
@@ -358,18 +453,53 @@ const root = createBrowserRouter([
                 path: ':boardNo/detail',
                 element: (
                     <Suspense fallback={Loading}>
-                        <InquiryDetailPage />
+                        <InquiryDetail />
+                    </Suspense>
+                ),
+            },   
+            {
+                path: ':boardNo/edit',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <InquiryEdit />
+                    </Suspense>
+                ),
+            },          
+        ],
+    },
+    //마이페이지 리뷰 라우터
+    {
+        path: 'review',
+        element: (
+            <Suspense fallback={Loading}>
+                <Layout />
+            </Suspense>
+        ),
+        children: [
+            {
+                path: ':memberNo',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <ReviewList />
                     </Suspense>
                 ),
             },
             {
-                path: ':farmNo/regist',
+                path: ':reviewNo/detail',
                 element: (
                     <Suspense fallback={Loading}>
-                        <InquiryRegist />
+                        <ReviewDetail />
                     </Suspense>
                 ),
             },
+            {
+                path: ':reviewNo/edit',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <ReviewEdit />
+                    </Suspense>
+                ),
+            },            
         ],
     },
     // 로그인 라우터

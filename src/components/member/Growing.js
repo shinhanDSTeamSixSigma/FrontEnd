@@ -30,9 +30,7 @@ const Growing = () => {
     return (
         <>
             <div>
-                <span className="text-base font-black">
-                    현재 재배 중인 작물
-                </span>
+                <span className="text-base font-black">작물의 단계</span>
             </div>
             <FlexRow>
                 <Box>
