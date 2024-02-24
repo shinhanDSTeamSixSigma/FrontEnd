@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-const baseUrl = process.env.REACT_APP_BASE_URL;
-
 const FlexRow = styled.div`
     display: flex;
     flex-direction: row;
@@ -16,7 +14,7 @@ const CropImage = styled.img`
     border-radius: 0.8rem;
 `;
 
-const CropReceiptInfo = ({ crop }) => {
+const CropReceiptInfo = ({ baseUrl, crop }) => {
     console.log(crop);
     const farmName = {
         fontWeight: '600',

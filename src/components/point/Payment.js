@@ -3,13 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import FullButton from '../FullButton';
 
-const baseUrl = process.env.REACT_APP_BASE_URL;
-
-const Payment = ({ selectedAmount, selectedPaymentOption }) => {
+const Payment = ({
+    memberNo,
+    cropNo,
+    baseUrl,
+    selectedAmount,
+    selectedPaymentOption,
+}) => {
     const navigate = useNavigate();
-
-    const [memberNo, setMemberNo] = useState(1);
-    const [cropNo, setCropNo] = useState(1);
 
     useEffect(() => {
         // 외부 스크립트 동적 로딩

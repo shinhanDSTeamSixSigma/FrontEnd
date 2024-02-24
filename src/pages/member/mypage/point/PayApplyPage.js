@@ -17,15 +17,15 @@ const StyledContainer = styled.div`
 `;
 
 const PayApplyPage = () => {
+    const [memberNo, setMemberNo] = useState(1); // 추후 변경
+    const [cropNo, setCropNo] = useState(1); // 추후 변경
+
     const navigate = useNavigate();
     const location = useLocation(); // 현재 위치
     const { cartItems, totalPrice, myCrop, myFarm } = location.state;
 
     //버튼 토글 상태
     const [isOff, setIsOff] = useState(true);
-
-    const [memberNo, setMemberNo] = useState(1); // 추후 변경
-    const [cropNo, setCropNo] = useState(1); // 추후 변경
 
     const handleButtonClick = async () => {
         try {
@@ -99,7 +99,12 @@ const PayApplyPage = () => {
                     myCrop={myCrop}
                     myFarm={myFarm}
                 />
-                <PointApply isOff={isOff} onToggle={setIsOff} />
+                <PointApply
+                    memberNo={memberNo}
+                    baseUrl={baseUrl}
+                    isOff={isOff}
+                    onToggle={setIsOff}
+                />
             </StyledContainer>
             <FullButton
                 name="결제하기"

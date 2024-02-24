@@ -13,8 +13,6 @@ import FloatingButton from '../diary/FloatingButton';
 import '../../styles/diary/diaryCalendar.css';
 import Button from '../Button';
 
-const baseUrl = process.env.REACT_APP_BASE_URL;
-
 const FlexRow = styled.div`
     display: flex;
     flex-direction: row;
@@ -51,7 +49,7 @@ const modalStyle = {
     },
 };
 
-const DiaryCalendar = () => {
+const DiaryCalendar = (memberNo, cropNo, baseUrl) => {
     const formatDate = (date) => {
         const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
         const formattedDate = new Date(date).toLocaleDateString(
@@ -69,8 +67,6 @@ const DiaryCalendar = () => {
     const [diaryList, setDiaryList] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalData, setModalData] = useState(null);
-    const memberNo = 1;
-    const cropNo = 1;
 
     const image = {
         margin: 'auto 0.1rem',

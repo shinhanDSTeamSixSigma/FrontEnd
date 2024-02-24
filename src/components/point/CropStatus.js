@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 
-const baseUrl = process.env.REACT_APP_BASE_URL;
-
 const StyledContainer = styled.div`
     background-color: #c4dfaa;
     height: 4.5rem;
@@ -22,12 +20,8 @@ const Textmargin = styled.div`
     font-weight: ${(props) => (props.isCompleted ? 'bold' : 'normal')};
 `;
 
-const CropStatus = () => {
+const CropStatus = ({ memberNo, cropNo, baseUrl }) => {
     const [status, setStatus] = useState();
-
-    //데이터
-    const [memberNo, setMemberNo] = useState(1); // 추후 변경
-    const [cropNo, setCropNo] = useState(1); // 추후 변경
 
     useEffect(() => {
         fetchData();

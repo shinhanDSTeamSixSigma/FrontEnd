@@ -6,8 +6,6 @@ import axios from 'axios';
 import styled from 'styled-components';
 import FullButton from '../FullButton';
 
-const baseUrl = process.env.REACT_APP_BASE_URL;
-
 const StyledContainer = styled.div`
     background-color: #f9f7c9;
     padding: 0.5rem 1.5rem;
@@ -44,13 +42,7 @@ const Height = styled.div`
     height: 8rem;
 `;
 
-const fileInitState = {
-    files: [],
-    manageDiv: 'DIARY',
-    fileManageNo: 0, //diaryNo
-};
-
-const DiaryRegist = () => {
+const DiaryRegist = ({ memberNo, cropNo, baseUrl }) => {
     const marginLeft = {
         margin: '0.2rem',
         fontSize: '0.8em',
@@ -69,10 +61,6 @@ const DiaryRegist = () => {
 
     const contentRef = useRef();
     const [content, setContent] = useState('');
-    const [file, setFile] = useState({ ...fileInitState });
-
-    const [memberNo, setMemberNo] = useState(1);
-    const [cropNo, setCropNo] = useState(1);
 
     const [cropBuyDate, setCropBuyDate] = useState(null);
     const [dateDifferenceInDays, setDateDifferenceInDays] = useState(null);

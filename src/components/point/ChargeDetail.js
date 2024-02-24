@@ -5,8 +5,6 @@ import TextDivisionLine from '../TextDivisionLine';
 import TitleDetailName from '../point/TitleDetailName';
 import CropPoint from './CropPoint';
 
-const baseUrl = process.env.REACT_APP_BASE_URL;
-
 const FlexRow = styled.div`
     display: flex;
     flex-direction: row;
@@ -22,7 +20,7 @@ const FinalPayCss = styled.div`
     color: #4f6f52;
 `;
 
-const ChargeDetail = ({ crop }) => {
+const ChargeDetail = ({ memberNo, cropNo, baseUrl }) => {
     const textCss = {
         display: 'flex',
         justifyContent: 'center',
@@ -34,10 +32,6 @@ const ChargeDetail = ({ crop }) => {
     const [fertilizerInfo, setFertilizerInfo] = useState({});
 
     const [status, setStatus] = useState();
-
-    //데이터
-    const [memberNo, setMemberNo] = useState(1); // 추후 변경
-    const cropNo = crop.cropNo;
 
     useEffect(() => {
         fetchCropChargeData();

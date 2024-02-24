@@ -5,8 +5,6 @@ import styled from 'styled-components';
 import TitleUserName from '../../components/diary/TitleUserName';
 import TitleDivisionLine from '../TitleDivisionLine';
 
-const baseUrl = process.env.REACT_APP_BASE_URL;
-
 const FlexRow = styled.div`
     display: flex;
     flex-direction: row;
@@ -16,16 +14,13 @@ const FontSize = styled.div`
     font-size: 0.8em;
 `;
 
-export default function DiaryDetailTitle() {
+export default function DiaryDetailTitle({ memberNo, cropNo, baseUrl }) {
     const image = {
         margin: 'auto 0.1rem',
         width: '30%',
     };
 
     const [cropData, setCropData] = useState([]);
-
-    const [memberNo, setMemberNo] = useState(1); // 추후 변경
-    const [cropNo, setCropNo] = useState(1); // 추후 변경
 
     useEffect(() => {
         cropInfoData();

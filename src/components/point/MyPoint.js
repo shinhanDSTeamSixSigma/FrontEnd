@@ -8,8 +8,6 @@ import 'react-datepicker/dist/react-datepicker.module.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import MyPointValue from './MyPointValue';
 
-const baseUrl = process.env.REACT_APP_BASE_URL;
-
 const FlexRow = styled.div`
     display: flex;
     flex-direction: row;
@@ -27,12 +25,9 @@ const TextMargin = styled.div`
     margin: 0.4rem auto 0.4rem 0;
 `;
 
-export default function MyPoint() {
+export default function MyPoint({ memberNo, baseUrl }) {
     const [points, setPoint] = useState(0);
     const [monthlyCharge, setMonthlyCharge] = useState(0);
-
-    //데이터
-    const [memberNo, setMemberNo] = useState(1); // 추후 변경
 
     const currentTime = new Date();
     const year = currentTime.getFullYear();

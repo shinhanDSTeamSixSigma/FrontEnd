@@ -7,8 +7,6 @@ import TextDivisionLine from '../TextDivisionLine';
 import styled from 'styled-components';
 import MyPointBlank from '../../components/point/MyPointBlank';
 
-const baseUrl = process.env.REACT_APP_BASE_URL;
-
 const FlexRow = styled.div`
     display: flex;
     flex-direction: row;
@@ -28,13 +26,10 @@ const CustomDatePicker = styled(DatePicker)`
     }
 `;
 
-const MyPointDetail = () => {
+const MyPointDetail = ({ memberNo, baseUrl }) => {
     //axios 설정값
     const [points, setPoint] = useState([]);
     console.log(points);
-
-    //데이터
-    const [memberNo, setMemberNo] = useState(1); // 추후 변경
 
     const currentTime = new Date();
     const [year, setYear] = useState(currentTime.getFullYear());

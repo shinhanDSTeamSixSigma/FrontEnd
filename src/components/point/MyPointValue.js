@@ -2,14 +2,12 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 
-const baseUrl = process.env.REACT_APP_BASE_URL;
-
 const FlexRow = styled.div`
     display: flex;
     flex-direction: row;
 `;
 
-export default function MyPointValue() {
+export default function MyPointValue({ memberNo, baseUrl }) {
     const pointResult = {
         fontWeight: '700',
         fontSize: '1.4em',
@@ -17,9 +15,6 @@ export default function MyPointValue() {
     };
 
     const [points, setPoint] = useState(0);
-
-    //데이터
-    const [memberNo, setMemberNo] = useState(1); // 추후 변경
 
     useEffect(() => {
         fetchData();

@@ -5,8 +5,6 @@ import styled from 'styled-components';
 import axios from 'axios';
 import FullButton from '../FullButton';
 
-const baseUrl = process.env.REACT_APP_BASE_URL;
-
 const StyledContainer = styled.div`
     background-color: #f9f7c9;
     padding: 0.5rem 1.5rem;
@@ -37,7 +35,7 @@ const Content = styled.div`
     }
 `;
 
-const DiaryEdit = () => {
+const DiaryEdit = (baseUrl) => {
     const marginLeft = {
         margin: '0.2rem',
         fontSize: '0.8em',

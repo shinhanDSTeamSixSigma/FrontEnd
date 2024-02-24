@@ -6,8 +6,6 @@ import TitleDivisionLine from '../TitleDivisionLine';
 import styled from 'styled-components';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const baseUrl = process.env.REACT_APP_BASE_URL;
-
 const FlexRow = styled.div`
     display: flex;
     flex-direction: row;
@@ -23,12 +21,11 @@ const FinalPayCss = styled.div`
     color: #4f6f52;
 `;
 
-const PointApply = ({ isOff, onToggle }) => {
+const PointApply = ({ memberNo, baseUrl, isOff, onToggle }) => {
     const location = useLocation(); // useLocation 훅을 사용하여 현재 위치의 정보를 가져옵니다.
     const { totalPrice } = location.state;
 
     const [points, setPoint] = useState(0);
-    const [memberNo, setMemberNo] = useState(1); // 추후 변경
 
     useEffect(() => {
         fetchData();

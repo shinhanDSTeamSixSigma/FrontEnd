@@ -5,20 +5,16 @@ import axios from 'axios';
 import DiaryContentDetail from '../diary/DiaryContentDetail';
 import FloatingButton from '../diary/FloatingButton';
 
-const baseUrl = process.env.REACT_APP_BASE_URL;
-
 const StyledContainer = styled.div`
     background-color: #f9f7c9;
     padding: 0.5rem 1.5rem;
     min-height: 30em;
 `;
 
-const DiaryContent = () => {
+const DiaryContent = ({ memberNo, cropNo, baseUrl }) => {
     const [diaryList, setDiaryList] = useState([]);
     const [formattedDiaryDate, setFormattedDiaryDate] = useState('');
 
-    const [memberNo, setMemberNo] = useState(1); // 추후 변경
-    const [cropNo, setCropNo] = useState(1); // 추후 변경
     const [diaryDate, setDiaryDate] = useState();
 
     useEffect(() => {
