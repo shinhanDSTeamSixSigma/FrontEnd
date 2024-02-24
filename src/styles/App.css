@@ -1,10 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&family=Nanum+Pen+Script&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
 .App {
     margin: 1.5rem;
     font-size: 1.5rem;
-    font-family: 'Noto Sans KR', sans-serif;
+    /* font-family: 'Noto Sans KR', sans-serif; */
     font-family: 'Nanum Pen Script', cursive;
+    font-family: 'Montserrat', sans-serif;
 }
 body {
     background-color: #ffffff;

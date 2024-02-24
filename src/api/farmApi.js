@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const API_SERVER_HOST = 'http://localhost:8090';
+export const API_SERVER_HOST = process.env.REACT_APP_API_URL;
 
 export const prefix = `${API_SERVER_HOST}/api/farm`;
 
@@ -105,8 +105,14 @@ export async function deleteFarmCrop(farmNo) {
 
 // 로그인 멤버 가져오기
 export async function getMemberNo() {
-    const res = await axios.get(`${API_SERVER_HOST}/user`, {
+    const res = await axios.get(`${process.env.REACT_APP_API_URL}/user`, {
         withCredentials: true,
     });
+    return res.data;
+}
+
+// 농장의 멤버 데이터 가져오기
+export async function getFarmMember(farmNo) {
+    const res = await axios.get(`${prefix}/memberData/${farmNo}`);
     return res.data;
 }
