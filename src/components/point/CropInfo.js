@@ -17,6 +17,12 @@ const FarmImage = styled.div`
     align-items: center; /* 이미지를 수직으로 중앙에 정렬하기 위해 사용 */
     overflow: hidden; /* 이미지가 div를 벗어나지 않도록 함 */
 `;
+const CropImage = styled.img`
+    width: 6.5rem;
+    height: 6.5rem;
+    margin-right: 1rem;
+    border-radius: 0.8rem;
+`;
 const url = `${prefix}`;
 
 const CropInfo = ({ cartItems, myCrop, myFarm }) => {
@@ -38,9 +44,9 @@ const CropInfo = ({ cartItems, myCrop, myFarm }) => {
                 <FarmImage>
                     {myCrop && (
                         <div>
-                            <img
+                            <CropImage
                                 src={`${url}/${myCrop.image}`}
-                                style={{ width: '100%', objectFit: 'cover' }}
+                                // style={{ width: '100%', objectFit: 'cover' }}
                             />
                         </div>
                     )}

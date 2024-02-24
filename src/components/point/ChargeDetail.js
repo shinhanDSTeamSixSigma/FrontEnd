@@ -20,7 +20,7 @@ const FinalPayCss = styled.div`
     color: #4f6f52;
 `;
 
-const ChargeDetail = () => {
+const ChargeDetail = ({ memberNo, cropNo, baseUrl }) => {
     const textCss = {
         display: 'flex',
         justifyContent: 'center',
@@ -33,10 +33,6 @@ const ChargeDetail = () => {
 
     const [status, setStatus] = useState();
 
-    //데이터
-    const [memberNo, setMemberNo] = useState(1); // 추후 변경
-    const [cropNo, setCropNo] = useState(1); // 추후 변경
-
     useEffect(() => {
         fetchCropChargeData();
         fetchCropStatusData();
@@ -44,11 +40,12 @@ const ChargeDetail = () => {
 
     const fetchCropChargeData = () => {
         axios
-            .get('http://localhost:8080/receipt/crop-charge', {
+            .get(`${baseUrl}/receipt/crop-charge`, {
                 params: {
                     memberNo: memberNo,
                     cropNo: cropNo,
                 },
+                withCredentials: true,
             })
             .then((res) => {
                 const [totalData, landData, fertilizerData] = res.data;
@@ -70,11 +67,12 @@ const ChargeDetail = () => {
     };
     const fetchCropStatusData = () => {
         axios
-            .get('http://localhost:8080/receipt/crop-status', {
+            .get(`${baseUrl}/receipt/crop-status`, {
                 params: {
                     memberNo: memberNo,
                     cropNo: cropNo,
                 },
+                withCredentials: true,
             })
             .then((res) => {
                 setStatus(res.data);

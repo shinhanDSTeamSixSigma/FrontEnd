@@ -20,29 +20,35 @@ const FontSize = styled.div`
     font-size: 0.8em;
 `;
 
-export default function DiaryTitle() {
+export default function DiaryTitle({ memberNo, cropNo, baseUrl }) {
     const image = {
         margin: 'auto 0.1rem',
         width: '30%',
     };
 
     const location = useLocation();
-    const isDiaryCalendarPage = location.pathname === '/calendar';
+    const isCalendarPage = location.pathname === '/calendar';
+    const isDiaryPage = location.pathname === '/diary';
+    const isAlbumPage = location.pathname === '/mypage/album';
+
+    const sharedColor = '#C4C4C4';
 
     const diaryButtonStyle = {
-        backgroundColor: isDiaryCalendarPage ? '#C4C4C4' : '#90C8AC',
-        hoverBackgroundColor: isDiaryCalendarPage ? '#90C8AC' : '#C4DFAA',
+        backgroundColor: isDiaryPage ? '#90C8AC' : sharedColor,
+        hoverBackgroundColor: isDiaryPage ? '#C4DFAA' : '#C4DFAA',
     };
 
     const calendarButtonStyle = {
-        backgroundColor: isDiaryCalendarPage ? '#90C8AC' : '#C4C4C4',
-        hoverBackgroundColor: isDiaryCalendarPage ? '#C4DFAA' : '#90C8AC',
+        backgroundColor: isCalendarPage ? '#90C8AC' : sharedColor,
+        hoverBackgroundColor: isCalendarPage ? '#C4DFAA' : '#C4DFAA',
+    };
+
+    const albumButtonStyle = {
+        backgroundColor: isAlbumPage ? '#90C8AC' : sharedColor,
+        hoverBackgroundColor: isAlbumPage ? '#C4DFAA' : '#C4DFAA',
     };
 
     const [cropData, setCropData] = useState([]);
-
-    const [memberNo, setMemberNo] = useState(1); // 추후 변경
-    const [cropNo, setCropNo] = useState(1); // 추후 변경
 
     useEffect(() => {
         cropInfoData();
@@ -50,11 +56,12 @@ export default function DiaryTitle() {
 
     const cropInfoData = () => {
         axios
-            .get('http://localhost:8080/calendar/crop/crop-info', {
+            .get(`${baseUrl}/calendar/crop/crop-info`, {
                 params: {
                     memberNo: memberNo,
                     cropNo: cropNo,
                 },
+                withCredentials: true,
             })
             .then((res) => {
                 setCropData(res.data);
@@ -73,6 +80,16 @@ export default function DiaryTitle() {
                             <TitleUserName name={crop[0]} />
                             <FlexRow style={{ marginLeft: 'auto' }}>
                                 <SelectButton
+                                    name="캘린더"
+                                    backgroundColor={
+                                        calendarButtonStyle.backgroundColor
+                                    }
+                                    hoverBackgroundColor={
+                                        calendarButtonStyle.hoverBackgroundColor
+                                    }
+                                    to="/calendar"
+                                />
+                                <SelectButton
                                     name="다이어리"
                                     backgroundColor={
                                         diaryButtonStyle.backgroundColor
@@ -83,14 +100,14 @@ export default function DiaryTitle() {
                                     to="/diary"
                                 />
                                 <SelectButton
-                                    name="캘린더"
+                                    name="앨범"
                                     backgroundColor={
-                                        calendarButtonStyle.backgroundColor
+                                        albumButtonStyle.backgroundColor
                                     }
                                     hoverBackgroundColor={
-                                        calendarButtonStyle.hoverBackgroundColor
+                                        albumButtonStyle.hoverBackgroundColor
                                     }
-                                    to="/calendar"
+                                    to="/mypage/album"
                                 />
                             </FlexRow>
                         </FlexRow>

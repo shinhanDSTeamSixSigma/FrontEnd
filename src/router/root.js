@@ -366,7 +366,7 @@ const root = createBrowserRouter([
                 ),
             },
             {
-                path: 'regist',
+                path: 'regist/:diaryDate',
                 element: (
                     <Suspense fallback={Loading}>
                         <DiaryRegist />

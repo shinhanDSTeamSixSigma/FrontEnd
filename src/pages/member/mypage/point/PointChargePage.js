@@ -5,6 +5,8 @@ import MyPointValue from '../../../../components/point/MyPointValue';
 import PointCharge from '../../../../components/point/PointCharge';
 import Payment from '../../../../components/point/Payment';
 
+const baseUrl = process.env.REACT_APP_BASE_URL;
+
 const StyledContainer = styled.div`
     color: black;
     font-size: 0.8em;
@@ -12,6 +14,9 @@ const StyledContainer = styled.div`
 `;
 
 const PointChargePage = () => {
+    const [memberNo, setMemberNo] = useState(1); // 추후 변경
+    const [cropNo, setCropNo] = useState(1); // 추후 변경
+
     const [selectedAmount, setSelectedAmount] = useState(null);
     const [selectedPaymentOption, setSelectedPaymentOption] = useState(null);
 
@@ -27,7 +32,7 @@ const PointChargePage = () => {
         <>
             <StyledContainer>
                 <TitleName name="충전하기" />
-                <MyPointValue />
+                <MyPointValue memberNo={memberNo} baseUrl={baseUrl} />
                 <PointCharge
                     selectedAmount={selectedAmount}
                     selectedPaymentOption={selectedPaymentOption}
@@ -36,6 +41,9 @@ const PointChargePage = () => {
                 />
             </StyledContainer>
             <Payment
+                memberNo={memberNo}
+                cropNo={cropNo}
+                baseUrl={baseUrl}
                 selectedAmount={selectedAmount}
                 selectedPaymentOption={selectedPaymentOption}
             />
