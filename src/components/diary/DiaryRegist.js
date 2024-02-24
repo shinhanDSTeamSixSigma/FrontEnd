@@ -140,7 +140,7 @@ const DiaryRegist = () => {
 
             // 일기 등록 성공 시 처리
             console.log('일기 등록 성공:', response.data);
-            navigate('/diary');
+            navigate(-1);
         } catch (error) {
             console.error('Error registering diary:', error);
         }

@@ -67,7 +67,7 @@ const Payment = ({ selectedAmount, selectedPaymentOption }) => {
                         buyer_addr: '서울특별시',
                         buyer_postcode: '123-456',
                         digital: true,
-                        m_redirect_url: 'http://192.168.0.47:3000//pay/detail',
+                        m_redirect_url: 'http://localhost:3000//pay/detail',
                     },
                     async (rsp) => {
                         try {
