@@ -62,5 +62,20 @@ export default function useCustomMove() {
         });
     };
 
-    return { moveToList, moveToModify, moveToRead, page, size, refresh };
+    const moveToPay = (num) => {
+        navigate({
+            pathname: `/farm/pay/${num}`,
+            search: queryParams.toString(), // 기존 쿼리 스트링 유지
+        });
+    };
+
+    return {
+        moveToList,
+        moveToModify,
+        moveToRead,
+        moveToPay,
+        page,
+        size,
+        refresh,
+    };
 }

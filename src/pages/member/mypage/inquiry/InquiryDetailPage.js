@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { MdVisibility } from 'react-icons/md';
-import { IoArrowBackSharp } from 'react-icons/io5';
-import axios from "axios";
+import { IoArrowBackSharp, IoTrophy } from 'react-icons/io5';
+import axios, { AxiosHeaders } from "axios";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 const StyledContainer = styled.div`
@@ -11,7 +11,7 @@ const StyledContainer = styled.div`
     margin:1.5rem;
 `;
 const Title=styled.div`
-    font-size:1.5rem;
+    font-size:1.2rem;
     font-weight: 600;
     margin:1rem;
     margin-top:1.5rem;
@@ -23,6 +23,13 @@ const FlexRowGap=styled.div`
     margin:1rem;
     color:#878787;
 `;
+const Buttons=styled.div`
+    display:flex;
+    flex-direction:row;
+    gap:1.5rem;
+    margin:1rem;
+    justify-content: flex-end;
+`
 const ViewsContainer = styled.div`
     display: flex;
     align-items: center;
@@ -34,9 +41,61 @@ const DivLine=styled.div`
     margin-top:1.5rem;
 `
 const Content=styled.div`
-    font-size : 1.2rem;
+    font-size : 1rem;
     margin:2rem 0 2rem 1rem;   
     height: 15rem;
+`
+export const FormItem = styled.div`
+    font-weight: 500;
+    margin-top:1rem;
+    & input {
+        width: ${(props) => (props.width ? props.width : '100%')};
+        border: 0.1rem solid lightgray;
+        padding: 1rem;
+        box-sizing: border-box;
+        border-radius: 1rem;
+    }
+    & textarea {
+        width: ${(props) => (props.width ? props.width : '100%')};
+        border: 0.1rem solid lightgray; 
+        padding: 1rem;
+        box-sizing: border-box;
+        border-radius: 1rem;
+        height: 15rem;
+    }
+`;
+
+
+const InquiryItem=styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border: 0.1rem solid lightgray;
+    border-radius: 1rem;
+    padding: 1rem 1rem;
+    margin-top: 1rem;
+    cursor: pointer;
+`;
+const InquiryTitle = styled.h3`
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-left: 1rem;
+`;
+const CommentContent=styled.div`
+    font-size : 1.1rem;
+    margin: 1rem 0 1rem 1rem;   
+    height: 5rem;
+`
+const CommentElse=styled.div`
+    margin:0.5rem 0 1rem 1rem;
+    color:#878787;
+`
+const NoComment=styled.div`
+    color: #4F6F52;
+    font-size : 1.1rem;
+    font-weight: 600;
+    text-align: center;
+    margin:4rem 0 4rem 0;
 `
 export const BackButton = styled(IoArrowBackSharp)`
   color: var(--color-textgrey);
@@ -45,33 +104,88 @@ export const BackButton = styled(IoArrowBackSharp)`
 const InquiryDetailPage =()=>{
     const { boardNo } = useParams();
     const [inquiryDetail, setInquiryDetail] = useState(null);
+    const [commentList, setCommentList] = useState(null);
+    const isCommentListEmpty = !commentList || commentList.length === 0;
+    
+    console.log(isCommentListEmpty);
     const navigate = useNavigate();
+    const fetchInquiryDetail = async () => {
+    try {
+        const response = await axios.get(`http://localhost:8090/board/detail/${boardNo}`);
+        
+        const inquiryData = response.data;
 
-    useEffect(() => {
-        const fetchInquiryDetail = async () => {
-        try {
-            const response = await axios.get(`http://localhost:8090/board/detail/${boardNo}`);
-            
-            const inquiryData = response.data;
+        const createdDate = new Date(inquiryData.createdDate);
 
-            const createdDate = new Date(inquiryData.createdDate);
+        // 원하는 형식의 날짜
+        const formattedDate = `${createdDate.getFullYear()}-${('0' + (createdDate.getMonth() + 1)).slice(-2)}-${('0' + createdDate.getDate()).slice(-2)} ${('0' + createdDate.getHours()).slice(-2)}:${('0' + createdDate.getMinutes()).slice(-2)}`;
+        inquiryData.formattedDate = formattedDate;
+        setInquiryDetail(inquiryData); 
+        console.log(inquiryData);
 
-            // 원하는 형식의 날짜
-            const formattedDate = `${createdDate.getFullYear()}-${('0' + (createdDate.getMonth() + 1)).slice(-2)}-${('0' + createdDate.getDate()).slice(-2)} ${('0' + createdDate.getHours()).slice(-2)}:${('0' + createdDate.getMinutes()).slice(-2)}`;
-            inquiryData.formattedDate = formattedDate;
-            setInquiryDetail(inquiryData); 
-            console.log(inquiryData);
+        // 답변 목록 불러오기
+        handleCommentList();
+
         } catch (error) {
-            console.error("Error fetching inquiry detail:", error);
+        console.error("Error fetching inquiry detail:", error);
         }
-        };
-
+    };
+    useEffect(() => {
         fetchInquiryDetail();
-    }, [boardNo]); 
+    }, [boardNo]);
+     
+    const CommentList = ({ commentList }) => {
+        return (
+          <div>
+            <InquiryTitle>문의답변</InquiryTitle>
+            <ul>
+              {commentList.map((comment, index) => (
+                <InquiryItem key={index}>                 
+                    <CommentElse>{comment && comment.memberId}</CommentElse>    
+                    <CommentContent>{comment && comment.commentContent}</CommentContent> 
+                    <CommentElse>{comment && comment.formattedDate}</CommentElse>            
+                </InquiryItem>             
+              ))}
+            </ul>
+          </div>
+        );
+      };
+
     const handleBack = () => {
         navigate(-1); // 뒤로 가기
     };
-
+    const handleEdit = () => {
+        // 수정 폼으로 이동
+        navigate(`/inquiry/${boardNo}/edit`);
+    };
+    const handleDelete = async()=>{
+        try{
+            await axios.delete(`http://localhost:8090/board/inquiryDelete/${boardNo}`);
+            alert("문의가 삭제되었습니다.");
+            navigate(-1);
+        }catch(error){
+            console.log("Error deleting inquiry:", error);
+        }
+    };
+    
+    const handleCommentList = async ()=>{
+        try {
+            const response = await axios.get(`http://localhost:8090/board/${boardNo}/commentlist`);
+            const commentList = response.data.map(comment => {
+                const commentDate = new Date(comment.commentDate);
+                const formattedDate = `${commentDate.getFullYear()}-${('0' + (commentDate.getMonth() + 1)).slice(-2)}-${('0' + commentDate.getDate()).slice(-2)} ${('0' + commentDate.getHours()).slice(-2)}:${('0' + commentDate.getMinutes()).slice(-2)}`;
+                return {
+                    ...comment,
+                    formattedDate: formattedDate
+                };
+            });
+            console.log(commentList);
+            setCommentList(commentList); // 답변 목록을 상태로 설정
+        } catch (error) {
+            console.error("Error fetching comment list:", error);
+        }
+    }
+   
     return (
         <>
         <StyledContainer>
@@ -89,8 +203,27 @@ const InquiryDetailPage =()=>{
             <DivLine/>
             <Content>{inquiryDetail && inquiryDetail.boardContent}</Content>
             <DivLine/>
-            
+            <Buttons>
+                <button 
+                    onClick={handleEdit}
+                    className="block rounded-md bg-[#80BCBD] text-white text-lg py-1.5 px-3">수정</button>
+                <button 
+                    onClick={handleDelete}
+                    className="block rounded-md bg-[#D9D9D9] text-white text-lg py-1.5 px-3">삭제</button>
+            </Buttons>
 
+            {isCommentListEmpty ? (
+            // 답변 목록이 비어있을 때
+                <>
+                <NoComment>아직 답변이 없습니다.</NoComment>
+              </>
+                ) : (
+                // 답변 목록이 비어있지 않을 때
+                <>
+                    <CommentList commentList={commentList} />
+                </>
+            )}
+            
         </StyledContainer>
         </>
     )

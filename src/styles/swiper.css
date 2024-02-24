@@ -1,6 +1,6 @@
 .swiper {
     width: 100%;
-    padding-top: 1.5rem;
+
     padding-bottom: 50px;
 }
 
@@ -20,11 +20,22 @@
     border-radius: 20px;
 }
 .swiper-button-prev {
-    padding-bottom: 1.5rem;
+    padding-bottom: 3rem;
     color: #80bcbd; /* 왼쪽 화살표 색상 */
 }
 
 .swiper-button-next {
-    padding-bottom: 1.5rem;
+    padding-bottom: 3rem;
     color: #80bcbd; /* 오른쪽 화살표 색상 */
+}
+.swiper-button-prev::after {
+    font-size: 1.5rem;
+}
+
+.swiper-button-next::after {
+    font-size: 1.5rem;
+}
+
+.swiper-pagination-bullet {
+    background-color: #80bcbd;
 }

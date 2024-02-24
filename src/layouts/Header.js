@@ -75,7 +75,9 @@ export default function Header({ handleModalToggle }) {
                                                     (item, index) => (
                                                         <Link
                                                             to={item.href}
-                                                            key={item.name}
+                                                            key={
+                                                                'namer' + index
+                                                            } /*이거 이름 중복돼서 수정! */
                                                             onClick={() =>
                                                                 handleItemClick(
                                                                     index,
@@ -147,7 +149,7 @@ export default function Header({ handleModalToggle }) {
                                                 >
                                                     <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                                                         {userNavigation.map(
-                                                            (item) => (
+                                                            (item, index) => (
                                                                 <Menu.Item
                                                                     key={
                                                                         item.name
@@ -228,7 +230,7 @@ export default function Header({ handleModalToggle }) {
                                         <>
                                             <Link
                                                 to={item.href}
-                                                key={item.name}
+                                                key={'asdf' + index}
                                                 onClick={() =>
                                                     handleItemClick(index)
                                                 } // 항목을 클릭하면 해당 인덱스로 업데이트하는 함수 호출
