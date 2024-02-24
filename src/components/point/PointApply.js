@@ -29,7 +29,7 @@ const PointApply = ({ memberNo, baseUrl, isOff, onToggle }) => {
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [memberNo, baseUrl]);
 
     const fetchData = () => {
         axios

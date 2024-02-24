@@ -18,7 +18,7 @@ export default function MyPointValue({ memberNo, baseUrl }) {
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [memberNo, baseUrl]);
 
     const fetchData = () => {
         axios

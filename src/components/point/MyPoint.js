@@ -40,7 +40,7 @@ export default function MyPoint({ memberNo, baseUrl }) {
             month,
             credentials: 'include',
         });
-    }, [year, month]);
+    }, [memberNo, year, month]);
 
     const fetchData = (url, params = {}) => {
         axios

@@ -18,11 +18,8 @@ const PointDetailPage = () => {
         <>
             <StyledContainer>
                 <TitleName name="나의 포인트" />
-                <MyPoint memberNo={(memberNo, baseUrl)} baseUrl={baseUrl} />
-                <MyPointDetail
-                    memberNo={(memberNo, baseUrl)}
-                    baseUrl={baseUrl}
-                />
+                <MyPoint memberNo={memberNo} baseUrl={baseUrl} />
+                <MyPointDetail memberNo={memberNo} baseUrl={baseUrl} />
             </StyledContainer>
         </>
     );

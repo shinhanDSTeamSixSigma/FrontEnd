@@ -52,7 +52,7 @@ const DiaryEdit = (baseUrl) => {
 
     useEffect(() => {
         diaryListData();
-    }, []);
+    }, [baseUrl]);
 
     const diaryListData = () => {
         axios

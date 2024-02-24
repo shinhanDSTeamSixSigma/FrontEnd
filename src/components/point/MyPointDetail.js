@@ -56,7 +56,7 @@ const MyPointDetail = ({ memberNo, baseUrl }) => {
 
     useEffect(() => {
         fetchData(); // 초기 로딩 시에도 데이터를 불러옴
-    }, [year, month, changeValue]);
+    }, [memberNo, year, month, changeValue]);
 
     const fetchData = () => {
         axios

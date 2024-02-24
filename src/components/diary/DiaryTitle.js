@@ -52,7 +52,7 @@ export default function DiaryTitle({ memberNo, cropNo, baseUrl }) {
 
     useEffect(() => {
         cropInfoData();
-    }, []);
+    }, [memberNo, cropNo, baseUrl]);
 
     const cropInfoData = () => {
         axios

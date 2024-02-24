@@ -28,7 +28,7 @@ const Payment = ({
             document.head.removeChild(jquery);
             document.head.removeChild(iamport);
         };
-    }, [selectedAmount, selectedPaymentOption]);
+    }, [memberNo, cropNo, selectedAmount, selectedPaymentOption]);
 
     const requestPay = async () => {
         try {

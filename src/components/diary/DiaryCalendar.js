@@ -49,7 +49,7 @@ const modalStyle = {
     },
 };
 
-const DiaryCalendar = (memberNo, cropNo, baseUrl) => {
+const DiaryCalendar = ({ memberNo, cropNo, baseUrl }) => {
     const formatDate = (date) => {
         const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
         const formattedDate = new Date(date).toLocaleDateString(
@@ -176,7 +176,7 @@ const DiaryCalendar = (memberNo, cropNo, baseUrl) => {
         };
 
         fetchData();
-    }, [memberNo, cropNo]);
+    }, [memberNo, cropNo, baseUrl]);
 
     useEffect(() => {
         if (diaryDate && diaryData) {
