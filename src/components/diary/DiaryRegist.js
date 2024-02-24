@@ -44,6 +44,12 @@ const Height = styled.div`
     height: 8rem;
 `;
 
+const fileInitState = {
+    files: [],
+    manageDiv: 'DIARY',
+    fileManageNo: 0, //diaryNo
+};
+
 const DiaryRegist = () => {
     const marginLeft = {
         margin: '0.2rem',
@@ -63,6 +69,7 @@ const DiaryRegist = () => {
 
     const contentRef = useRef();
     const [content, setContent] = useState('');
+    const [file, setFile] = useState({ ...fileInitState });
 
     const [memberNo, setMemberNo] = useState(1);
     const [cropNo, setCropNo] = useState(1);

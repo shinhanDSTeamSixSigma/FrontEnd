@@ -22,7 +22,7 @@ const FinalPayCss = styled.div`
     color: #4f6f52;
 `;
 
-const ChargeDetail = () => {
+const ChargeDetail = ({ crop }) => {
     const textCss = {
         display: 'flex',
         justifyContent: 'center',
@@ -37,7 +37,7 @@ const ChargeDetail = () => {
 
     //데이터
     const [memberNo, setMemberNo] = useState(1); // 추후 변경
-    const [cropNo, setCropNo] = useState(1); // 추후 변경
+    const cropNo = crop.cropNo;
 
     useEffect(() => {
         fetchCropChargeData();

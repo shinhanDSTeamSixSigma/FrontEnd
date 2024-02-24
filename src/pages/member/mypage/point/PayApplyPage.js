@@ -7,6 +7,9 @@ import TitleDetailName from '../../../../components/point/TitleDetailName';
 import CropInfo from '../../../../components/point/CropInfo';
 import FullButton from '../../../../components/FullButton';
 import PointApply from '../../../../components/point/PointApply';
+
+const baseUrl = process.env.REACT_APP_BASE_URL;
+
 const StyledContainer = styled.div`
     color: black;
     font-size: 0.8em;
@@ -40,11 +43,11 @@ const PayApplyPage = () => {
                     memberNo: memberNo,
                     cropNo: cropNo,
                 };
-                apiUrl = 'http://localhost:8080/pay/register-point';
+                apiUrl = `${baseUrl}/pay/register-point`;
             } else if (status === 1) {
                 // cropEntity 등록 요청
                 const cropResponse = await axios.post(
-                    'http://localhost:8080/pay/register-crop',
+                    `${baseUrl}/pay/register-crop`,
                     {
                         cropNickname: myCrop.cropName,
                         cropState: 2,
@@ -52,6 +55,7 @@ const PayApplyPage = () => {
                         dictNo: myCrop.cropDictNo,
                         farmNo: myFarm.farmNo,
                     },
+                    { withCredentials: true },
                 );
 
                 // cropEntity 등록 후 서버 응답에서 cropNo 추출
@@ -66,7 +70,7 @@ const PayApplyPage = () => {
                     memberNo: memberNo,
                     cropNo: cropNo, // 추출한 cropNo 설정
                 };
-                apiUrl = 'http://localhost:8080/pay/register-point';
+                apiUrl = `${baseUrl}/pay/register-point`;
             }
 
             // 포인트 결제 등록 요청

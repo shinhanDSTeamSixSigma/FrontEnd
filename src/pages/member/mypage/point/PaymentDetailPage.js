@@ -1,9 +1,9 @@
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import TitleName from '../../../../components/point/TitleName';
 import TitleDetailName from '../../../../components/point/TitleDetailName';
-import CropInfo from '../../../../components/point/CropInfo';
 import ChargeDetail from '../../../../components/point/ChargeDetail';
-import NutrientsInfo from '../../../../components/point/NutrientsInfo';
+import CropReceiptInfo from '../../../../components/point/CropReceiptInfo';
 import CropStatus from '../../../../components/point/CropStatus';
 
 const StyledContainer = styled.div`
@@ -13,6 +13,9 @@ const StyledContainer = styled.div`
 `;
 
 const PaymentDetailPage = () => {
+    const location = useLocation();
+    const { crop } = location.state;
+
     return (
         <>
             <StyledContainer>
@@ -21,9 +24,8 @@ const PaymentDetailPage = () => {
             <CropStatus />
             <StyledContainer>
                 <TitleDetailName name="구매 정보" />
-                <CropInfo />
-                <NutrientsInfo />
-                <ChargeDetail />
+                <CropReceiptInfo crop={crop} />
+                <ChargeDetail crop={crop} />
             </StyledContainer>
         </>
     );
