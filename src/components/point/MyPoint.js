@@ -8,6 +8,8 @@ import 'react-datepicker/dist/react-datepicker.module.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import MyPointValue from './MyPointValue';
 
+const baseUrl = process.env.REACT_APP_BASE_URL;
+
 const FlexRow = styled.div`
     display: flex;
     flex-direction: row;
@@ -37,8 +39,12 @@ export default function MyPoint() {
     const month = currentTime.getMonth() + 1;
 
     useEffect(() => {
-        fetchData('http://localhost:8080/pay/total-charge');
-        fetchData('http://localhost:8080/pay/month-charge', { year, month });
+        fetchData(`${baseUrl}/pay/total-charge`, { credentials: 'include' });
+        fetchData(`${baseUrl}/pay/month-charge`, {
+            year,
+            month,
+            credentials: 'include',
+        });
     }, [year, month]);
 
     const fetchData = (url, params = {}) => {
@@ -51,11 +57,11 @@ export default function MyPoint() {
             })
             .then((res) => {
                 // 총 충전 금액
-                if (url === 'http://localhost:8080/pay/total-charge') {
+                if (url === `${baseUrl}/pay/total-charge`) {
                     setPoint(res.data);
                 }
                 // 이번 달 충전 금액
-                if (url === 'http://localhost:8080/pay/month-charge') {
+                if (url === `${baseUrl}/pay/month-charge`) {
                     setMonthlyCharge(res.data);
                 }
             })

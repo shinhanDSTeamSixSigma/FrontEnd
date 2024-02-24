@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 
+const baseUrl = process.env.REACT_APP_BASE_URL;
+
 const StyledContainer = styled.div`
     background-color: #c4dfaa;
     height: 4.5rem;
@@ -33,11 +35,12 @@ const CropStatus = () => {
 
     const fetchData = () => {
         axios
-            .get('http://localhost:8080/receipt/crop-status', {
+            .get(`${baseUrl}/receipt/crop-status`, {
                 params: {
                     memberNo: memberNo,
                     cropNo: cropNo,
                 },
+                withCredentials: true,
             })
             .then((res) => {
                 setStatus(res.data);

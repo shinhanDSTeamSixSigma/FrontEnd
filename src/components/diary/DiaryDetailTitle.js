@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import TitleUserName from '../../components/diary/TitleUserName';
 import TitleDivisionLine from '../TitleDivisionLine';
 
+const baseUrl = process.env.REACT_APP_BASE_URL;
+
 const FlexRow = styled.div`
     display: flex;
     flex-direction: row;
@@ -31,11 +33,12 @@ export default function DiaryDetailTitle() {
 
     const cropInfoData = () => {
         axios
-            .get('http://localhost:8080/calendar/crop/crop-info', {
+            .get(`${baseUrl}/calendar/crop/crop-info`, {
                 params: {
                     memberNo: memberNo,
                     cropNo: cropNo,
                 },
+                withCredentials: true,
             })
             .then((res) => {
                 setCropData(res.data);

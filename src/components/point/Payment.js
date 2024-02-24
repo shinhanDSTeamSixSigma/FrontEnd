@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import FullButton from '../FullButton';
 
+const baseUrl = process.env.REACT_APP_BASE_URL;
+
 const Payment = ({ selectedAmount, selectedPaymentOption }) => {
     const navigate = useNavigate();
 
@@ -67,14 +69,14 @@ const Payment = ({ selectedAmount, selectedPaymentOption }) => {
                         buyer_addr: '서울특별시',
                         buyer_postcode: '123-456',
                         digital: true,
-                        m_redirect_url: 'http://localhost:3000//pay/detail',
+                        m_redirect_url: 'http://localhost:3000/pay/detail',
                     },
                     async (rsp) => {
                         try {
                             if (rsp.success) {
                                 // 서버로 결제 정보 전송
                                 const billResponse = await axios.post(
-                                    'http://localhost:8080/charge/register-bill',
+                                    `${baseUrl}/charge/register-bill`,
                                     {
                                         merchantUid: rsp.merchant_uid,
                                         finalValue: rsp.paid_amount,
@@ -83,6 +85,9 @@ const Payment = ({ selectedAmount, selectedPaymentOption }) => {
                                         billDiv: 0,
                                         memberNo: memberNo,
                                     },
+                                    {
+                                        withCredentials: true,
+                                    },
                                 );
 
                                 const billNo = billResponse.data;
@@ -90,7 +95,7 @@ const Payment = ({ selectedAmount, selectedPaymentOption }) => {
 
                                 // 서버로 포인트 정보 전송
                                 const pointResponse = await axios.post(
-                                    'http://localhost:8080/pay/register-point',
+                                    `${baseUrl}/pay/register-point`,
                                     {
                                         pointValue: rsp.paid_amount,
                                         changeValue: 0,
@@ -98,6 +103,9 @@ const Payment = ({ selectedAmount, selectedPaymentOption }) => {
                                         memberNo: memberNo,
                                         cropNo: cropNo,
                                         billNo: billNo,
+                                    },
+                                    {
+                                        withCredentials: true,
                                     },
                                 );
                                 if (pointResponse.data.result === 'success') {

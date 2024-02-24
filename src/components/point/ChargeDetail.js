@@ -5,6 +5,8 @@ import TextDivisionLine from '../TextDivisionLine';
 import TitleDetailName from '../point/TitleDetailName';
 import CropPoint from './CropPoint';
 
+const baseUrl = process.env.REACT_APP_BASE_URL;
+
 const FlexRow = styled.div`
     display: flex;
     flex-direction: row;
@@ -44,11 +46,12 @@ const ChargeDetail = () => {
 
     const fetchCropChargeData = () => {
         axios
-            .get('http://localhost:8080/receipt/crop-charge', {
+            .get(`${baseUrl}/receipt/crop-charge`, {
                 params: {
                     memberNo: memberNo,
                     cropNo: cropNo,
                 },
+                withCredentials: true,
             })
             .then((res) => {
                 const [totalData, landData, fertilizerData] = res.data;
@@ -70,11 +73,12 @@ const ChargeDetail = () => {
     };
     const fetchCropStatusData = () => {
         axios
-            .get('http://localhost:8080/receipt/crop-status', {
+            .get(`${baseUrl}/receipt/crop-status`, {
                 params: {
                     memberNo: memberNo,
                     cropNo: cropNo,
                 },
+                withCredentials: true,
             })
             .then((res) => {
                 setStatus(res.data);

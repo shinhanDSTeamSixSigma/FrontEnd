@@ -12,6 +12,8 @@ import FloatingButton from '../diary/FloatingButton';
 import '../../styles/diary/diaryCalendar.css';
 import Button from '../Button';
 
+const baseUrl = process.env.REACT_APP_BASE_URL;
+
 const FlexRow = styled.div`
     display: flex;
     flex-direction: row;
@@ -67,9 +69,9 @@ const DiaryCalendar = () => {
         setIsModalOpen(true);
 
         // 모달이 열릴 때 모달 내부 데이터를 불러옴
-        fetch(
-            `http://localhost:8080/diary/list/${info.event.extendedProps.diaryNo}`,
-        )
+        fetch(`${baseUrl}/diary/list/${info.event.extendedProps.diaryNo}`, {
+            credentials: 'include',
+        })
             .then((response) => response.json())
             .then((data) => setModalData(data))
             .catch((error) =>
@@ -86,7 +88,9 @@ const DiaryCalendar = () => {
         console.log(diaryNo);
 
         // 모달이 열릴 때 모달 내부 데이터를 불러옴
-        fetch(`http://localhost:8080/diary/list/${diaryNo}`)
+        fetch(`${baseUrl}/diary/list/${diaryNo}`, {
+            credentials: 'include',
+        })
             .then((response) => response.json())
             .then((data) => {
                 setModalData(data);
@@ -114,7 +118,10 @@ const DiaryCalendar = () => {
         const fetchData = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:8080/calendar/total-list?memberNo=${memberNo}&cropNo=${cropNo}`,
+                    `${baseUrl}/calendar/total-list?memberNo=${memberNo}&cropNo=${cropNo}`,
+                    {
+                        credentials: 'include',
+                    },
                 );
                 const data = await response.json();
                 setDiaryData(data);

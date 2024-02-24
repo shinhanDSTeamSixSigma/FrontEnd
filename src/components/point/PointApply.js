@@ -6,6 +6,8 @@ import TitleDivisionLine from '../TitleDivisionLine';
 import styled from 'styled-components';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+const baseUrl = process.env.REACT_APP_BASE_URL;
+
 const FlexRow = styled.div`
     display: flex;
     flex-direction: row;
@@ -34,10 +36,11 @@ const PointApply = ({ isOff, onToggle }) => {
 
     const fetchData = () => {
         axios
-            .get('http://localhost:8080/pay/current-point', {
+            .get(`${baseUrl}/pay/current-point`, {
                 params: {
                     memberNo: memberNo,
                 },
+                withCredentials: true,
             })
             .then((res) => {
                 setPoint(res.data);

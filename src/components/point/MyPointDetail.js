@@ -7,6 +7,8 @@ import TextDivisionLine from '../TextDivisionLine';
 import styled from 'styled-components';
 import MyPointBlank from '../../components/point/MyPointBlank';
 
+const baseUrl = process.env.REACT_APP_BASE_URL;
+
 const FlexRow = styled.div`
     display: flex;
     flex-direction: row;
@@ -63,13 +65,14 @@ const MyPointDetail = () => {
 
     const fetchData = () => {
         axios
-            .get('http://localhost:8080/pay/point-detail', {
+            .get(`${baseUrl}/pay/point-detail`, {
                 params: {
                     memberNo: memberNo,
                     changeValue: changeValue,
                     year: year,
                     month: month,
                 },
+                withCredentials: true,
             })
             .then((res) => {
                 setPoint(res.data);

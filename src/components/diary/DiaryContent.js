@@ -5,6 +5,8 @@ import axios from 'axios';
 import DiaryContentDetail from '../diary/DiaryContentDetail';
 import FloatingButton from '../diary/FloatingButton';
 
+const baseUrl = process.env.REACT_APP_BASE_URL;
+
 const StyledContainer = styled.div`
     background-color: #f9f7c9;
     padding: 0.5rem 1.5rem;
@@ -32,12 +34,13 @@ const DiaryContent = () => {
 
         console.log(formattedDiaryDate);
         axios
-            .get('http://localhost:8080/calendar/list', {
+            .get(`${baseUrl}/calendar/list`, {
                 params: {
                     memberNo: memberNo,
                     cropNo: cropNo,
                     diaryDate: formattedDiaryDate,
                 },
+                withCredentials: true,
             })
             .then((res) => {
                 setDiaryList(res.data);

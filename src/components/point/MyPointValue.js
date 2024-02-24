@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 
+const baseUrl = process.env.REACT_APP_BASE_URL;
+
 const FlexRow = styled.div`
     display: flex;
     flex-direction: row;
@@ -25,10 +27,11 @@ export default function MyPointValue() {
 
     const fetchData = () => {
         axios
-            .get('http://localhost:8080/pay/current-point', {
+            .get(`${baseUrl}/pay/current-point`, {
                 params: {
                     memberNo: memberNo,
                 },
+                withCredentials: true,
             })
             .then((res) => {
                 setPoint(res.data);

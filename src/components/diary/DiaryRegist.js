@@ -6,6 +6,8 @@ import axios from 'axios';
 import styled from 'styled-components';
 import FullButton from '../FullButton';
 
+const baseUrl = process.env.REACT_APP_BASE_URL;
+
 const StyledContainer = styled.div`
     background-color: #f9f7c9;
     padding: 0.5rem 1.5rem;
@@ -79,12 +81,13 @@ const DiaryRegist = () => {
     const getCropBuyDate = async () => {
         try {
             const response = await axios.get(
-                'http://localhost:8080/calendar/crop/buy-date',
+                `${baseUrl}/calendar/crop/buy-date`,
                 {
                     params: {
                         memberNo: memberNo,
                         cropNo: cropNo,
                     },
+                    withCredentials: true,
                 },
             );
 
@@ -99,12 +102,13 @@ const DiaryRegist = () => {
         const formattedDiaryDate = new Date(diaryDate);
 
         axios
-            .get('http://localhost:8080/calendar/sensor-info', {
+            .get(`${baseUrl}/calendar/sensor-info`, {
                 params: {
                     memberNo: memberNo,
                     cropNo: cropNo,
                     diaryDate: formattedDiaryDate,
                 },
+                withCredentials: true,
             })
             .then((res) => {
                 setSensorInfo(res.data);
@@ -134,8 +138,11 @@ const DiaryRegist = () => {
 
             // 일기 등록 요청
             const response = await axios.post(
-                'http://localhost:8080/diary/register',
+                `${baseUrl}/diary/register`,
                 requestData,
+                {
+                    withCredentials: true,
+                },
             );
 
             // 일기 등록 성공 시 처리

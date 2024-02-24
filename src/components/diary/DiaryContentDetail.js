@@ -8,6 +8,8 @@ import styled from 'styled-components';
 import axios from 'axios';
 import DiaryBlank from '../diary/DiaryBlank';
 
+const baseUrl = process.env.REACT_APP_BASE_URL;
+
 const StyledContainer = styled.div`
     background-color: white;
     font-size: 0.8em;
@@ -51,11 +53,12 @@ const DiaryContentDetail = () => {
 
     const diaryListData = () => {
         axios
-            .get('http://localhost:8080/diary/list', {
+            .get(`${baseUrl}/diary/list`, {
                 params: {
                     memberNo: memberNo,
                     cropNo: cropNo,
                 },
+                withCredentials: true,
             })
             .then((res) => {
                 // 2차원 배열의 각 내부 배열에 대해 map을 사용
@@ -88,7 +91,9 @@ const DiaryContentDetail = () => {
     const handleDeleteClick = async (diaryNo) => {
         try {
             // HTTP DELETE 요청 보내기
-            await axios.delete(`http://localhost:8080/diary/delete/${diaryNo}`);
+            await axios.delete(`${baseUrl}/diary/delete/${diaryNo}`, {
+                withCredentials: true,
+            });
 
             // 성공 시에 다른 로직 수행 가능
             console.log('일기 삭제 성공');
