@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { FaCircle } from 'react-icons/fa';
 import { LuImagePlus } from 'react-icons/lu';
 import axios from 'axios';
@@ -54,6 +54,12 @@ const DiaryRegist = () => {
     };
 
     const navigate = useNavigate();
+    const { diaryDate: urlDiaryDate } = useParams();
+
+    // URL 파라미터에서 받아온 값이 없을 경우 현재 날짜를 기본값으로 사용
+    const [diaryDate, setDiaryDate] = useState(
+        urlDiaryDate ? new Date(urlDiaryDate) : new Date(),
+    );
 
     const contentRef = useRef();
     const [content, setContent] = useState('');
@@ -61,7 +67,6 @@ const DiaryRegist = () => {
     const [memberNo, setMemberNo] = useState(1);
     const [cropNo, setCropNo] = useState(1);
 
-    const [diaryDate, setDiaryDate] = useState(new Date());
     const [cropBuyDate, setCropBuyDate] = useState(null);
     const [dateDifferenceInDays, setDateDifferenceInDays] = useState(null);
 
