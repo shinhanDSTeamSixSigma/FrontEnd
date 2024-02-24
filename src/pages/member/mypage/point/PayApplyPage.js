@@ -105,7 +105,6 @@ const PayApplyPage = () => {
                         : handleButtonClick()
                 }
             />
-
         </>
     );
 };

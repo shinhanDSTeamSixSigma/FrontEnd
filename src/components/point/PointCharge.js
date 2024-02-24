@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { LiaCcVisa } from 'react-icons/lia';
 import { RiKakaoTalkFill } from 'react-icons/ri';
 import styled from 'styled-components';
@@ -27,18 +26,17 @@ const ButtonCss = styled.div`
     align-items: center;
 `;
 
-const PointCharge = () => {
+const PointCharge = ({
+    selectedAmount,
+    selectedPaymentOption,
+    handleAmountClick,
+    handlePaymentOptionClick,
+}) => {
     const icon = {
         fontSize: '2rem',
         marginRight: '1rem',
     };
 
-    const [selectedAmount, setSelectedAmount] = useState(null);
-
-    // 포인트 충전 금액 설정
-    const handleAmountClick = (amount) => {
-        setSelectedAmount(amount);
-    };
     return (
         <>
             {/*포인트 충전 금액 설정*/}
@@ -112,6 +110,11 @@ const PointCharge = () => {
                             name="payment-option"
                             className="checked:border-indigo-500 ..."
                             style={{ marginLeft: 'auto' }}
+                            onClick={() =>
+                                handlePaymentOptionClick(
+                                    'html5_inicis.INIBillTst',
+                                )
+                            }
                         />
                     </FlexRow>
                 </label>
@@ -124,6 +127,7 @@ const PointCharge = () => {
                             name="payment-option"
                             className="checked:border-indigo-500 ..."
                             style={{ marginLeft: 'auto' }}
+                            onClick={() => handlePaymentOptionClick('kakaopay')}
                         />
                     </FlexRow>
                 </label>
