@@ -28,7 +28,7 @@ export function FarmPay() {
     const [myFarm, setMyFarm] = useState();
     // farmNo에 맞는 농장의 대표작물의 데이터값 - 객체
     const [myCrop, setMyCrop] = useState();
-    console.log(myFarm);
+    console.log(myCrop);
 
     useEffect(() => {
         updateTotalPrice();
