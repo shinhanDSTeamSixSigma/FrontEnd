@@ -48,15 +48,20 @@ export default function MyFarmList() {
     const { page, size, moveToList, moveToRead } = useCustomMove();
     const [imagePaths, setImagePaths] = useState({});
     const [farmCrop, setFarmCrop] = useState({ ...cropInit });
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     const [serverData, setServerData] = useState(initState);
+    const [sortByReview, setSortByReview] = useState(false); // 필터링
+
     useEffect(() => {
-        getPaging({ page, size }).then((data) => {
-            console.log(data);
-            setServerData(data);
-        });
-    }, [page, size]);
+        fetchData();
+    }, [page, sortByReview]); // page와 sortByReview가 변경될 때마다 데이터를 다시 가져옴
+
+    const fetchData = async () => {
+        const data = await getPaging({ page, size, sortByReview });
+        sortFarmList(data.dtoList); // 정렬
+        setServerData(data);
+    };
 
     useEffect(() => {
         const fetchImages = async () => {
@@ -124,10 +129,35 @@ export default function MyFarmList() {
         console.log(JSON.stringify(imagePaths));
     });
 
+    // 정렬
+    const sortFarmList = (list) => {
+        if (sortByReview) {
+            list.sort((a, b) => b.reviewCnt - a.reviewCnt); // 리뷰 많은 순
+        } else {
+            list.sort((a, b) => a.farmNo - b.farmNo); // 기본 순서
+        }
+    };
+
+    const handleSortChange = (value) => {
+        if (value === 'review') {
+            setSortByReview(true);
+        } else {
+            setSortByReview(false);
+        }
+    };
     return (
         <>
-            <StyledHeader>농장 목록 </StyledHeader>
             <StyledBody>
+                <div className="flex justify-end text-[1rem] text-[#4F6F52]">
+                    <div>
+                        <select
+                            onChange={(e) => handleSortChange(e.target.value)}
+                        >
+                            <option value="default">기본순</option>
+                            <option value="review">리뷰 많은 순</option>
+                        </select>
+                    </div>
+                </div>
                 <ul>
                     {serverData.dtoList.map((key, idx) => (
                         <li key={key.farmNo} className="">

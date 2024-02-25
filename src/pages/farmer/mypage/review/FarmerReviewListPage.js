@@ -67,7 +67,7 @@ const FarmerReviewListPage = ({
     const [reviews, setReviews] = useState([]);
     const [totalReviews, setTotalReviews] = useState(0);
     const [averageRating, setAverageRating] = useState(0); //평균 별점을 저장할 상태
-    const farmNo = farm.farmNo; //농장번호 50번의 리뷰 목록
+    const farmNo = farm.farmNo; //농장번호
 
     useEffect(() => {
         const fetchData = async () => {
