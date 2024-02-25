@@ -18,7 +18,7 @@ export default function MyPointValue({ memberNo, baseUrl }) {
 
     useEffect(() => {
         fetchData();
-    }, [memberNo, baseUrl]);
+    }, [memberNo]);
 
     const fetchData = () => {
         axios
@@ -50,7 +50,9 @@ export default function MyPointValue({ memberNo, baseUrl }) {
                         />
                     </div>
                     <div style={pointResult}>
-                        {points.toLocaleString('ko-KR')} 원
+                        {points
+                            ? points.toLocaleString('ko-KR') + ' 원'
+                            : '0 원'}
                     </div>
                 </FlexRow>
             </FlexRow>

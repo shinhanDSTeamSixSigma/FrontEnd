@@ -1,8 +1,8 @@
-import StyledBody from '../../../../components/StyledBody';
-import { Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
+import StyledBody from '../../../../components/StyledBody';
 import DiaryTitle from '../../../../components/diary/DiaryTitle';
 
 const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -12,10 +12,13 @@ const CropImage = styled.img`
     height: 6rem;
     border-radius: 0.8rem;
 `;
-
-var cropNo = 6;
-
 export default function AlbumPage() {
+    const location = useLocation(); // 현재 위치
+    const { memberNo, cropNo } = location.state;
+
+    console.log('앨범 페이지' + memberNo);
+    console.log('앨범 페이지' + cropNo);
+
     const [crops, setCrops] = useState([]);
 
     useEffect(() => {
@@ -44,7 +47,11 @@ export default function AlbumPage() {
                     margin: 'auto 1.5rem auto',
                 }}
             >
-                <DiaryTitle />
+                <DiaryTitle
+                    memberNo={memberNo}
+                    cropNo={cropNo}
+                    baseUrl={baseUrl}
+                />
             </div>
             <StyledBody>
                 <div style={{ fontSize: '1rem' }}>앨범</div>

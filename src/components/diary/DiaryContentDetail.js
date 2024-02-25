@@ -33,7 +33,7 @@ const Height = styled.div`
     align-items: center;
 `;
 
-const DiaryContentDetail = () => {
+const DiaryContentDetail = ({ memberNo, cropNo, baseUrl }) => {
     const marginContent = {
         margin: '0 0.5rem 0.5rem',
     };
@@ -42,9 +42,6 @@ const DiaryContentDetail = () => {
     };
 
     const [diaryList, setDiaryList] = useState([]);
-
-    const [memberNo, setMemberNo] = useState(1); // 추후 변경
-    const [cropNo, setCropNo] = useState(1); // 추후 변경
     const [diaryDate, setDiaryDate] = useState();
 
     useEffect(() => {
@@ -156,7 +153,10 @@ const DiaryContentDetail = () => {
                                     justifyContent: 'end',
                                 }}
                             >
-                                <Link to={`list/${diary[0].diaryNo}`}>
+                                <Link
+                                    to={`list/${diary[0].diaryNo}`}
+                                    state={{ memberNo, cropNo, baseUrl }}
+                                >
                                     <TfiPencil />
                                 </Link>
                                 <button

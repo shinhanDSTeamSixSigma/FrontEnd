@@ -24,7 +24,7 @@ export default function DiaryDetailTitle({ memberNo, cropNo, baseUrl }) {
 
     useEffect(() => {
         cropInfoData();
-    }, [memberNo, cropNo, baseUrl]);
+    }, [memberNo, cropNo]);
 
     const cropInfoData = () => {
         axios

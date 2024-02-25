@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import TitleName from '../../../../components/point/TitleName';
 import MyPointValue from '../../../../components/point/MyPointValue';
@@ -14,9 +15,11 @@ const StyledContainer = styled.div`
 `;
 
 const PointChargePage = () => {
-    const [memberNo, setMemberNo] = useState(1); // 추후 변경
-    const [cropNo, setCropNo] = useState(1); // 추후 변경
+    const location = useLocation(); // 현재 위치
+    const { userInfo } = location.state;
+    const memberNo = userInfo.memberNo;
 
+    console.log(userInfo);
     const [selectedAmount, setSelectedAmount] = useState(null);
     const [selectedPaymentOption, setSelectedPaymentOption] = useState(null);
 
@@ -41,8 +44,7 @@ const PointChargePage = () => {
                 />
             </StyledContainer>
             <Payment
-                memberNo={memberNo}
-                cropNo={cropNo}
+                userInfo={userInfo}
                 baseUrl={baseUrl}
                 selectedAmount={selectedAmount}
                 selectedPaymentOption={selectedPaymentOption}

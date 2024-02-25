@@ -35,7 +35,7 @@ const Content = styled.div`
     }
 `;
 
-const DiaryEdit = (baseUrl) => {
+const DiaryEdit = ({ memberNo, cropNo, baseUrl }) => {
     const marginLeft = {
         margin: '0.2rem',
         fontSize: '0.8em',
@@ -52,7 +52,7 @@ const DiaryEdit = (baseUrl) => {
 
     useEffect(() => {
         diaryListData();
-    }, [baseUrl]);
+    }, []);
 
     const diaryListData = () => {
         axios
@@ -101,7 +101,7 @@ const DiaryEdit = (baseUrl) => {
                 );
                 // 성공적으로 수정되었으면 리다이렉션을 수행
                 alert('수정 완료');
-                navigate('/diary');
+                navigate('/diary', { state: { memberNo, cropNo } });
             } catch (error) {
                 console.error('Error modifying diary:', error);
             }

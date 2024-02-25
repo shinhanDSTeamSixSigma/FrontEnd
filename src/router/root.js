@@ -50,7 +50,9 @@ const CropAlbum = lazy(() =>
 const MyCrop = lazy(() => import('../pages/member/mypage/MyCropPage'));
 
 //식물 기록 - 다이어리
-const Diary = lazy(() => import('../pages/member/mypage/diary/DiaryPage'));
+const DiaryList = lazy(() =>
+    import('../pages/member/mypage/diary/DiaryListPage'),
+);
 const DiaryRegist = lazy(() =>
     import('../pages/member/mypage/diary/DiaryRegistPage'),
 );
@@ -322,14 +324,6 @@ const root = createBrowserRouter([
                 ),
             },
             {
-                path: 'album',
-                element: (
-                    <Suspense fallback={Loading}>
-                        <CropAlbum />
-                    </Suspense>
-                ),
-            },
-            {
                 path: 'mycrop',
                 element: (
                     <Suspense fallback={Loading}>
@@ -361,7 +355,7 @@ const root = createBrowserRouter([
                 path: '',
                 element: (
                     <Suspense fallback={Loading}>
-                        <Diary />
+                        <DiaryList />
                     </Suspense>
                 ),
             },
@@ -381,18 +375,16 @@ const root = createBrowserRouter([
                     </Suspense>
                 ),
             },
-        ],
-    },
-    {
-        path: 'calendar',
-        element: (
-            <Suspense fallback={Loading}>
-                <Layout />
-            </Suspense>
-        ),
-        children: [
             {
-                path: '',
+                path: 'album',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <CropAlbum />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'calendar',
                 element: (
                     <Suspense fallback={Loading}>
                         <DiaryCalendar />

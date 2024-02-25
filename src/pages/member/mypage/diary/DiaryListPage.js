@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import DiaryTitle from '../../../../components/diary/DiaryTitle';
 import DiaryContent from '../../../../components/diary/DiaryContent';
@@ -11,9 +12,12 @@ const StyledContainer = styled.div`
     margin: auto 1.5rem auto;
 `;
 
-const DiaryPage = () => {
-    const [memberNo, setMemberNo] = useState(1); // 추후 변경
-    const [cropNo, setCropNo] = useState(1); // 추후 변경
+const DiaryListPage = () => {
+    const location = useLocation(); // 현재 위치
+    const { memberNo, cropNo } = location.state;
+
+    console.log('일기 페이지' + memberNo);
+    console.log('일기 페이지' + cropNo);
 
     return (
         <>
@@ -32,4 +36,4 @@ const DiaryPage = () => {
         </>
     );
 };
-export default DiaryPage;
+export default DiaryListPage;

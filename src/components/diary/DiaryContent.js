@@ -19,7 +19,7 @@ const DiaryContent = ({ memberNo, cropNo, baseUrl }) => {
 
     useEffect(() => {
         diaryListData();
-    }, [memberNo, cropNo, baseUrl, diaryDate]);
+    }, [diaryDate]);
 
     const diaryListData = () => {
         const today = new Date();
@@ -50,14 +50,24 @@ const DiaryContent = ({ memberNo, cropNo, baseUrl }) => {
     return (
         <>
             <StyledContainer>
-                <DiaryContentDetail />
+                <DiaryContentDetail
+                    memberNo={memberNo}
+                    cropNo={cropNo}
+                    baseUrl={baseUrl}
+                />
                 {/* diaryList가 비어있으면 regist 링크를, 비어있지 않으면 edit 링크를 표시 */}
                 {diaryList && diaryList.length > 0 ? (
-                    <Link to={`list/${diaryList[0].diaryNo}`}>
+                    <Link
+                        to={`list/${diaryList[0].diaryNo}`}
+                        state={{ memberNo, cropNo, baseUrl }}
+                    >
                         <FloatingButton />
                     </Link>
                 ) : (
-                    <Link to={`regist/${formattedDiaryDate}`}>
+                    <Link
+                        to={`regist/${formattedDiaryDate}`}
+                        state={{ memberNo, cropNo, baseUrl }}
+                    >
                         <FloatingButton />
                     </Link>
                 )}
