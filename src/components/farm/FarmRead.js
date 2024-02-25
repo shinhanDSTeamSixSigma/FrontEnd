@@ -4,6 +4,7 @@ import {
     getListAllFile,
     getFarmCropAll,
     getFarmMember,
+    putOne,
 } from '../../api/farmApi';
 import useCustomMove from '../../hooks/useCustomMove';
 import Button from '../Button';
@@ -15,6 +16,7 @@ import FarmReview from './FarmReview';
 import FarmCropInfo from './FarmCropInfo';
 import FarmImage from './FarmImage';
 import FarmInquiry from './FarmInquiry';
+import { debounce } from 'lodash';
 
 const url = `${prefix}`;
 const initState = {
@@ -58,7 +60,7 @@ export default function FarmRead({ farmNo }) {
     const [farmCrop, setFarmCrop] = useState({ ...cropInit });
     const [content, setContent] = useState('리뷰'); // 버튼에 따른 컴포넌트 렌더링
     const [farmMember, setFarmMember] = useState(); // 농장 멤버에 대한 데이터
-    const [totalReviews, setTotalReviews] = useState(0);
+    const [totalReviews, setTotalReviews] = useState(0); // 농장 리뷰 수
     const [averageRating, setAverageRating] = useState(0); //평균 별점을 저장할 상태
 
     const handleTotalReviews = (data) => {
@@ -120,6 +122,37 @@ export default function FarmRead({ farmNo }) {
             console.log(data.getResult);
         });
     }, []);
+
+    useEffect(() => {
+        // totalReviews와 averageRating이 변경될 때 farm 상태 업데이트
+        setFarm((prevFarm) => ({
+            ...prevFarm,
+            farmRating: averageRating.toFixed(1),
+            reviewCnt: totalReviews,
+        }));
+    }, [totalReviews, averageRating]);
+
+    useEffect(() => {
+        // 디바운스 함수 설정
+        const debouncedUpdate = debounce(() => {
+            if (farm) {
+                putOne(farm)
+                    .then((data) => {
+                        console.log('modify result: ' + data);
+                    })
+                    .catch((error) => {
+                        console.error('Error updating farm: ', error);
+                    });
+            }
+        }, 2000); // 2초 디바운스
+
+        debouncedUpdate();
+
+        // 디바운스 취소
+        return () => {
+            debouncedUpdate.cancel();
+        };
+    }, [farm]); // farm 상태가 변경될 때마다 실행
 
     const renderFields = () => {
         return (
