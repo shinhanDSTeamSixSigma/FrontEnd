@@ -26,13 +26,10 @@ const CustomDatePicker = styled(DatePicker)`
     }
 `;
 
-const MyPointDetail = () => {
+const MyPointDetail = ({ memberNo, baseUrl }) => {
     //axios 설정값
     const [points, setPoint] = useState([]);
     console.log(points);
-
-    //데이터
-    const [memberNo, setMemberNo] = useState(1); // 추후 변경
 
     const currentTime = new Date();
     const [year, setYear] = useState(currentTime.getFullYear());
@@ -63,13 +60,14 @@ const MyPointDetail = () => {
 
     const fetchData = () => {
         axios
-            .get('http://localhost:8080/pay/point-detail', {
+            .get(`${baseUrl}/pay/point-detail`, {
                 params: {
                     memberNo: memberNo,
                     changeValue: changeValue,
                     year: year,
                     month: month,
                 },
+                withCredentials: true,
             })
             .then((res) => {
                 setPoint(res.data);

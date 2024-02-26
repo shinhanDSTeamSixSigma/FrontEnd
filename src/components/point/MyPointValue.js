@@ -7,7 +7,7 @@ const FlexRow = styled.div`
     flex-direction: row;
 `;
 
-export default function MyPointValue() {
+export default function MyPointValue({ memberNo, baseUrl }) {
     const pointResult = {
         fontWeight: '700',
         fontSize: '1.4em',
@@ -16,19 +16,17 @@ export default function MyPointValue() {
 
     const [points, setPoint] = useState(0);
 
-    //데이터
-    const [memberNo, setMemberNo] = useState(1); // 추후 변경
-
     useEffect(() => {
         fetchData();
     }, []);
 
     const fetchData = () => {
         axios
-            .get('http://localhost:8080/pay/current-point', {
+            .get(`${baseUrl}/pay/current-point`, {
                 params: {
                     memberNo: memberNo,
                 },
+                withCredentials: true,
             })
             .then((res) => {
                 setPoint(res.data);

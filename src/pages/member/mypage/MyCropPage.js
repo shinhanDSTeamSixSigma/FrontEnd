@@ -1,31 +1,46 @@
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination } from 'swiper/modules';
 import StyledHeader from '../../../components/StyledHeader';
 import StyledBody from '../../../components/StyledBody';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import styled from 'styled-components';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import '../../../styles/crop/mycrop.css';
-import { Link } from 'react-router-dom';
+import TitleDivisionLine from '../../../components/TitleDivisionLine';
 
-import { Navigation, Pagination } from 'swiper/modules';
+const baseUrl = process.env.REACT_APP_BASE_URL;
 
-function MyCropUnit(crop) {
+const CropImage = styled.img`
+    width: 5rem;
+    height: 5rem;
+    border-radius: 0.8rem;
+`;
+
+function MyCropUnit({ crop }) {
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        navigate('/pay/receipt', { state: { crop } });
+    };
+
     return (
-        <Link to={'/pay'}>
+        <div onClick={handleClick}>
             <div className="flex justify-center">
-                <img src={`http://localhost:8090/img${crop.crop.image}`}></img>
+                <CropImage src={`${baseUrl}/img${crop.image}`}></CropImage>
             </div>
             <div className="mt-1">
-                <span>{crop.crop.cropNickname}</span>
+                <span>{crop.cropNickname}</span>
             </div>
-            <p className="text-sm">{crop.crop.cropName}</p>
-            <p className="text-xs">{crop.crop.farmName}</p>
+            <p className="text-sm">{crop.cropName}</p>
+            <p className="text-xs">{crop.farmName}</p>
             <p className="text-xs mt-2">
-                {crop.crop.buyDate} ~ {crop.crop.endDate}
+                {crop.buyDate} ~ {crop.endDate}
             </p>
-            <p className="text-xs ">(D+{crop.crop.dueDate})</p>
-        </Link>
+            <p className="text-xs ">(D+{crop.dueDate})</p>
+        </div>
     );
 }
 
@@ -35,14 +50,9 @@ export default function MyCropPage() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(
-                    'http://localhost:8090/myCropsList',
-                    {
-                        withCredentials: true,
-                    },
-                    /*.get(`${baseUrl}/user`, {
-                    })*/
-                );
+                const response = await axios.get(`${baseUrl}/myCropsList`, {
+                    withCredentials: true,
+                });
                 setCrops(response.data); // API에서 받아온 작물 목록을 상태에 업데이트
                 console.log(response.data);
             } catch (error) {
@@ -55,21 +65,36 @@ export default function MyCropPage() {
 
     return (
         <>
-            <StyledHeader>
+            <div style={{ margin: '1.5rem 1.5rem 0.5rem 1.5rem' }}>
                 <div className="flex justify-between items-center">
                     <div>
-                        <span className="text-2xl font-black">
+                        <span
+                            className="text-2xl font-black"
+                            style={{ fontSize: '1.2em' }}
+                        >
                             내 작물 리스트
                         </span>
-                        <span className="text-base ml-3">재배내역</span>
+                        <span
+                            className="text-base ml-3"
+                            style={{ fontSize: '0.8em' }}
+                        >
+                            재배내역
+                        </span>
                     </div>
                 </div>
-                <div className="border-1 mt-2 border-[#90C8AC]"></div>
-            </StyledHeader>
-            <StyledBody>
-                <div className=" h-11 bg-[#C4DFAA] pl-3 leading-10 pt-px">
-                    재배중인 작물
-                </div>
+            </div>
+            <TitleDivisionLine />
+            <div
+                className=" h-10 bg-[#C4DFAA] pl-3 leading-10 pt-px"
+                style={{
+                    fontSize: '0.9em',
+                    width: '100%',
+                    marginTop: '1rem',
+                }}
+            >
+                <div style={{ marginLeft: '1.5rem' }}>재배중인 작물</div>
+            </div>
+            <div style={{ margin: 'auto 1.5rem 1rem' }}>
                 <div className="">
                     <Swiper
                         watchSlidesProgress={true}
@@ -83,15 +108,23 @@ export default function MyCropPage() {
                     >
                         {crops.liveCrops &&
                             crops.liveCrops.map((crop, idx) => (
-                                <SwiperSlide>
+                                <SwiperSlide key={idx}>
                                     <MyCropUnit crop={crop} />
                                 </SwiperSlide>
                             ))}
                     </Swiper>
                 </div>
-                <div className="mt-2 h-11 bg-[#C4DFAA] pl-3 leading-10 pt-px ">
-                    재배완료 작물
-                </div>
+            </div>
+            <div
+                className="mt-2 h-10 bg-[#C4DFAA] pl-3 leading-10 pt-px "
+                style={{
+                    fontSize: '0.9em',
+                    width: '100%',
+                }}
+            >
+                <div style={{ marginLeft: '1.5rem' }}>재배 완료 작물</div>
+            </div>
+            <div style={{ margin: 'auto 1.5rem 1rem' }}>
                 <div className="">
                     <Swiper
                         watchSlidesProgress={true}
@@ -105,13 +138,13 @@ export default function MyCropPage() {
                     >
                         {crops.doneCrops &&
                             crops.doneCrops.map((crop, idx) => (
-                                <SwiperSlide>
+                                <SwiperSlide key={idx}>
                                     <MyCropUnit crop={crop} />
                                 </SwiperSlide>
                             ))}
                     </Swiper>
                 </div>
-            </StyledBody>
+            </div>
         </>
     );
 }

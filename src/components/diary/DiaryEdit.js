@@ -35,7 +35,7 @@ const Content = styled.div`
     }
 `;
 
-const DiaryEdit = () => {
+const DiaryEdit = (baseUrl) => {
     const marginLeft = {
         margin: '0.2rem',
         fontSize: '0.8em',
@@ -56,7 +56,9 @@ const DiaryEdit = () => {
 
     const diaryListData = () => {
         axios
-            .get(`http://localhost:8080/diary/list/${diaryNo}`)
+            .get(`${baseUrl}/diary/list/${diaryNo}`, {
+                withCredentials: true,
+            })
             .then((res) => {
                 // buyDate와 diaryDate의 차이를 계산하여 새로운 속성 추가
                 const diaryData = res.data[0][0];
@@ -91,8 +93,11 @@ const DiaryEdit = () => {
 
                 // HTTP PUT 요청 보내기
                 await axios.put(
-                    `http://localhost:8080/diary/modify/${diaryDto.diaryNo}`,
+                    `${baseUrl}/diary/modify/${diaryDto.diaryNo}`,
                     diaryDto,
+                    {
+                        withCredentials: true,
+                    },
                 );
                 // 성공적으로 수정되었으면 리다이렉션을 수행
                 alert('수정 완료');

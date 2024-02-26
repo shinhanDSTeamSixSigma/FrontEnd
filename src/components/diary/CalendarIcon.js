@@ -18,12 +18,8 @@ const CalendarIcon = () => {
         <>
             <FlexRow style={styledContainer}>
                 <FlexRow style={{ margin: '1rem' }}>
-                    <div>이미지</div>
-                    <div>물 준 날</div>
-                </FlexRow>
-                <FlexRow style={{ margin: '1rem' }}>
-                    <div>이미지</div>
-                    <div>영양제 준 날</div>
+                    <div></div>
+                    <div></div>
                 </FlexRow>
             </FlexRow>
         </>

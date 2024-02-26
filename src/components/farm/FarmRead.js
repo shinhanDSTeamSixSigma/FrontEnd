@@ -120,23 +120,10 @@ function FarmDetailPage2(farm) {
             {/* 구분 선 */}
             <hr className="mb-3"></hr>
             {/* 아래 */}
-            <article>
+            <div>
                 {/* 버튼으로 나열 */}
                 {/* 디폴트는 농장 정보 */}
-                <p>{farm.farm.farmName}</p>
-                <section>
-                    <p>농부: 깁덕팔</p>
-                    <p>연락 가능 시간: {farm.farm.farmConnect}</p>
-                </section>
-                <section>
-                    <p>상세 설명</p>
-                    <p>{farm.farm.farmDescription}</p>
-                </section>
-                <section>
-                    <p>위치</p>
-                    <p>{farm.farm.farmAddress}</p>
-                </section>
-            </article>
+            </div>
         </>
     );
 }

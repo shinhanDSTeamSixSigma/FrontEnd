@@ -25,20 +25,21 @@ const TextMargin = styled.div`
     margin: 0.4rem auto 0.4rem 0;
 `;
 
-export default function MyPoint() {
+export default function MyPoint({ memberNo, baseUrl }) {
     const [points, setPoint] = useState(0);
     const [monthlyCharge, setMonthlyCharge] = useState(0);
-
-    //데이터
-    const [memberNo, setMemberNo] = useState(1); // 추후 변경
 
     const currentTime = new Date();
     const year = currentTime.getFullYear();
     const month = currentTime.getMonth() + 1;
 
     useEffect(() => {
-        fetchData('http://localhost:8080/pay/total-charge');
-        fetchData('http://localhost:8080/pay/month-charge', { year, month });
+        fetchData(`${baseUrl}/pay/total-charge`, { credentials: 'include' });
+        fetchData(`${baseUrl}/pay/month-charge`, {
+            year,
+            month,
+            credentials: 'include',
+        });
     }, [year, month]);
 
     const fetchData = (url, params = {}) => {
@@ -51,11 +52,11 @@ export default function MyPoint() {
             })
             .then((res) => {
                 // 총 충전 금액
-                if (url === 'http://localhost:8080/pay/total-charge') {
+                if (url === `${baseUrl}/pay/total-charge`) {
                     setPoint(res.data);
                 }
                 // 이번 달 충전 금액
-                if (url === 'http://localhost:8080/pay/month-charge') {
+                if (url === `${baseUrl}/pay/month-charge`) {
                     setMonthlyCharge(res.data);
                 }
             })

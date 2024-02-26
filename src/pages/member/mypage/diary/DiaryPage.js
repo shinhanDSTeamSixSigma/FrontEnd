@@ -1,6 +1,9 @@
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import DiaryTitle from '../../../../components/diary/DiaryTitle';
 import DiaryContent from '../../../../components/diary/DiaryContent';
+
+const baseUrl = process.env.REACT_APP_BASE_URL;
 
 const StyledContainer = styled.div`
     color: black;
@@ -9,12 +12,23 @@ const StyledContainer = styled.div`
 `;
 
 const DiaryPage = () => {
+    const [memberNo, setMemberNo] = useState(1); // 추후 변경
+    const [cropNo, setCropNo] = useState(1); // 추후 변경
+
     return (
         <>
             <StyledContainer>
-                <DiaryTitle />
+                <DiaryTitle
+                    memberNo={memberNo}
+                    cropNo={cropNo}
+                    baseUrl={baseUrl}
+                />
             </StyledContainer>
-            <DiaryContent />
+            <DiaryContent
+                memberNo={memberNo}
+                cropNo={cropNo}
+                baseUrl={baseUrl}
+            />
         </>
     );
 };
