@@ -121,12 +121,11 @@ const DiaryCalendar = ({ memberNo, cropNo, baseUrl }) => {
             setIsModalOpen(true);
         }
     };
-    const handleEventClick = (info) => {
+    const handleEventClick = async (info) => {
         const clickedTitleDate = formatDate(info.event.start);
         console.log('클릭한 타이틀:', clickedTitleDate);
 
         setDiaryDate(clickedTitleDate);
-        setIsModalOpen(true);
 
         const diaryNo = info.event.extendedProps
             ? info.event.extendedProps.diaryNo
@@ -135,20 +134,19 @@ const DiaryCalendar = ({ memberNo, cropNo, baseUrl }) => {
 
         // 모달이 열릴 때 모달 내부 데이터를 불러옴
         if (diaryNo) {
-            fetch(`${baseUrl}/diary/list/${diaryNo}`, {
-                credentials: 'include',
-            })
-                .then((response) => response.json())
-                .then((data) => {
-                    setModalData(data);
-                    console.log(data);
-                })
-                .catch((error) =>
-                    console.error(
-                        '모달 데이터를 불러오는 동안 오류 발생:',
-                        error,
-                    ),
+            try {
+                const response = await fetch(
+                    `${baseUrl}/diary/list/${diaryNo}`,
+                    {
+                        credentials: 'include',
+                    },
                 );
+                const data = await response.json();
+                setModalData(data);
+                console.log(data);
+            } catch (error) {
+                console.error('모달 데이터를 불러오는 동안 오류 발생:', error);
+            }
         }
         console.log(modalData);
     };
@@ -294,42 +292,38 @@ const DiaryCalendar = ({ memberNo, cropNo, baseUrl }) => {
                                 {diaryDate}
                             </div>
                             {modalData &&
-                                modalData.length > 0 &&
-                                modalData[0][1] && (
-                                    <FlexRow
-                                        style={{
-                                            marginLeft: 'auto',
-                                            fontSize: 'small',
-                                            alignItems: 'center',
-                                        }}
-                                    >
-                                        <div className="d-flex justify-content-end">
-                                            <FaCircle
-                                                color="#F97777"
-                                                style={image}
-                                            />
-                                            <div>
-                                                {modalData[0][1].thomer}°C
-                                            </div>
-                                        </div>
-                                        <div className="d-flex justify-content-end">
-                                            <FaCircle
-                                                color="#BACCFD"
-                                                style={image}
-                                            />
-                                            <div>
-                                                {modalData[0][1].soilHumid}%
-                                            </div>
-                                        </div>
-                                        <div className="d-flex justify-content-end">
-                                            <FaCircle
-                                                color="#FCC9A7"
-                                                style={image}
-                                            />
-                                            <div>{modalData[0][1].lumen}lx</div>
-                                        </div>
-                                    </FlexRow>
-                                )}
+                            modalData.length > 0 &&
+                            modalData[0][1] ? (
+                                <FlexRow
+                                    style={{
+                                        marginLeft: 'auto',
+                                        fontSize: 'small',
+                                        alignItems: 'center',
+                                    }}
+                                >
+                                    <div className="d-flex justify-content-end">
+                                        <FaCircle
+                                            color="#F97777"
+                                            style={image}
+                                        />
+                                        <div>{modalData[0][1].thomer}°C</div>
+                                    </div>
+                                    <div className="d-flex justify-content-end">
+                                        <FaCircle
+                                            color="#BACCFD"
+                                            style={image}
+                                        />
+                                        <div>{modalData[0][1].soilHumid}%</div>
+                                    </div>
+                                    <div className="d-flex justify-content-end">
+                                        <FaCircle
+                                            color="#FCC9A7"
+                                            style={image}
+                                        />
+                                        <div>{modalData[0][1].lumen}lx</div>
+                                    </div>
+                                </FlexRow>
+                            ) : null}
                         </FlexRow>
 
                         <div
