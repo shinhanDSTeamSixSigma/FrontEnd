@@ -51,10 +51,20 @@ export default function CropStreamingPage() {
                         <span className="ml-2">25</span>lx
                     </div>
                 </div>
-                <div className="flex justify-evenly mt-8">
-                    <Button name={'캡처하기'} widthHeight={'w-20 h-11'} />
-                    <Button name={'물주기'} widthHeight={'w-20 h-11'} />
-                </div>
+                <section className="d-flex justify-content-center mt-8">
+                    <Button
+                        className="d-flex justify-content-center mt-8"
+                        name={'캡쳐하기'}
+                        widthHeight={'w-40 h-11'}
+                    />
+                    <div className="flex justify-evenly mt-8">
+                        <Button
+                            name={'영양제 주기'}
+                            widthHeight={'w-40 h-15'}
+                        />
+                        <Button name={'물주기'} widthHeight={'w-40 h-25'} />
+                    </div>
+                </section>
             </StyledBody>
         </>
     );
