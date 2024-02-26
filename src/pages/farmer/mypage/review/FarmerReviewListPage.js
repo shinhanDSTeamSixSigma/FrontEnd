@@ -19,27 +19,28 @@ const FlexRow = styled.div`
     justify-content: space-between;
     margin: 0.5rem 1rem 1rem 0;
 `;
-const FlexRowGap = styled.div`
-    display: flex;
-    flex-direction: row;
-    gap: 2rem;
+
+const FlexRowGap=styled.div`
+    display:flex;
+    flex-direction:row;
+    gap:1rem;
+    font-size:0.6rem;
+    color:#878787;
+`;
+const Totalcnt=styled.div`
     font-size: 0.8rem;
-    color: #878787;
-`;
-const Totalcnt = styled.div`
-    font-size: 1rem;
-    font-weight: 500;
-    color: #878787;
-    margin: 0 0 0 0.5rem;
-`;
-const AvgRating = styled.div`
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #878787;
-    margin: 0 0.5rem;
-`;
-const Content = styled.div`
-    font-size: 1rem;
+    font-weight:500;
+    color:#878787;
+    margin: 0 0 0 0.2rem;
+`
+const AvgRating=styled.div`
+    font-size:1rem;
+    font-weight:600;
+    color:#878787;
+    margin:0 0.2rem 0 0.5rem;
+`
+const Content=styled.div`
+    font-size:0.8rem;
     font-weight: 500;
 `;
 const TitleContainer = styled.div`
@@ -58,6 +59,7 @@ const InquiryItem = styled.div`
     margin-top: 1rem;
     cursor: pointer;
 `;
+const baseUrl = process.env.REACT_APP_BASE_URL;
 
 const FarmerReviewListPage = ({
     farm,
@@ -67,6 +69,7 @@ const FarmerReviewListPage = ({
     const [reviews, setReviews] = useState([]);
     const [totalReviews, setTotalReviews] = useState(0);
     const [averageRating, setAverageRating] = useState(0); //평균 별점을 저장할 상태
+
     const farmNo = farm.farmNo; //농장번호
 
     useEffect(() => {
@@ -78,6 +81,7 @@ const FarmerReviewListPage = ({
 
                 // 날짜 형식 변환
                 const formattedData = response.data.map((item) => ({
+
                     ...item,
 
                     createdDate: new Date(item.createdDate).toLocaleDateString(
@@ -104,6 +108,7 @@ const FarmerReviewListPage = ({
             } catch (error) {
                 console.error('Error fetching reviews:', error);
             }
+
         };
 
         fetchData(); // 데이터 가져오기 함수 호출
@@ -111,6 +116,7 @@ const FarmerReviewListPage = ({
 
     return (
         <>
+
             <StyledContainer>
                 <FlexRow>
                     <FlexRow style={{ marginRight: '1rem' }}>
