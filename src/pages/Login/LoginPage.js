@@ -16,7 +16,7 @@ const LoginPage = () => {
 
         try {
             const response = await axios.get(
-                'http://localhost:8090/login?email=' +
+                'http://localhost:8080/login?email=' +
                     email +
                     '&password=' +
                     password,

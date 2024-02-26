@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import DiaryDetailTitle from '../../../../components/diary/DiaryDetailTitle';
-import DiaryRegist from '../../../../components/diary/DiaryRegist';
+import DiaryTitle from '../../../../components/diary/DiaryTitle';
+import DiaryContent from '../../../../components/diary/DiaryContent';
 
 const baseUrl = process.env.REACT_APP_BASE_URL;
 
@@ -12,23 +12,23 @@ const StyledContainer = styled.div`
     margin: auto 1.5rem auto;
 `;
 
-const DiaryRegistPage = () => {
+const DiaryListPage = () => {
     const location = useLocation(); // 현재 위치
     const { memberNo, cropNo } = location.state;
 
-    console.log('등록 페이지' + memberNo);
-    console.log('등록 페이지' + cropNo);
+    console.log('일기 페이지' + memberNo);
+    console.log('일기 페이지' + cropNo);
 
     return (
         <>
             <StyledContainer>
-                <DiaryDetailTitle
+                <DiaryTitle
                     memberNo={memberNo}
                     cropNo={cropNo}
                     baseUrl={baseUrl}
                 />
             </StyledContainer>
-            <DiaryRegist
+            <DiaryContent
                 memberNo={memberNo}
                 cropNo={cropNo}
                 baseUrl={baseUrl}
@@ -36,4 +36,4 @@ const DiaryRegistPage = () => {
         </>
     );
 };
-export default DiaryRegistPage;
+export default DiaryListPage;

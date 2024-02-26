@@ -7,7 +7,7 @@ const FlexRow = styled.div`
     flex-direction: row;
 `;
 
-export default function MyPointValue() {
+export default function MyPointValue({ memberNo, baseUrl }) {
     const pointResult = {
         fontWeight: '700',
         fontSize: '1.4em',
@@ -16,19 +16,17 @@ export default function MyPointValue() {
 
     const [points, setPoint] = useState(0);
 
-    //데이터
-    const [memberNo, setMemberNo] = useState(1); // 추후 변경
-
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [memberNo]);
 
     const fetchData = () => {
         axios
-            .get('http://localhost:8080/pay/current-point', {
+            .get(`${baseUrl}/pay/current-point`, {
                 params: {
                     memberNo: memberNo,
                 },
+                withCredentials: true,
             })
             .then((res) => {
                 setPoint(res.data);
@@ -52,7 +50,9 @@ export default function MyPointValue() {
                         />
                     </div>
                     <div style={pointResult}>
-                        {points.toLocaleString('ko-KR')} 원
+                        {points
+                            ? points.toLocaleString('ko-KR') + ' 원'
+                            : '0 원'}
                     </div>
                 </FlexRow>
             </FlexRow>

@@ -25,21 +25,24 @@ const TextMargin = styled.div`
     margin: 0.4rem auto 0.4rem 0;
 `;
 
-export default function MyPoint() {
+export default function MyPoint({ userInfo, baseUrl }) {
+    const memberNo = userInfo.memberNo;
+
     const [points, setPoint] = useState(0);
     const [monthlyCharge, setMonthlyCharge] = useState(0);
-
-    //데이터
-    const [memberNo, setMemberNo] = useState(1); // 추후 변경
 
     const currentTime = new Date();
     const year = currentTime.getFullYear();
     const month = currentTime.getMonth() + 1;
 
     useEffect(() => {
-        fetchData('http://localhost:8080/pay/total-charge');
-        fetchData('http://localhost:8080/pay/month-charge', { year, month });
-    }, [year, month]);
+        fetchData(`${baseUrl}/pay/total-charge`, { credentials: 'include' });
+        fetchData(`${baseUrl}/pay/month-charge`, {
+            year,
+            month,
+            credentials: 'include',
+        });
+    }, [memberNo, year, month]);
 
     const fetchData = (url, params = {}) => {
         axios
@@ -51,11 +54,11 @@ export default function MyPoint() {
             })
             .then((res) => {
                 // 총 충전 금액
-                if (url === 'http://localhost:8080/pay/total-charge') {
+                if (url === `${baseUrl}/pay/total-charge`) {
                     setPoint(res.data);
                 }
                 // 이번 달 충전 금액
-                if (url === 'http://localhost:8080/pay/month-charge') {
+                if (url === `${baseUrl}/pay/month-charge`) {
                     setMonthlyCharge(res.data);
                 }
             })
@@ -68,10 +71,11 @@ export default function MyPoint() {
         <>
             <FlexRow>
                 {/*포인트 총 합계*/}
-                <MyPointValue />
+                <MyPointValue memberNo={memberNo} baseUrl={baseUrl} />
                 <Link
                     to="/pay/charge"
                     style={{ marginLeft: 'auto', textDecoration: 'none' }}
+                    state={{ userInfo }}
                 >
                     <Button name="충전하기" />
                 </Link>
@@ -85,11 +89,17 @@ export default function MyPoint() {
                             style={{ margin: 'auto 0.3rem' }}
                         />
                     </FlexRow>
-                    <MarginLeft>{points.toLocaleString()} 원</MarginLeft>
+                    <MarginLeft>
+                        {points ? `${points.toLocaleString()} 원` : '0 원'}
+                    </MarginLeft>
                 </FlexRow>
                 <FlexRow>
                     <TextMargin>이번달 충전 금액</TextMargin>
-                    <MarginLeft>{monthlyCharge.toLocaleString()} 원</MarginLeft>
+                    <MarginLeft>
+                        {monthlyCharge
+                            ? `${monthlyCharge.toLocaleString()} 원`
+                            : '0 원'}
+                    </MarginLeft>
                 </FlexRow>
             </PointBoxColor>
         </>

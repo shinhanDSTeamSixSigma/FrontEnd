@@ -14,7 +14,7 @@ const FontSize = styled.div`
     font-size: 0.8em;
 `;
 
-export default function DiaryDetailTitle() {
+export default function DiaryDetailTitle({ memberNo, cropNo, baseUrl }) {
     const image = {
         margin: 'auto 0.1rem',
         width: '30%',
@@ -22,20 +22,18 @@ export default function DiaryDetailTitle() {
 
     const [cropData, setCropData] = useState([]);
 
-    const [memberNo, setMemberNo] = useState(1); // 추후 변경
-    const [cropNo, setCropNo] = useState(1); // 추후 변경
-
     useEffect(() => {
         cropInfoData();
-    }, []);
+    }, [memberNo, cropNo]);
 
     const cropInfoData = () => {
         axios
-            .get('http://localhost:8080/calendar/crop/crop-info', {
+            .get(`${baseUrl}/calendar/crop/crop-info`, {
                 params: {
                     memberNo: memberNo,
                     cropNo: cropNo,
                 },
+                withCredentials: true,
             })
             .then((res) => {
                 setCropData(res.data);
