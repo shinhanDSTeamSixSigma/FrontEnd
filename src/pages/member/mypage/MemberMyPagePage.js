@@ -24,8 +24,8 @@ const FlexRow = styled.div`
 `;
 
 const Container = styled.div`
-  display: flex;
-  align-itmes = center;
+    display: flex;
+    align-itmes: center;
 `;
 
 const Box = styled.div`
