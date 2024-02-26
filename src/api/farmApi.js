@@ -133,6 +133,7 @@ export async function searchFarm(searchTerm) {
     const res = await axios.get(`${baseUrl}/api/farm/search`, {
         params: { searchTerm },
     });
+
     return res.data;
 }
 // 농장의 멤버 데이터 가져오기
