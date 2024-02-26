@@ -10,7 +10,7 @@ import { getMemberNo } from '../api/farmApi';
 
 const user = {
     name: '토심이',
-    email: 'tom@example.com',
+    email: 'tom@kky.com',
     imageUrl:
         'https://ilovecharacter.com/news/data/20230731/p1065542571400847_461_thum.jpg',
 };
