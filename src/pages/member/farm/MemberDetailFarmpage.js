@@ -3,6 +3,7 @@ import StyledHeader from '../../../components/StyledHeader';
 import StyledBody from '../../../components/StyledBody';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import Button from '../../../components/Button';
+import MemberFarmRead from '../../../components/farm/MemberFarmRead';
 
 export default function MemberDetailFarmpage() {
     const { farmNo } = useParams();
@@ -12,7 +13,7 @@ export default function MemberDetailFarmpage() {
         <>
             <StyledHeader></StyledHeader>
             <StyledBody>
-                <FarmRead farmNo={farmNo} />
+                <MemberFarmRead farmNo={farmNo} />
             </StyledBody>
         </>
     );
