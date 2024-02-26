@@ -44,7 +44,7 @@ export default function AddFarm() {
     const [file, setFile] = useState({ ...fileInitState });
     const [crop, setCrop] = useState({ ...farmCropInitState }); // 보낼 농작물들
     const [farmCrop, setFarmCrop] = useState([]); // 가져올 농작물들
-    const [memberData, setMemberData] = useState(null);
+    const [memberData, setMemberData] = useState(null); // 농부의 memberNo
 
     const [result, setResult] = useState(null); //농장 결과 상태
     const [fileReuslt, setFileResult] = useState(null); // 파일 결과

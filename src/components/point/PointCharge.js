@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { LiaCcVisa } from 'react-icons/lia';
 import { RiKakaoTalkFill } from 'react-icons/ri';
 import styled from 'styled-components';
@@ -22,23 +21,22 @@ const ContentMargin = styled.div`
 const ButtonCss = styled.div`
     width: 4rem;
     height: 2.4rem;
-    font-size: 0.9em;
+    font-size: 0.8em;
     margin: auto 0.5rem 0.5rem;
     align-items: center;
 `;
 
-const PointCharge = () => {
+const PointCharge = ({
+    selectedAmount,
+    selectedPaymentOption,
+    handleAmountClick,
+    handlePaymentOptionClick,
+}) => {
     const icon = {
         fontSize: '2rem',
         marginRight: '1rem',
     };
 
-    const [selectedAmount, setSelectedAmount] = useState(null);
-
-    // 포인트 충전 금액 설정
-    const handleAmountClick = (amount) => {
-        setSelectedAmount(amount);
-    };
     return (
         <>
             {/*포인트 충전 금액 설정*/}
@@ -52,7 +50,7 @@ const PointCharge = () => {
                     }`}
                     onClick={() => handleAmountClick('10000')}
                 >
-                    1만원
+                    1만
                 </ButtonCss>
                 <ButtonCss
                     type="button"
@@ -61,7 +59,7 @@ const PointCharge = () => {
                     }`}
                     onClick={() => handleAmountClick('30000')}
                 >
-                    3만원
+                    3만
                 </ButtonCss>
                 <ButtonCss
                     type="button"
@@ -70,7 +68,7 @@ const PointCharge = () => {
                     }`}
                     onClick={() => handleAmountClick('50000')}
                 >
-                    5만원
+                    5만
                 </ButtonCss>
                 <ButtonCss
                     type="button"
@@ -79,7 +77,7 @@ const PointCharge = () => {
                     }`}
                     onClick={() => handleAmountClick('70000')}
                 >
-                    7만원
+                    7만
                 </ButtonCss>
                 <ButtonCss
                     type="button"
@@ -88,7 +86,7 @@ const PointCharge = () => {
                     }`}
                     onClick={() => handleAmountClick('100000')}
                 >
-                    10만원
+                    10만
                 </ButtonCss>
                 <ButtonCss
                     type="button"
@@ -97,7 +95,7 @@ const PointCharge = () => {
                     }`}
                     onClick={() => handleAmountClick('500000')}
                 >
-                    50만원
+                    50만
                 </ButtonCss>
             </ContentMargin>
             {/*포인트 결제 방식 설정*/}
@@ -112,6 +110,11 @@ const PointCharge = () => {
                             name="payment-option"
                             className="checked:border-indigo-500 ..."
                             style={{ marginLeft: 'auto' }}
+                            onClick={() =>
+                                handlePaymentOptionClick(
+                                    'html5_inicis.INIBillTst',
+                                )
+                            }
                         />
                     </FlexRow>
                 </label>
@@ -124,6 +127,7 @@ const PointCharge = () => {
                             name="payment-option"
                             className="checked:border-indigo-500 ..."
                             style={{ marginLeft: 'auto' }}
+                            onClick={() => handlePaymentOptionClick('kakaopay')}
                         />
                     </FlexRow>
                 </label>

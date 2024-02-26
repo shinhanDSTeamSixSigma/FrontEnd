@@ -3,6 +3,8 @@ import axios from 'axios';
 import styled from 'styled-components';
 import TitleDetailName from '../point/TitleDetailName';
 
+const baseUrl = process.env.REACT_APP_BASE_URL;
+
 const FlexRow = styled.div`
     display: flex;
     flex-direction: row;
@@ -31,11 +33,12 @@ const CropPoint = () => {
 
     const fetchData = () => {
         axios
-            .get('http://localhost:8080/receipt/crop-point', {
+            .get(`${baseUrl}/receipt/crop-point`, {
                 params: {
                     memberNo: memberNo,
                     cropNo: cropNo,
                 },
+                withCredentials: true,
             })
             .then((res) => {
                 setPoint(res.data);

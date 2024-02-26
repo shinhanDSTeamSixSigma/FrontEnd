@@ -4,6 +4,9 @@ import { IoArrowBackSharp} from 'react-icons/io5';
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import BoardTitle from "./BoardTitle";
+import {
+    getMemberNo
+}from '../../api/farmApi'
 
 const StyledContainer = styled.div`
     background-color:white;
@@ -17,6 +20,7 @@ const FlexRow = styled.div`
     flex-direction:row;
     justify-content: space-between;
     align-items:center;
+    margin:0 1rem 1rem 0;
 `;
 
 export const FormItem = styled.div`
@@ -44,6 +48,7 @@ const BackButton = styled(IoArrowBackSharp)`
     margin-bottom: 1rem;
     cursor: pointer;
 `;
+const baseUrl = process.env.REACT_APP_BASE_URL;
 
 const BoardRegist = ({ title: initialTitle, content: initialContent, boardNo, isEdit }) => {
     const { farmNo } = useParams();
@@ -51,6 +56,7 @@ const BoardRegist = ({ title: initialTitle, content: initialContent, boardNo, is
     const [title, setTitle] = useState(initialTitle || '');
     const [content, setContent] = useState(initialContent || '');
     const navigate = useNavigate();
+    const [memberData, setMemberData] = useState();
 
     useEffect(() => {
         if (isEdit && initialTitle && initialContent) {
@@ -70,9 +76,28 @@ const BoardRegist = ({ title: initialTitle, content: initialContent, boardNo, is
     const handleBack = () => {
         navigate(-1);
     };
+    useEffect(() => {
+        // 서버에서 사용자 정보 가져오기
+        getMemberNo()
+            .then((res) => {
+                setMemberData(res);
+                console.log(res);
+
+                console.log('멤버데이터 ', JSON.stringify(res.memberNo));
+                if (res.role !== 'FARMER') {
+                    console.log(res.role);
+                    alert('농부만 들어갈 수 있는 페이지 입니다!');
+                    window.location.href = '/';
+                }
+            })
+            .catch((error) => {
+                console.log('데이터 안옴!!!!!!');
+                console.error(error);
+            });
+    }, []);
 
     const handleRegisterOrUpdate = () => {
-        const url = isEdit ? `http://localhost:8090/board/inquiryEdit/${boardNo}` : `http://localhost:8090/board/inquiryRegist`;
+        const url = isEdit ? `${baseUrl}/board/inquiryEdit/${boardNo}` : `${baseUrl}/board/inquiryRegist`;
         const method = isEdit ? 'put' : 'post';
 
         axios({
@@ -86,8 +111,9 @@ const BoardRegist = ({ title: initialTitle, content: initialContent, boardNo, is
                 views: 0,
                 isReplied: false,
                 isDeleted: false,
-                memberNo: 1,
-                farmNo: 50 // 임시값, 실제로는 어떻게 처리할지에 따라 변경
+                memberNo: memberData.memberNo,
+                farmNo:farmNo,
+                withCredentials: true,
             }
         }).then((response) => {
             if (isEdit) {
@@ -109,7 +135,7 @@ const BoardRegist = ({ title: initialTitle, content: initialContent, boardNo, is
                 <BoardTitle name={isEdit ? "문의 수정하기" : "문의하기"} />
                 <button
                     onClick={handleRegisterOrUpdate}
-                    className="block rounded-md bg-[#80BCBD] text-white text-lg py-1.5 px-3">
+                    className="block rounded-md bg-[#80BCBD] text-white py-1 px-2.5">
                     {isEdit ? "수정" : "등록"}
                 </button>
             </FlexRow>

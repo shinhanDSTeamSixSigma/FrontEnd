@@ -5,18 +5,19 @@ import { FaStar, FaStarHalfAlt } from "react-icons/fa";
 const StarContainer = styled.div`
   display: inline-flex;
   align-items: center;
+  margin-left:0.5rem;
 `;
 
 const StyledStar = styled(FaStar)`
   color: ${({ active }) => (active ? "#90C8AC" : "#ccc")};
   cursor: pointer;
-  font-size: ${({ size }) => size || "30px"}; /* 별 크기 설정 */
+  font-size: ${({ size }) => size || "24px"}; /* 별 크기 설정 */
 `;
 
 const StyledHalfStar = styled(FaStarHalfAlt)`
   color: ${({ active }) => (active ? "#90C8AC" : "#ccc")};
   cursor: pointer;
-  font-size: ${({ size }) => size || "30px"}; /* 별 크기 설정 */
+  font-size: ${({ size }) => size || "24px"}; /* 별 크기 설정 */
 `;
 
 const ReviewStar = ({ rating, setRating, size }) => {

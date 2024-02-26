@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { FaCircle } from 'react-icons/fa';
 import { TfiPencil } from 'react-icons/tfi';
@@ -7,6 +6,8 @@ import { RiDeleteBinLine } from 'react-icons/ri';
 import styled from 'styled-components';
 import axios from 'axios';
 import DiaryBlank from '../diary/DiaryBlank';
+
+const baseUrl = process.env.REACT_APP_BASE_URL;
 
 const StyledContainer = styled.div`
     background-color: white;
@@ -19,11 +20,12 @@ const FlexRow = styled.div`
     display: flex;
     flex-direction: row;
 `;
-const Picture = styled.div`
+const Picture = styled.img`
     background-color: #d9d9d9;
     border-radius: 0.8rem;
     margin-bottom: 1rem;
     height: 8rem;
+    width: 100%;
 `;
 const Height = styled.div`
     height: 30em;
@@ -31,7 +33,7 @@ const Height = styled.div`
     align-items: center;
 `;
 
-const DiaryContentDetail = () => {
+const DiaryContentDetail = ({ memberNo, cropNo, baseUrl }) => {
     const marginContent = {
         margin: '0 0.5rem 0.5rem',
     };
@@ -40,10 +42,7 @@ const DiaryContentDetail = () => {
     };
 
     const [diaryList, setDiaryList] = useState([]);
-
-    const [memberNo, setMemberNo] = useState(1); // 추후 변경
-    const [cropNo, setCropNo] = useState(1); // 추후 변경
-    const [diaryDate, setDiaryDate] = useState();
+    //const [diaryDate, setDiaryDate] = useState();
 
     useEffect(() => {
         diaryListData();
@@ -51,11 +50,12 @@ const DiaryContentDetail = () => {
 
     const diaryListData = () => {
         axios
-            .get('http://localhost:8080/diary/list', {
+            .get(`${baseUrl}/diary/list`, {
                 params: {
                     memberNo: memberNo,
                     cropNo: cropNo,
                 },
+                withCredentials: true,
             })
             .then((res) => {
                 // 2차원 배열의 각 내부 배열에 대해 map을 사용
@@ -88,23 +88,29 @@ const DiaryContentDetail = () => {
     const handleDeleteClick = async (diaryNo) => {
         try {
             // HTTP DELETE 요청 보내기
-            await axios.delete(`http://localhost:8080/diary/delete/${diaryNo}`);
+            await axios.delete(`${baseUrl}/diary/delete/${diaryNo}`, {
+                withCredentials: true,
+            });
 
             // 성공 시에 다른 로직 수행 가능
             console.log('일기 삭제 성공');
             alert('삭제되었습니다');
-            window.location.reload();
+
+            diaryListData();
         } catch (error) {
             console.error('Error deleting diary:', error);
         }
     };
+    console.log(diaryList);
     return (
         <>
             {diaryList && diaryList.length > 0 ? (
                 diaryList.map((diary, index) => (
-                    <div key={'인덱스' + index}>
+                    <div key={'index' + index}>
                         <StyledContainer>
-                            <Picture></Picture>
+                            <Picture
+                                src={`${baseUrl}/img/DIARY/${diary[3].fileSrc}.${diary[3].fileExtension}`}
+                            />
                             <FlexRow style={marginContent}>
                                 <FlexRow style={{ fontWeight: 'bold' }}>
                                     <div>
@@ -151,7 +157,10 @@ const DiaryContentDetail = () => {
                                     justifyContent: 'end',
                                 }}
                             >
-                                <Link to={`list/${diary[0].diaryNo}`}>
+                                <Link
+                                    to={`list/${diary[0].diaryNo}`}
+                                    state={{ memberNo, cropNo, baseUrl }}
+                                >
                                     <TfiPencil />
                                 </Link>
                                 <button

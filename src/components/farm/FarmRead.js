@@ -1,9 +1,22 @@
 import { useEffect, useState } from 'react';
-import { getOne, getListAllFile, getFarmCropAll } from '../../api/farmApi';
+import {
+    getOne,
+    getListAllFile,
+    getFarmCropAll,
+    getFarmMember,
+    putOne,
+} from '../../api/farmApi';
 import useCustomMove from '../../hooks/useCustomMove';
 import Button from '../Button';
 import { useNavigate, useParams } from 'react-router-dom';
 import { prefix } from '../../api/farmApi';
+import StyledHeader from '../StyledHeader';
+import FarmFarmerInfo from './FarmFarmerInfo';
+import FarmReview from './FarmReview';
+import FarmCropInfo from './FarmCropInfo';
+import FarmImage from './FarmImage';
+import FarmInquiry from './FarmInquiry';
+import { debounce } from 'lodash';
 
 const url = `${prefix}`;
 const initState = {
@@ -21,7 +34,6 @@ const initState = {
     farmRating: 0.0,
     reviewCnt: 0,
 };
-
 const cropInit = {
     cropCategoryEntity: { cropCateNo: 0, cropCateName: '' },
     cropContent: '',
@@ -41,99 +53,53 @@ const cropInit = {
     highTemp: 0,
 };
 
-function whenShareClick() {
-    alert('공유버튼 진행중');
-}
-function whenLikeClicked() {
-    alert('좋아요버튼 진행중');
-}
-function FarmDetailPage2(farm) {
-    console.log(farm);
-    return (
-        <>
-            {/* 위에 */}
-            <div>
-                {/*이미지 제목 공유 하트 */}
-                <div className="d-flex ml-7 mr-7">
-                    <img
-                        src={farm.farm.image}
-                        className="rounded-5 shadow w-36"
-                    />
-                    <p
-                        className="bg-dark text-danger border w-10 h-10 float-right justify-content-end ms-auto"
-                        onClick={whenLikeClicked}
-                    >
-                        🤍❤
-                    </p>
-                </div>
-                <div className="d-flex mr-7 ml-7 mt-3">
-                    <p className="align-middle w-36 text-center text-xl font-bold pt-2">
-                        {farm.farm.farmName}
-                    </p>
-                    {/*placeholder */}
-                    <img
-                        src=""
-                        className="ms-auto bg-dark w-10 h-10"
-                        alt="공유버튼"
-                        onClick={whenShareClick}
-                    ></img>
-                </div>
-                {/*ㅁㅁ 전문 농장 +위치 */}
-                <div className="d-flex mt-3 ml-7 mr-7 mb-2">
-                    <p>{farm.farm.farmCategory}전문 농장</p>
-                    <p className="pl-5 text-gray-430 text-sm">
-                        🌏 {farm.farm.farmAddress}
-                    </p>
-                </div>
-                {/*미니 텍스트 소개 */}
-                <p className="ml-10 mr-10 text-gray-430 mt-1">
-                    {farm.farm.farmContent}
-                </p>
-                <div className="ml-10 mr-10 row align-items-start bg-gray-100 rounded mt-2 mb-5 pt-2 pb-2">
-                    <div className="col text-center">
-                        <p className="text-sm">신청수</p>
-                        <p className="text-sm mt-2 font-bold">
-                            {farm.farm.farmOrderNum}회
-                        </p>
-                    </div>
-                    <div className="col text-center">
-                        <p className="text-sm text-center">리뷰 {'>'}</p>
-                        <div className="d-flex mt-1">
-                            <p>⭐</p>
-                            <p className="ml-1 mr-1 font-bold">
-                                {farm.farm.farmRating}
-                            </p>
-                            <p className="text-sm align-text-bottom mt-1">
-                                ({farm.farm.reviewCnt})
-                            </p>
-                        </div>
-                    </div>
-                    <div className="col text-center">
-                        <p className="text-sm">경력</p>
-                        <p className="text-sm mt-2  font-bold">
-                            {farm.farm.farmCareer}년
-                        </p>
-                    </div>
-                </div>
-                {/*신청수 리뷰 경력 div 박스 */}
-            </div>
-            {/* 구분 선 */}
-            <hr className="mb-3"></hr>
-            {/* 아래 */}
-            <div>
-                {/* 버튼으로 나열 */}
-                {/* 디폴트는 농장 정보 */}
-            </div>
-        </>
-    );
-}
-
 export default function FarmRead({ farmNo }) {
-    const navigate = useNavigate();
     const [farm, setFarm] = useState(initState);
     const { moveToList, moveToModify, moveToPay } = useCustomMove();
     const [imagePaths, setImagePaths] = useState([]);
     const [farmCrop, setFarmCrop] = useState({ ...cropInit });
+    const [content, setContent] = useState('리뷰'); // 버튼에 따른 컴포넌트 렌더링
+    const [farmMember, setFarmMember] = useState(); // 농장 멤버에 대한 데이터
+    const [totalReviews, setTotalReviews] = useState(0); // 농장 리뷰 수
+    const [averageRating, setAverageRating] = useState(0); //평균 별점을 저장할 상태
+
+    const handleTotalReviews = (data) => {
+        setTotalReviews(data);
+    };
+    const handleAverageRating = (data) => {
+        setAverageRating(data);
+    };
+
+    useEffect(() => {
+        getFarmMember(farmNo).then((data) => {
+            setFarmMember(data);
+        });
+    }, [farmNo]);
+    const MAIN_DATA = [
+        { id: 1, name: '농부정보', text: '농부정보' },
+        { id: 2, name: '리뷰', text: '리뷰' },
+        { id: 3, name: '작물소개', text: '작물소개' },
+        { id: 4, name: '사진', text: '사진' },
+        { id: 5, name: '문의', text: '문의' },
+    ];
+
+    const handleClickButton = (name) => {
+        console.log(name);
+        setContent(name);
+    };
+    const selectComponent = {
+        농부정보: <FarmFarmerInfo farm={farm} farmMember={farmMember} />,
+        리뷰: (
+            <FarmReview
+                farm={farm}
+                handleTotalReviews={handleTotalReviews}
+                handleAverageRating={handleAverageRating}
+            />
+        ),
+        작물소개: <FarmCropInfo farmCrop={farmCrop} />,
+        사진: <FarmImage imagePaths={imagePaths} />,
+        문의: <FarmInquiry farm={farm} />,
+    };
 
     const moveToListFunc = () => moveToList();
     const moveToModifyFunc = () => moveToModify(farmNo);
@@ -157,68 +123,156 @@ export default function FarmRead({ farmNo }) {
         });
     }, []);
 
-    const renderFields = () => {
-        return Object.keys(farm).map((key) => {
-            if (key === `memberNo` || key === `photos`) {
-                return null;
-            }
+    useEffect(() => {
+        // totalReviews와 averageRating이 변경될 때 farm 상태 업데이트
+        setFarm((prevFarm) => ({
+            ...prevFarm,
+            farmRating: averageRating.toFixed(1),
+            reviewCnt: totalReviews,
+        }));
+    }, [totalReviews, averageRating]);
 
-            return (
-                <div key={key} className="flex justify-center">
-                    <div className="items-center relative mb-4 flex w-full rounded-r border border-solid shadow-md  ">
-                        <div
-                            key={key}
-                            className="flex items-center justify-center h-full p-1 mr-1 h-10 w-13 font-bold text-sm border-r"
-                        >
-                            {key}
-                        </div>
-                        <div className=" p-1 ">{farm[key]}</div>
+    useEffect(() => {
+        // 디바운스 함수 설정
+        const debouncedUpdate = debounce(() => {
+            if (farm) {
+                putOne(farm)
+                    .then((data) => {
+                        console.log('modify result: ' + data);
+                    })
+                    .catch((error) => {
+                        console.error('Error updating farm: ', error);
+                    });
+            }
+        }, 2000); // 2초 디바운스
+
+        debouncedUpdate();
+
+        // 디바운스 취소
+        return () => {
+            debouncedUpdate.cancel();
+        };
+    }, [farm]); // farm 상태가 변경될 때마다 실행
+
+    const renderFields = () => {
+        return (
+            <div className="w-full">
+                <div className="flex justify-between">
+                    <div className=" rounded-2xl w-24 h-24 flex">
+                        {imagePaths && (
+                            <img
+                                key={0}
+                                src={`${url}/${imagePaths[0]}`}
+                                alt={`image ${0}`}
+                                className="h-full rounded-2xl shadow-xl"
+                            />
+                        )}
+                    </div>
+                    <div>
+                        <Button
+                            name={'<'}
+                            widthHeight={'w-10'}
+                            moveToListFunc={moveToListFunc}
+                        />
                     </div>
                 </div>
-            );
-        });
+                <div className="font-semibold text-[1.5rem] mt-2 flex justify-between">
+                    {farm.farmName}
+
+                    <img
+                        src={process.env.PUBLIC_URL + `/img/upload.png`}
+                        alt=""
+                        className="w-6 h-6 mt-[0.3rem] "
+                    />
+                </div>
+                <div className="flex mb-2 mt-2">
+                    {farmCrop && (
+                        <div className="text-[1rem] ">
+                            {farmCrop.cropCategoryEntity.cropCateName} 전문 농장
+                        </div>
+                    )}
+                    <div className="text-[1rem] flex ml-4 text-[#737373]">
+                        <img
+                            src={process.env.PUBLIC_URL + `/img/locate.png`}
+                            alt=""
+                            className="mr-1"
+                        />
+                        {farm.farmAddress}
+                    </div>
+                </div>
+                <div className="text-[0.9rem] text-[#737373] ml-3 mt-3">
+                    {farm.farmContent}
+                </div>
+                <div className="flex h-16 mt-3 rounded bg-[#FAFAFA] ml-3 items-center">
+                    <div className="basis-1/4">
+                        <div className="text-[0.8rem] text-center">신청수</div>
+                        <div className="text-[0.79rem] font-semibold text-center">
+                            {/* {farm.farmOrderNum} */}
+                            8회
+                        </div>
+                    </div>
+                    <div className="basis-1/2">
+                        <div className="text-[0.8rem] text-center">
+                            리뷰 {'>'}{' '}
+                        </div>
+                        <div className="text-[0.79rem] font-semibold flex justify-center items-center">
+                            <img
+                                src={process.env.PUBLIC_URL + `/img/star.png`}
+                                alt=""
+                                className="mr-1 w-4 h-4"
+                            />
+                            <span>{averageRating.toFixed(1)}</span>
+                            <span className="text-[0.7rem] ml-1">
+                                ({totalReviews})
+                            </span>
+                        </div>
+                    </div>
+                    <div className="basis-1/4 ">
+                        <div className="text-[0.8rem] text-center">경력</div>
+                        <div className="text-[0.79rem] font-semibold text-center">
+                            {farm.farmCareer}년
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
     };
 
     return (
         <>
-            {/*<div className="border-2  mt-10 m2 p-4">{renderFields()}</div>*/}
-            <FarmDetailPage2 farm={farm} />
-            <div>
-                <div>
-                    내 농장 작물 카테고리:{' '}
-                    {farmCrop && (
-                        <div>{farmCrop.cropCategoryEntity.cropCateName}</div>
-                    )}
+            <StyledHeader>{renderFields()}</StyledHeader>
+
+            <div className=" w-full border-t-[0.2rem] border-[#F2F2F2]">
+                <div className="flex justify-between mt-2">
+                    {MAIN_DATA.map((data) => {
+                        return (
+                            <button
+                                onClick={() => handleClickButton(data.name)}
+                                name={data.name}
+                                key={data.id}
+                                className="block rounded-md px-2.5 py-1.5 text-base font-semibold text-[#878787] focus:text-gray-700 focus:text-black focus:underline"
+                            >
+                                {data.text}
+                            </button>
+                        );
+                    })}
                 </div>
-                <div>
-                    내 농장 작물:
-                    {farmCrop && <div>{farmCrop.cropName}</div>}
-                </div>
-                {imagePaths ? (
-                    imagePaths.map((imagePath, idx) => (
-                        <img
-                            key={idx}
-                            src={`${url}/${imagePath}`}
-                            alt={`image ${idx}`}
-                        />
-                    ))
-                ) : (
-                    <></>
+                {content && (
+                    <div className="border-t-[0.2rem]">
+                        {selectComponent[content]}
+                    </div>
                 )}
             </div>
 
-            <div className="flex justify-center">
-                <Button
-                    name={'목록'}
-                    widthHeight={'w-20'}
-                    moveToListFunc={moveToListFunc}
-                />
-                <Button
-                    name={'수정'}
-                    widthHeight={'w-20'}
-                    moveToModifyFunc={moveToModifyFunc}
-                />
-                <button onClick={() => moveToPay(farmNo)}>농장 구매하기</button>
+            <Button
+                name={'수정'}
+                widthHeight={'w-20'}
+                moveToModifyFunc={moveToModifyFunc}
+            />
+            <div className="fixed bottom-0 left-0 w-full bg-[#80BCBD] px-2.5 py-1.5 text-base font-semibold text-white p-3 flex justify-center text-[20px]">
+                <button onClick={() => moveToModify(farmNo)}>
+                    농장 수정하기
+                </button>
             </div>
         </>
     );

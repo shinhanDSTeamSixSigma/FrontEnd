@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import StyledHeader from '../../components/StyledHeader';
 import StyledBody from '../../components/StyledBody';
+import { API_SERVER_HOST } from '../../api/farmApi';
 
 import { Link } from 'react-router-dom';
 
@@ -17,7 +18,9 @@ const LoginPage = () => {
 
         try {
             const response = await axios.get(
+
                 `${baseUrl}/login?email=${email}&password=${password}`,
+
             );
 
             console.log('Authentication successful:', response);

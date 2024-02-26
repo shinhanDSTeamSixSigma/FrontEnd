@@ -48,8 +48,11 @@ const Nowing = ({ crops }) => {
     };
 
     const handleClickDiary = (crop) => {
-        // 클릭된 버튼의 cropNo를 사용하여 이동
-        navigate('/diary', { state: { crop } });
+
+        const memberNo = crop.memberEntity.memberNo;
+        const cropNo = crop.cropNo;
+        navigate('/diary/calendar', { state: { memberNo, cropNo } });
+
     };
 
     return (
