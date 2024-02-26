@@ -3,9 +3,10 @@ import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Link } from 'react-router-dom';
 import '../styles/header.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Search from '../components/Search';
 import ReactDOM from 'react-dom';
+import { getMemberNo } from '../api/farmApi';
 
 const user = {
     name: '토심이',
@@ -35,7 +36,11 @@ export default function Header({ handleModalToggle }) {
         },
     ];
     const userNavigation = [
-        { name: '마이페이지', href: '/mypage', current: selectedIndex === 3 },
+        {
+            name: '마이페이지',
+            href: '/mypage/memberMypage',
+            current: selectedIndex === 3,
+        },
         {
             name: '정보수정',
             href: '/mypage/info-edit',
@@ -87,7 +92,7 @@ export default function Header({ handleModalToggle }) {
                                                                 item.current
                                                                     ? 'bg-[#80BCBD] text-white'
                                                                     : 'text-gray-700 hover:bg-[#80BCBD] hover:text-white',
-                                                                'rounded-md px-3 py-2 text-sm font-medium',
+                                                                'rounded-md px-3 py-2 text-sm font-medium no-underline',
                                                             )}
                                                             aria-current={
                                                                 item.current
@@ -154,6 +159,7 @@ export default function Header({ handleModalToggle }) {
                                                                     key={
                                                                         item.name
                                                                     }
+                                                                    className="no-underline"
                                                                 >
                                                                     {({
                                                                         active,
@@ -238,7 +244,7 @@ export default function Header({ handleModalToggle }) {
                                                     item.current
                                                         ? 'bg-gray-700 text-white'
                                                         : 'text-black hover:bg-gray-700 hover:text-white',
-                                                    'block rounded-md px-3 py-2 text-base font-medium',
+                                                    'block rounded-md px-3 py-2 text-base font-medium no-underline',
                                                 )}
                                                 aria-current={
                                                     item.current
@@ -261,7 +267,7 @@ export default function Header({ handleModalToggle }) {
                                                 alt=""
                                             />
                                         </div>
-                                        <div className="ml-3">
+                                        <div className="ml-3 no-underline">
                                             <div className="text-base font-medium leading-none text-white">
                                                 {user.name}
                                             </div>
@@ -294,7 +300,12 @@ export default function Header({ handleModalToggle }) {
                                                             index + 3,
                                                         )
                                                     } // 항목을 클릭하면 해당 인덱스로 업데이트하는 함수 호출
-                                                    className="block rounded-md px-3 py-2 text-base font-medium text-black hover:bg-gray-700 hover:text-white"
+                                                    className={classNames(
+                                                        item.current
+                                                            ? 'bg-gray-700 text-white'
+                                                            : 'text-black hover:bg-gray-700 hover:text-white',
+                                                        'block rounded-md px-3 py-2 text-base font-medium no-underline',
+                                                    )}
                                                     aria-current={
                                                         item.current
                                                             ? 'page'
