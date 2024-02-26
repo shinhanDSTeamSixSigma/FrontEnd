@@ -35,13 +35,17 @@ export default function Header({ handleModalToggle }) {
         },
     ];
     const userNavigation = [
-        { name: '마이페이지', href: '/mypage', current: selectedIndex === 3 },
+        {
+            name: '마이페이지',
+            href: '/mypage/memberMypage',
+            current: selectedIndex === 3,
+        },
         {
             name: '정보수정',
             href: '/mypage/info-edit',
             current: selectedIndex === 4,
         },
-        { name: '로그아웃', href: '/', current: selectedIndex === 5 },
+        { name: '로그인', href: '/login', current: selectedIndex === 5 },
     ];
 
     const handleItemClick = (index) => {

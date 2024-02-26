@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // export const API_SERVER_HOST = 'http://localhost:8080';
 
-export const API_SERVER_HOST = process.env.REACT_APP_API_URL;
+export const API_SERVER_HOST = process.env.REACT_APP_BASE_URL;
 
 export const baseUrl = process.env.REACT_APP_BASE_URL;
 export const prefix = `${API_SERVER_HOST}/api/farm`;
@@ -120,22 +120,21 @@ export async function deleteFarmCrop(farmNo) {
 
 // 로그인 멤버 가져오기
 export async function getMemberNo() {
-
     const res = await axios.get(`${baseUrl}/user`, {
-
-//     const res = await axios.get(`${process.env.REACT_APP_API_URL}/user`, {
+        //     const res = await axios.get(`${process.env.REACT_APP_API_URL}/user`, {
 
         withCredentials: true,
     });
     return res.data;
 }
 
-
 // 농장 검색
 export async function searchFarm(searchTerm) {
     const res = await axios.get(`${baseUrl}/api/farm/search`, {
         params: { searchTerm },
     });
+    return res.data;
+}
 
 // 농장의 멤버 데이터 가져오기
 export async function getFarmMember(farmNo) {
