@@ -101,6 +101,8 @@ export const BackButton = styled(IoArrowBackSharp)`
   color: var(--color-textgrey);
   cursor: pointer;
 `;
+const baseUrl = process.env.REACT_APP_BASE_URL;
+
 const InquiryDetailPage =()=>{
     const { boardNo } = useParams();
     const [inquiryDetail, setInquiryDetail] = useState(null);
@@ -111,7 +113,9 @@ const InquiryDetailPage =()=>{
     const navigate = useNavigate();
     const fetchInquiryDetail = async () => {
     try {
-        const response = await axios.get(`http://localhost:8090/board/detail/${boardNo}`);
+        const response = await axios.get(`${baseUrl}/board/detail/${boardNo}`, {
+            withCredentials: true,
+        });
         
         const inquiryData = response.data;
 
@@ -160,7 +164,9 @@ const InquiryDetailPage =()=>{
     };
     const handleDelete = async()=>{
         try{
-            await axios.delete(`http://localhost:8090/board/inquiryDelete/${boardNo}`);
+            await axios.delete(`${baseUrl}/board/inquiryDelete/${boardNo}`, {
+                withCredentials: true,
+            });
             alert("문의가 삭제되었습니다.");
             navigate(-1);
         }catch(error){
@@ -170,7 +176,9 @@ const InquiryDetailPage =()=>{
     
     const handleCommentList = async ()=>{
         try {
-            const response = await axios.get(`http://localhost:8090/board/${boardNo}/commentlist`);
+            const response = await axios.get(`${baseUrl}/board/${boardNo}/commentlist`, {
+                withCredentials: true,
+            });
             const commentList = response.data.map(comment => {
                 const commentDate = new Date(comment.commentDate);
                 const formattedDate = `${commentDate.getFullYear()}-${('0' + (commentDate.getMonth() + 1)).slice(-2)}-${('0' + commentDate.getDate()).slice(-2)} ${('0' + commentDate.getHours()).slice(-2)}:${('0' + commentDate.getMinutes()).slice(-2)}`;

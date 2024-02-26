@@ -22,30 +22,30 @@ const FlexRow=styled.div`
 const FlexRowGap=styled.div`
     display:flex;
     flex-direction:row;
-    gap:2rem;
-    font-size:0.8rem;
+    gap:1rem;
+    font-size:0.6rem;
     color:#878787;
 `;
 const Totalcnt=styled.div`
     font-size: 0.8rem;
     font-weight:500;
     color:#878787;
-    margin: 0 0 0 0.5rem;
+    margin: 0 0 0 0.2rem;
 `
 const AvgRating=styled.div`
     font-size:1rem;
     font-weight:600;
     color:#878787;
-    margin:0 0.5rem;
+    margin:0 0.2rem 0 0.5rem;
 `
 const Content=styled.div`
-    font-size:1rem;
+    font-size:0.8rem;
     font-weight: 500;
 `
 const TitleContainer = styled.div`
     display: flex;
     align-items: center;
-    margin-right:1rem;
+    
 `;
 
 
@@ -59,18 +59,22 @@ const InquiryItem=styled.div`
     margin-top: 1rem;
     cursor: pointer;
 `;
+const baseUrl = process.env.REACT_APP_BASE_URL;
 
 const FarmerReviewListPage = () => {
     
     const [reviews, setReviews] = useState([]);
     const [totalReviews, setTotalReviews] = useState(0);
     const [averageRating, setAverageRating] = useState(0); //평균 별점을 저장할 상태
-    const farmNo =50; //농장번호 50번의 리뷰 목록
+    const [farmNo, setFarmNo] = useState(118); // farmNo를 상태로 관리
 
-    useEffect(()=>{
+    
+        console.log(baseUrl); // baseUrl 출력
         const fetchData = async () => {
             try {
-              const response = await axios.get(`http://localhost:8090/review/list?farmNo=${farmNo}`);
+              const response = await axios.get(`${baseUrl}/review/list?farmNo=${farmNo}`, {
+                withCredentials: true,
+            });
               
               // 날짜 형식 변환
               const formattedData = response.data.map(item => ({
@@ -94,7 +98,7 @@ const FarmerReviewListPage = () => {
               console.error("Error fetching reviews:", error);
             }
           };
-       
+        useEffect(()=>{
           fetchData(); // 데이터 가져오기 함수 호출
         }, [farmNo]);
 
@@ -129,7 +133,7 @@ const FarmerReviewListPage = () => {
                         <StarRating rating={review.rating} size='1rem'/>
                         <Content>{review.reviewContent}</Content>
                         <FlexRowGap>
-                            <div>{review.memberId}</div>
+                            <div>{review.nickname}</div>
                             <div>{review.createdDate}</div>
                             
                         </FlexRowGap>

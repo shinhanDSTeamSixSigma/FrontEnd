@@ -5,7 +5,9 @@ import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import BoardTitle from "./BoardTitle";
 import ReviewStar from "./ReviewStar";
-
+import {
+    getMemberNo
+}from '../../api/farmApi'
 const StyledContainer = styled.div`
     background-color:white;
     font-size:1em;
@@ -17,7 +19,6 @@ const FlexRow = styled.div`
     flex-direction:row;
     justify-content: space-between;
     align-items:center;
-    margin:0 1rem 1rem 0;
 `;
 export const FormItem = styled.div`
     font-weight: 500;
@@ -43,13 +44,15 @@ const BackButton = styled(IoArrowBackSharp)`
     margin-bottom: 1rem;
     cursor: pointer;
 `;
+const baseUrl = process.env.REACT_APP_BASE_URL;
+
 const ReviewRegist = ({ rating: initialRating, content: initialContent, reviewNo, isEdit }) => {
     const { farmNo } = useParams();
     const {memberNo} = useParams();
     const [content, setContent] = useState(initialContent || '');
     const [rating, setRating] = useState(initialRating || ''); // 별점 상태 추가
     const navigate = useNavigate();
-
+    const [memberData, setMemberData] = useState();
     useEffect(() => {
         if (isEdit && initialRating && initialContent) {
             setRating(initialRating);
@@ -65,13 +68,30 @@ const ReviewRegist = ({ rating: initialRating, content: initialContent, reviewNo
     }, []);
 
     const handleBack = () => {
-        setContent('');
-        setRating(0);
         navigate(-1); 
     };
+    
+    useEffect(() => {
+        // 서버에서 사용자 정보 가져오기
+        getMemberNo()
+            .then((res) => {
+                setMemberData(res);
+                console.log(res);
 
+                console.log('멤버데이터 ', JSON.stringify(res.memberNo));
+                if (res.role !== 'FARMER') {
+                    console.log(res.role);
+                    alert('농부만 들어갈 수 있는 페이지 입니다!');
+                    window.location.href = '/';
+                }
+            })
+            .catch((error) => {
+                console.log('데이터 안옴!!!!!!');
+                console.error(error);
+            });
+    }, []);
     const handleRegisterOrUpdate = () => {
-        const url = isEdit ? `http://localhost:8090/review/edit/${reviewNo}` : `http://localhost:8090/review/regist`;
+        const url = isEdit ? `${baseUrl}/review/edit/${reviewNo}` : `${baseUrl}/review/regist`;
         const method = isEdit ? 'put' : 'post';
         axios({   
             method : method,
@@ -81,8 +101,8 @@ const ReviewRegist = ({ rating: initialRating, content: initialContent, reviewNo
                 rating: rating,
                 createdDate: new Date().toISOString(),
                 isDeleted: false, 
-                memberNo: 1,
-                farmNo: 50 // 임시값, 실제로는 어떻게 처리할지에 따라 변경
+                memberNo: memberData.memberNo,
+                farmNo: farmNo 
             }     
             
         }).then((response) => {
@@ -91,7 +111,7 @@ const ReviewRegist = ({ rating: initialRating, content: initialContent, reviewNo
                 navigate(`/review/${memberNo}`); // 수정된 경우 memberNo로 이동
             } else {
                 alert("리뷰가 등록되었습니다.");
-                navigate(`/farm/reveiw/${farmNo}`); // 등록된 경우 farmNo로 이동
+                navigate(`/farm/review/${farmNo}`); // 등록된 경우 farmNo로 이동
             }
         }).catch((error) => {
             console.error("Error occured while registering the review:", error);
@@ -105,7 +125,7 @@ const ReviewRegist = ({ rating: initialRating, content: initialContent, reviewNo
                 <BoardTitle name="리뷰하기" />
                 <button 
                     onClick={handleRegisterOrUpdate}
-                    className="block rounded-md bg-[#80BCBD] text-white text-lg py-1 px-2.5">
+                    className="block rounded-md bg-[#80BCBD] text-white text-lg py-1.5 px-3">
                     {isEdit ? "수정" : "등록"}
                 </button>
             </FlexRow> 

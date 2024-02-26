@@ -30,7 +30,7 @@ export default function Header({ handleModalToggle }) {
         },
         {
             name: '작물정보',
-            href: '/crop-detail',
+            href: '/crop-list',
             current: selectedIndex === 2,
         },
     ];

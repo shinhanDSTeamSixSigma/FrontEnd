@@ -21,12 +21,12 @@ const FlexRow=styled.div`
 const FlexRowGap=styled.div`
     display:flex;
     flex-direction:row;
-    gap:2rem;
+    gap:1rem;
     font-size:0.8rem;
     color:#878787;
 `;
 const Title=styled.div`
-    font-size:1rem;
+    font-size:0.8rem;
     font-weight: 600;
 `
 const Totalcnt=styled.div`
@@ -44,14 +44,16 @@ const RepliedFont=styled.div`
     ${(props) =>
         props.isReplied &&
         css`
-            color: #90C8AC;
+            color: #4F6F52;
+            font-size:0.8rem;
             font-weight: 600;
         `}
 
     ${(props) =>
         !props.isReplied &&
         css`
-            color: #4F6F52;
+            color: #90C8AC;
+            font-size:0.8rem;
             font-weight: 600;
         `}
 `
@@ -62,23 +64,26 @@ const ViewsContainer = styled.div`
 const InquiryItem=styled.div`
     display: flex;
     flex-direction: column;
-    gap: 1.2rem;
+    gap: 1rem;
     border: 0.1rem solid lightgray;
     border-radius: 1rem;
     padding: 1.5rem 1.5rem;
     margin-top: 1rem;
     cursor: pointer;
 `;
+const baseUrl = process.env.REACT_APP_BASE_URL;
 const FarmerInquiryListPage = () => {
     
     const [inquires, setInquiries] = useState([]);
     const [totalInquiries, setTotalInquiries] = useState(0);
-    const farmNo =50; //농장번호 50번의 문의글 목록
+    const farmNo =118; //농장번호 50번의 문의글 목록
 
-    useEffect(()=>{
+    
         const fetchData = async () => {
             try {
-              const response = await axios.get(`http://localhost:8090/board/inquiryList?farmNo=${farmNo}&categoryNo=1`);
+              const response = await axios.get(`${baseUrl}/board/inquiryList?farmNo=${farmNo}&categoryNo=1`, {
+                withCredentials: true,
+            });
               // 날짜 형식 변환
               const formattedData = response.data.map(item => ({
                     ...item,
@@ -88,16 +93,16 @@ const FarmerInquiryListPage = () => {
                         month: '2-digit', 
                         day: '2-digit'
                     }),                    
-                    isReplied: item.replied ? "답변완료" : "미답변"
                 }));
                 setInquiries(formattedData);
                 setTotalInquiries(formattedData.length);   
+                
           } catch (error) {
               console.error("Error fetching inquiries:", error);
             }
           };
-       
-          fetchData(); 
+          useEffect(()=>{
+            fetchData(); 
         }, [farmNo]);
 
         
@@ -123,7 +128,7 @@ const FarmerInquiryListPage = () => {
                     <InquiryItem key={index}>
                         <FlexRow>
                             <Title>{inquiry.title}</Title>
-                            <RepliedFont>{inquiry.isReplied}</RepliedFont>
+                            <RepliedFont isReplied={inquiry.replied}> {inquiry.replied ? "답변완료" : "미답변"}</RepliedFont>
                         </FlexRow>
                         <Content>{inquiry.boardContent}</Content>
                         <FlexRowGap>

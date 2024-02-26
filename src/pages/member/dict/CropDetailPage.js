@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom"; // useParams를 가져옵니다.
+import { IoArrowBackSharp} from 'react-icons/io5';
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import CropImage from "../../../components/crop/CropImage";
 import CropCatebox from "../../../components/crop/CropCatebox";
@@ -41,8 +42,8 @@ const FlexColumn=styled.div`
 `;
 const DivLine=styled.div`
     background: #90C8AC;
-    width: 5rem;
-    height: 0.15em;
+    width: 4rem;
+    height: 0.1em;
     margin-top:1.5rem;
 `
 const ImageContainer = styled.div`
@@ -58,7 +59,7 @@ const ImageContainer = styled.div`
     border-radius: 1rem;
 `
 const SubTitle = styled.div`
-    font-size:1rem;
+    font-size:0.9rem;
     font-weight: 500;
     margin-right: 0.5rem;
     margin-left:0.2rem;
@@ -74,9 +75,14 @@ const Content =styled.div`
 const SummaryText=styled.div`
     margin-left:0.8rem;
 `
-
+const BackButton = styled(IoArrowBackSharp)`
+    color: var(--color-textgrey);
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+`;
 const CropDetailPage = () => {
-    const { id } = useParams(); // useParams를 사용하여 URL 파라미터를 가져옵니다.
+    const { id } = useParams(); 
+    const navigate = useNavigate();
     const [cropDetail, setCropDetail] = useState(null);
 
     useEffect(() => {
@@ -102,10 +108,13 @@ const CropDetailPage = () => {
         if (cropDetail.winter===1) seaseons.push("겨울");
         return seaseons.join(", ");
     }
-
+    const handleBack = () => {
+        navigate(-1);
+    };
     return(
         <>
             <StyledContainer>
+            <BackButton onClick={handleBack} size="20" />
             <FlexRow>
             <ImageContainer>
                 <img src={`http://localhost:8090/img/${cropDetail && cropDetail.image}`} alt="cropImage"  style={{ width: '100%', height: '100%', objectFit: 'cover' }}/>

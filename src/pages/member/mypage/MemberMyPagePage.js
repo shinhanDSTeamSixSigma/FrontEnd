@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import { Link } from "react-router-dom";
 import axios from 'axios';
 import styled from 'styled-components';
 import { IoSettingsOutline } from 'react-icons/io5';
@@ -52,6 +52,7 @@ const boxStyle = {
 
 export default function MemberMyPagePage() {
     const [userInfo, setUserInfo] = useState({
+        memberNo:'',
         memberId: '',
         memberName: '',
         phone: '',
@@ -188,31 +189,35 @@ export default function MemberMyPagePage() {
                             재배 내역
                         </Step>
                     </Box>
-
-                    <Box>
-                        <LiaCommentDotsSolid style={boxStyle} color="#73A9AD" />
-                        <Step
-                            style={{
-                                justifyContent: 'center',
-                                display: 'flex',
-                            }}
-                            className="text-xs"
-                        >
-                            리뷰 관리
-                        </Step>
-                    </Box>
-                    <Box>
-                        <RiQuestionnaireLine style={boxStyle} color="#73A9AD" />
-                        <Step
-                            style={{
-                                justifyContent: 'center',
-                                display: 'flex',
-                            }}
-                            className="text-xs"
-                        >
-                            후기 관리
-                        </Step>
-                    </Box>
+                    <Link to={`/review/${userInfo.memberNo}`}>
+                        <Box>
+                            
+                            <LiaCommentDotsSolid style={boxStyle} color="#73A9AD" />
+                            <Step
+                                style={{
+                                    justifyContent: 'center',
+                                    display: 'flex',
+                                }}
+                                className="text-xs"
+                            >
+                                리뷰 관리
+                            </Step>                      
+                        </Box>
+                    </Link>
+                    <Link to={`/inquiry/${userInfo.memberNo}`}>
+                        <Box>                        
+                            <RiQuestionnaireLine style={boxStyle} color="#73A9AD" />
+                            <Step
+                                style={{
+                                    justifyContent: 'center',
+                                    display: 'flex',
+                                }}
+                                className="text-xs"
+                            >
+                                문의 관리
+                            </Step>                       
+                        </Box>
+                    </Link>
                     {/* <Box>
                         <PiNotePencilLight style={boxStyle} color="#73A9AD" />
                         <Step
