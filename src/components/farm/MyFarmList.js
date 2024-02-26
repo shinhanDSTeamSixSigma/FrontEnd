@@ -52,6 +52,7 @@ export default function MyFarmList() {
     const [farmCrop, setFarmCrop] = useState({ ...cropInit });
     // const navigate = useNavigate();
 
+
     const [serverData, setServerData] = useState(initState);
     const [sortByReview, setSortByReview] = useState(false); // 필터링
     const [memberData, setMemberData] = useState(null); // 농부의 memberNo
