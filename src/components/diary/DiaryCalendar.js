@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaCircle } from 'react-icons/fa';
 import { IoIosCloseCircle } from 'react-icons/io';
+import axios from 'axios';
 import Modal from 'react-modal';
 import styled from 'styled-components';
 import FullCalendar from '@fullcalendar/react';
@@ -48,73 +49,118 @@ const modalStyle = {
     },
 };
 
-const DiaryCalendar = () => {
-    const [diaryData, setDiaryData] = useState([]);
-    const [diaryDate, setDiaryDate] = useState(null);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [modalData, setModalData] = useState(null);
-    const memberNo = 1;
-    const cropNo = 1;
-
+const DiaryCalendar = ({ memberNo, cropNo, baseUrl }) => {
     const image = {
         margin: 'auto 0.1rem',
     };
 
-    const handleDateClick = (info) => {
-        const clickedDate = info.dateStr;
-        console.log('클릭한 날짜:', clickedDate);
-        setDiaryDate(clickedDate);
-        setIsModalOpen(true);
-
-        // 모달이 열릴 때 모달 내부 데이터를 불러옴
-        fetch(
-            `http://localhost:8080/diary/list/${info.event.extendedProps.diaryNo}`,
-        )
-            .then((response) => response.json())
-            .then((data) => setModalData(data))
-            .catch((error) =>
-                console.error('모달 데이터를 불러오는 동안 오류 발생:', error),
-            );
-    };
-    const handleEventClick = (info) => {
-        const clickedTitleDate = formatDate(info.event.start);
-        console.log('클릭한 타이틀:', clickedTitleDate);
-        setDiaryDate(clickedTitleDate);
-        setIsModalOpen(true);
-
-        const diaryNo = info.event.extendedProps.diaryNo;
-        console.log(diaryNo);
-
-        // 모달이 열릴 때 모달 내부 데이터를 불러옴
-        fetch(`http://localhost:8080/diary/list/${diaryNo}`)
-            .then((response) => response.json())
-            .then((data) => {
-                setModalData(data);
-                console.log(data);
-            })
-            .catch((error) =>
-                console.error('모달 데이터를 불러오는 동안 오류 발생:', error),
-            );
-
-        console.log(modalData);
-    };
+    //날짜 형식 변환
     const formatDate = (date) => {
         const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
         const formattedDate = new Date(date).toLocaleDateString(
             'en-US',
             options,
         );
-
         // 형식을 'MM/DD/YYYY'에서 'YYYY-MM-DD'로 변경
         const [month, day, year] = formattedDate.split('/');
         return `${year}-${month}-${day}`;
+    };
+
+    const todayDate = formatDate(new Date());
+    const [diaryData, setDiaryData] = useState([]);
+    const [diaryDate, setDiaryDate] = useState(null);
+    const [diaryList, setDiaryList] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalData, setModalData] = useState(null);
+
+    const openModalWithData = (data, clickedDate) => {
+        setModalData(data);
+        setDiaryDate(clickedDate);
+        setIsModalOpen(true);
+    };
+
+    const handleDateClick = (info) => {
+        const clickedDate = info.dateStr;
+        console.log('클릭한 날짜:', clickedDate);
+
+        // 클릭한 날짜에 해당하는 일기가 있는지 확인
+        const matchingDiary = diaryData.find(
+            (diary) => formatDate(diary.diaryDate) === clickedDate,
+        );
+
+        if (info.event && info.event.extendedProps) {
+            // info.event가 정의되어 있고 extendedProps도 있는 경우
+            fetch(`${baseUrl}/diary/list/${info.event.extendedProps.diaryNo}`, {
+                credentials: 'include',
+            })
+                .then((response) => response.json())
+                .then((data) => openModalWithData(data, clickedDate))
+                .catch((error) =>
+                    console.error(
+                        '모달 데이터를 불러오는 동안 오류 발생:',
+                        error,
+                    ),
+                );
+        } else if (matchingDiary) {
+            // info.event가 없지만, 클릭한 날짜에 해당하는 일기가 있는 경우
+            fetch(`${baseUrl}/diary/list/${matchingDiary.diaryNo}`, {
+                credentials: 'include',
+            })
+                .then((response) => response.json())
+                .then((data) => openModalWithData(data, clickedDate))
+                .catch((error) =>
+                    console.error(
+                        '모달 데이터를 불러오는 동안 오류 발생:',
+                        error,
+                    ),
+                );
+        } else {
+            // info.event가 없고, 클릭한 날짜에 해당하는 일기도 없는 경우
+            setModalData(null);
+            setDiaryDate(clickedDate);
+            setIsModalOpen(true);
+        }
+    };
+    const handleEventClick = (info) => {
+        const clickedTitleDate = formatDate(info.event.start);
+        console.log('클릭한 타이틀:', clickedTitleDate);
+
+        setDiaryDate(clickedTitleDate);
+        setIsModalOpen(true);
+
+        const diaryNo = info.event.extendedProps
+            ? info.event.extendedProps.diaryNo
+            : null;
+        console.log(diaryNo);
+
+        // 모달이 열릴 때 모달 내부 데이터를 불러옴
+        if (diaryNo) {
+            fetch(`${baseUrl}/diary/list/${diaryNo}`, {
+                credentials: 'include',
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    setModalData(data);
+                    console.log(data);
+                })
+                .catch((error) =>
+                    console.error(
+                        '모달 데이터를 불러오는 동안 오류 발생:',
+                        error,
+                    ),
+                );
+        }
+        console.log(modalData);
     };
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:8080/calendar/total-list?memberNo=${memberNo}&cropNo=${cropNo}`,
+                    `${baseUrl}/calendar/total-list?memberNo=${memberNo}&cropNo=${cropNo}`,
+                    {
+                        credentials: 'include',
+                    },
                 );
                 const data = await response.json();
                 setDiaryData(data);
@@ -131,12 +177,54 @@ const DiaryCalendar = () => {
 
     useEffect(() => {
         if (diaryDate && diaryData) {
-            setIsModalOpen(true); // 모달을 열기 위한 상태 업데이트
+            const matchingDiary = diaryData.find(
+                (diary) => formatDate(diary.diaryDate) === diaryDate,
+            );
+
+            if (matchingDiary) {
+                fetch(`${baseUrl}/diary/list/${matchingDiary.diaryNo}`, {
+                    credentials: 'include',
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        setModalData(data);
+                        setIsModalOpen(true);
+                    })
+                    .catch((error) =>
+                        console.error(
+                            '모달 데이터를 불러오는 동안 오류 발생:',
+                            error,
+                        ),
+                    );
+            } else {
+                setModalData(null);
+                setIsModalOpen(true);
+            }
         }
     }, [diaryDate, diaryData]);
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`${baseUrl}/calendar/list`, {
+                    params: {
+                        memberNo: memberNo,
+                        cropNo: cropNo,
+                        diaryDate: todayDate,
+                    },
+                    withCredentials: true,
+                });
+                setDiaryList(response.data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchData();
+    }, [baseUrl, memberNo, cropNo, todayDate]);
+
     const closeModal = () => {
-        setIsModalOpen(false); // 모달을 닫기 위한 상태 업데이트
+        setIsModalOpen(false);
         setModalData(null);
     };
 
@@ -259,7 +347,10 @@ const DiaryCalendar = () => {
                                 : '작성된 일기가 없어요'}
                         </div>
                         <FlexRow style={{ justifyContent: 'center' }}>
-                            <Link to={`/mypage/streaming`}>
+                            <Link
+                                to={`/mypage/streaming`}
+                                state={{ memberNo, cropNo, baseUrl }}
+                            >
                                 <Button name="상태보러가기"></Button>
                             </Link>
                             <div style={{ width: '1.5rem' }}></div>
@@ -268,11 +359,15 @@ const DiaryCalendar = () => {
                             modalData[0] ? (
                                 <Link
                                     to={`/diary/list/${modalData[0][0].diaryNo}`}
+                                    state={{ memberNo, cropNo, baseUrl }}
                                 >
                                     <Button name="일기 수정하기"></Button>
                                 </Link>
                             ) : (
-                                <Link to="/diary/regist">
+                                <Link
+                                    to={`/diary/regist/${diaryDate}`}
+                                    state={{ memberNo, cropNo, baseUrl }}
+                                >
                                     <Button name="글 작성하기"></Button>
                                 </Link>
                             )}
@@ -280,13 +375,17 @@ const DiaryCalendar = () => {
                     </div>
                 </Modal>
             ) : null}
-            {diaryData && diaryData.length > 0 ? (
-                <Link to={`/diary/list/${diaryData[0].diaryNo}`}>
+            {diaryList && diaryList.length > 0 ? (
+                <Link
+                    to={`/diary/list/${diaryList[0].diaryNo}`}
+                    state={{ memberNo, cropNo, baseUrl }}
+                >
                     <FloatingButton />
                 </Link>
             ) : (
                 <Link
-                    to="/diary/regist"
+                    to={`/diary/regist/${todayDate}`}
+                    state={{ memberNo, cropNo, baseUrl }}
                     style={{
                         padding: '0.5rem 1.5rem',
                         minHeight: '30em',

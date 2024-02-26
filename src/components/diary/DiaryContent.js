@@ -11,11 +11,10 @@ const StyledContainer = styled.div`
     min-height: 30em;
 `;
 
-const DiaryContent = () => {
+const DiaryContent = ({ memberNo, cropNo, baseUrl }) => {
     const [diaryList, setDiaryList] = useState([]);
+    const [formattedDiaryDate, setFormattedDiaryDate] = useState('');
 
-    const [memberNo, setMemberNo] = useState(1); // 추후 변경
-    const [cropNo, setCropNo] = useState(1); // 추후 변경
     const [diaryDate, setDiaryDate] = useState();
 
     useEffect(() => {
@@ -29,15 +28,17 @@ const DiaryContent = () => {
         const day = String(today.getDate()).padStart(2, '0');
 
         const formattedDiaryDate = `${year}-${month}-${day}`;
-
         console.log(formattedDiaryDate);
+        setFormattedDiaryDate(formattedDiaryDate);
+
         axios
-            .get('http://localhost:8080/calendar/list', {
+            .get(`${baseUrl}/calendar/list`, {
                 params: {
                     memberNo: memberNo,
                     cropNo: cropNo,
                     diaryDate: formattedDiaryDate,
                 },
+                withCredentials: true,
             })
             .then((res) => {
                 setDiaryList(res.data);
@@ -49,14 +50,24 @@ const DiaryContent = () => {
     return (
         <>
             <StyledContainer>
-                <DiaryContentDetail />
+                <DiaryContentDetail
+                    memberNo={memberNo}
+                    cropNo={cropNo}
+                    baseUrl={baseUrl}
+                />
                 {/* diaryList가 비어있으면 regist 링크를, 비어있지 않으면 edit 링크를 표시 */}
                 {diaryList && diaryList.length > 0 ? (
-                    <Link to={`list/${diaryList[0].diaryNo}`}>
+                    <Link
+                        to={`list/${diaryList[0].diaryNo}`}
+                        state={{ memberNo, cropNo, baseUrl }}
+                    >
                         <FloatingButton />
                     </Link>
                 ) : (
-                    <Link to="regist">
+                    <Link
+                        to={`regist/${formattedDiaryDate}`}
+                        state={{ memberNo, cropNo, baseUrl }}
+                    >
                         <FloatingButton />
                     </Link>
                 )}

@@ -21,23 +21,23 @@ const FinalPayCss = styled.div`
     color: #4f6f52;
 `;
 
-const PointApply = ({ isOff, onToggle }) => {
+const PointApply = ({ memberNo, baseUrl, isOff, onToggle }) => {
     const location = useLocation(); // useLocation 훅을 사용하여 현재 위치의 정보를 가져옵니다.
     const { totalPrice } = location.state;
 
     const [points, setPoint] = useState(0);
-    const [memberNo, setMemberNo] = useState(1); // 추후 변경
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [memberNo, baseUrl]);
 
     const fetchData = () => {
         axios
-            .get('http://localhost:8080/pay/current-point', {
+            .get(`${baseUrl}/pay/current-point`, {
                 params: {
                     memberNo: memberNo,
                 },
+                withCredentials: true,
             })
             .then((res) => {
                 setPoint(res.data);

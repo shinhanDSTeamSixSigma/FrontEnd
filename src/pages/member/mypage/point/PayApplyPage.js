@@ -7,6 +7,9 @@ import TitleDetailName from '../../../../components/point/TitleDetailName';
 import CropInfo from '../../../../components/point/CropInfo';
 import FullButton from '../../../../components/FullButton';
 import PointApply from '../../../../components/point/PointApply';
+
+const baseUrl = process.env.REACT_APP_BASE_URL;
+
 const StyledContainer = styled.div`
     color: black;
     font-size: 0.8em;
@@ -14,15 +17,15 @@ const StyledContainer = styled.div`
 `;
 
 const PayApplyPage = () => {
+    const [memberNo, setMemberNo] = useState(1); // 추후 변경
+    const [cropNo, setCropNo] = useState(1); // 추후 변경
+
     const navigate = useNavigate();
     const location = useLocation(); // 현재 위치
     const { cartItems, totalPrice, myCrop, myFarm } = location.state;
 
     //버튼 토글 상태
     const [isOff, setIsOff] = useState(true);
-
-    const [memberNo, setMemberNo] = useState(1); // 추후 변경
-    const [cropNo, setCropNo] = useState(1); // 추후 변경
 
     const handleButtonClick = async () => {
         try {
@@ -40,11 +43,11 @@ const PayApplyPage = () => {
                     memberNo: memberNo,
                     cropNo: cropNo,
                 };
-                apiUrl = 'http://localhost:8080/pay/register-point';
+                apiUrl = `${baseUrl}/pay/register-point`;
             } else if (status === 1) {
                 // cropEntity 등록 요청
                 const cropResponse = await axios.post(
-                    'http://localhost:8080/pay/register-crop',
+                    `${baseUrl}/pay/register-crop`,
                     {
                         cropNickname: myCrop.cropName,
                         cropState: 2,
@@ -52,6 +55,7 @@ const PayApplyPage = () => {
                         dictNo: myCrop.cropDictNo,
                         farmNo: myFarm.farmNo,
                     },
+                    { withCredentials: true },
                 );
 
                 // cropEntity 등록 후 서버 응답에서 cropNo 추출
@@ -66,7 +70,7 @@ const PayApplyPage = () => {
                     memberNo: memberNo,
                     cropNo: cropNo, // 추출한 cropNo 설정
                 };
-                apiUrl = 'http://localhost:8080/pay/register-point';
+                apiUrl = `${baseUrl}/pay/register-point`;
             }
 
             // 포인트 결제 등록 요청
@@ -95,7 +99,12 @@ const PayApplyPage = () => {
                     myCrop={myCrop}
                     myFarm={myFarm}
                 />
-                <PointApply isOff={isOff} onToggle={setIsOff} />
+                <PointApply
+                    memberNo={memberNo}
+                    baseUrl={baseUrl}
+                    isOff={isOff}
+                    onToggle={setIsOff}
+                />
             </StyledContainer>
             <FullButton
                 name="결제하기"
