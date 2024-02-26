@@ -5,7 +5,7 @@ import axios from 'axios';
 export const API_SERVER_HOST = process.env.REACT_APP_BASE_URL;
 
 export const baseUrl = process.env.REACT_APP_BASE_URL;
-export const prefix = `${API_SERVER_HOST}/api/farm`;
+export const prefix = `${baseUrl}/api/farm`;
 
 export async function getMember() {
     const res = await axios.get(`${prefix}/member-detail`);
@@ -80,7 +80,7 @@ export async function deleteFile(farmNo, fileName) {
 }
 // 작물리스트 가져오기
 export async function getFarmCrop() {
-    const res = await axios.get(`${API_SERVER_HOST}/crop-dict/list`, {
+    const res = await axios.get(`${baseUrl}/crop-dict/list`, {
         withCredentials: true,
     });
     return res.data;

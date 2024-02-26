@@ -53,7 +53,7 @@ export default function Search({ isModalOpen, handleCloseModal }) {
                     {error && <p>Error: {error.message}</p>}
                     {Array.isArray(searchResult) && searchResult.length > 0 ? (
                         <div>
-                            <h2 style={{ paddingTop: '2rem' }}>검색 결과:</h2>
+                            <h3 style={{ paddingTop: '2rem' }}>검색 결과:</h3>
                             <ul className="divide-y divide-gray-200">
                                 {searchResult.map((result) => (
                                     <li key={result.farmNo} className="py-4 ">
