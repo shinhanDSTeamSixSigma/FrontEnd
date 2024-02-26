@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 import { IoSettingsOutline } from 'react-icons/io5';
@@ -55,7 +55,7 @@ const baseUrl = process.env.REACT_APP_BASE_URL;
 
 export default function MemberMyPagePage() {
     const [userInfo, setUserInfo] = useState({
-        memberNo:'',
+        memberNo: '',
         memberId: '',
         memberName: '',
         phone: '',
@@ -79,11 +79,7 @@ export default function MemberMyPagePage() {
             })
             .then((res) => {
                 setUserInfo(res.data);
-                if (res.data.role !== 'FARMER') {
-                    console.log(res.data.role);
-                    alert('농부만 들어갈 수 있는 페이지 입니다!');
-                    window.location.href = '/';
-                }
+
                 // 사용자 정보를 가져온 후 농작물 정보를 가져옴
                 fetchCrops();
             })
@@ -200,11 +196,12 @@ export default function MemberMyPagePage() {
                         </Step>
                     </Box>
 
-
                     <Link to={`/review/${userInfo.memberNo}`}>
                         <Box>
-                            
-                            <LiaCommentDotsSolid style={boxStyle} color="#73A9AD" />
+                            <LiaCommentDotsSolid
+                                style={boxStyle}
+                                color="#73A9AD"
+                            />
                             <Step
                                 style={{
                                     justifyContent: 'center',
@@ -213,12 +210,15 @@ export default function MemberMyPagePage() {
                                 className="text-xs"
                             >
                                 리뷰 관리
-                            </Step>                      
+                            </Step>
                         </Box>
                     </Link>
                     <Link to={`/inquiry/${userInfo.memberNo}`}>
-                        <Box>                        
-                            <RiQuestionnaireLine style={boxStyle} color="#73A9AD" />
+                        <Box>
+                            <RiQuestionnaireLine
+                                style={boxStyle}
+                                color="#73A9AD"
+                            />
                             <Step
                                 style={{
                                     justifyContent: 'center',
@@ -227,10 +227,9 @@ export default function MemberMyPagePage() {
                                 className="text-xs"
                             >
                                 문의 관리
-                            </Step>                       
+                            </Step>
                         </Box>
                     </Link>
-
 
                     {/* <Box>
                         <PiNotePencilLight style={boxStyle} color="#73A9AD" />
