@@ -37,6 +37,11 @@ export default function MyCropPage() {
             try {
                 const response = await axios.get(
                     'http://localhost:8090/myCropsList',
+                    {
+                        withCredentials: true,
+                    },
+                    /*.get(`${baseUrl}/user`, {
+                    })*/
                 );
                 setCrops(response.data); // API에서 받아온 작물 목록을 상태에 업데이트
                 console.log(response.data);
