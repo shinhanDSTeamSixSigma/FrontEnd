@@ -1,6 +1,6 @@
 import StyledHeader from '../StyledHeader';
 import StyledBody from '../StyledBody';
-import { getAllList, getPaging } from '../../api/farmApi';
+import { getAllList, getPaging, getListAllFile } from '../../api/farmApi';
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../Button';
@@ -23,6 +23,7 @@ export default function MyFarmList() {
     // const [farm, setFarm] = useState(initState);
 
     const { page, size, moveToList, moveToRead } = useCustomMove();
+    const [imagePaths, setImagePaths] = useState([]);
     const navigate = useNavigate();
 
     // useEffect(() => {
@@ -39,6 +40,12 @@ export default function MyFarmList() {
             setServerData(data);
         });
     }, [page, size]);
+
+    // useEffect(() => {
+    //     getListAllFile(farmNo).then((data) => {
+    //         setImagePaths(data);
+    //     });
+    // }, [farmNo]);
 
     const handleFarmItemClick = (farmNo) => {
         moveToRead(farmNo);

@@ -47,6 +47,11 @@ const Nowing = ({ crops }) => {
         navigate('/mypage/temperature', { state: { crop } });
     };
 
+    const handleClickDiary = (crop) => {
+        // 클릭된 버튼의 cropNo를 사용하여 이동
+        navigate('/diary', { state: { crop } });
+    };
+
     return (
         <>
             {crops.map((crop, index) => (
@@ -102,8 +107,11 @@ const Nowing = ({ crops }) => {
 
                     <div>
                         <div>
-                            <button className="flex-none rounded-md ml-2 bg-[#D5F0C1] px-2 py-1 text-xs shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 mt-2">
-                                현재 밥값
+                            <button
+                                onClick={() => handleClickDiary(crop)}
+                                className="flex-none rounded-md ml-2 bg-[#D5F0C1] px-2 py-1 text-xs shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 mt-2"
+                            >
+                                다이어리
                             </button>
                         </div>
                         <div key={crop.cropNo}>

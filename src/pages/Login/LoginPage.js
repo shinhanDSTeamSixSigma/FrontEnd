@@ -5,6 +5,8 @@ import StyledBody from '../../components/StyledBody';
 
 import { Link } from 'react-router-dom';
 
+const baseUrl = process.env.REACT_APP_BASE_URL;
+
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -15,11 +17,9 @@ const LoginPage = () => {
 
         try {
             const response = await axios.get(
-                'http://localhost:8090/login?email=' +
-                    email +
-                    '&password=' +
-                    password,
+                `${baseUrl}/login?email=${email}&password=${password}`,
             );
+
             console.log('Authentication successful:', response);
             // 인증 성공 시 다음 작업 수행
             const token = response.data.token;
