@@ -109,6 +109,7 @@ export default function MyFarmList() {
         }
     }, [serverData]);
 
+    // member가 farmer면 농부의 농장 상세 member면 멤버의 농장 상세
     const handleFarmItemClick = (farmNo) => {
         if (memberData.role === 'farmer') {
             moveToRead(farmNo);
