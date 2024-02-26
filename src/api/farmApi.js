@@ -120,23 +120,20 @@ export async function deleteFarmCrop(farmNo) {
 
 // 로그인 멤버 가져오기
 export async function getMemberNo() {
-
     const res = await axios.get(`${baseUrl}/user`, {
-
-//     const res = await axios.get(`${process.env.REACT_APP_API_URL}/user`, {
+        //     const res = await axios.get(`${process.env.REACT_APP_API_URL}/user`, {
 
         withCredentials: true,
     });
     return res.data;
 }
 
-
 // 농장 검색
 export async function searchFarm(searchTerm) {
     const res = await axios.get(`${baseUrl}/api/farm/search`, {
         params: { searchTerm },
     });
-
+}
 // 농장의 멤버 데이터 가져오기
 export async function getFarmMember(farmNo) {
     const res = await axios.get(`${prefix}/memberData/${farmNo}`);
