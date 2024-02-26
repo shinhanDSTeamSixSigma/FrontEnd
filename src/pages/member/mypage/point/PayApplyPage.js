@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { getMemberNo } from '../../../../api/farmApi';
 import axios from 'axios';
 import styled from 'styled-components';
 import TitleName from '../../../../components/point/TitleName';
@@ -17,8 +18,10 @@ const StyledContainer = styled.div`
 `;
 
 const PayApplyPage = () => {
-    const [memberNo, setMemberNo] = useState(1); // 추후 변경
-    const [cropNo, setCropNo] = useState(1); // 추후 변경
+    const crop = location.state.crop;
+    const cropNo = crop.cropNo;
+
+    const [memberData, setMemberData] = useState(null); // 농부의 memberNo
 
     const navigate = useNavigate();
     const location = useLocation(); // 현재 위치
@@ -40,7 +43,7 @@ const PayApplyPage = () => {
                     changeValue: 1,
                     changeCause: 4, // 영양제 구매
 
-                    memberNo: memberNo,
+                    memberNo: memberData,
                     cropNo: cropNo,
                 };
                 apiUrl = `${baseUrl}/pay/register-point`;
@@ -51,7 +54,7 @@ const PayApplyPage = () => {
                     {
                         cropNickname: myCrop.cropName,
                         cropState: 2,
-                        memberNo: memberNo,
+                        memberNo: memberData,
                         dictNo: myCrop.cropDictNo,
                         farmNo: myFarm.farmNo,
                     },
@@ -67,7 +70,7 @@ const PayApplyPage = () => {
                     pointValue: totalPrice,
                     changeValue: 1,
                     changeCause: 3,
-                    memberNo: memberNo,
+                    memberNo: memberData,
                     cropNo: cropNo, // 추출한 cropNo 설정
                 };
                 apiUrl = `${baseUrl}/pay/register-point`;
@@ -83,11 +86,22 @@ const PayApplyPage = () => {
             } else if (status === 1) {
                 alert('땅 등록이 완료되었습니다.');
             }
-            navigate('/mypage'); // 경로 수정해야함
+            navigate('/mypage');
         } catch (error) {
             console.error('Error registering point:', error);
         }
     };
+    useEffect(() => {
+        // 서버에서 사용자 정보 가져오기
+        getMemberNo()
+            .then((res) => {
+                setMemberData(res.memberNo);
+            })
+            .catch((error) => {
+                console.log('데이터 안옴!!!!!!');
+                console.error(error);
+            });
+    }, [memberData]);
 
     return (
         <>
@@ -100,7 +114,7 @@ const PayApplyPage = () => {
                     myFarm={myFarm}
                 />
                 <PointApply
-                    memberNo={memberNo}
+                    memberNo={memberData}
                     baseUrl={baseUrl}
                     isOff={isOff}
                     onToggle={setIsOff}
