@@ -16,7 +16,7 @@ export default function ResultModal({ title, content, callbackFnc }) {
                 <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
                     <div className="p-4 md:p-5 text-center">
                         <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                            {title} - {content}
+                            {title}  {content}
                         </h3>
                         <button
                             data-modal-hide="popup-modal"

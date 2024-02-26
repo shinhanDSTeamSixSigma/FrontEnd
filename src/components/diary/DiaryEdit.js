@@ -5,6 +5,8 @@ import { getDiaryFile } from '../../api/diaryApi';
 import styled from 'styled-components';
 import axios from 'axios';
 import FullButton from '../FullButton';
+import ResultModal from '../modal/ResultModal';
+import useCustomMove from '../../hooks/useCustomMove';
 
 const StyledContainer = styled.div`
     background-color: #f9f7c9;
@@ -53,7 +55,7 @@ const DiaryEdit = ({ memberNo, cropNo, baseUrl }) => {
     const contentRef = useRef();
 
     const [imagePaths, setImagePaths] = useState([]);
-
+    const [resultMessage, setResultMessage] = useState(null);
     useEffect(() => {
         diaryListData();
     }, []);
@@ -104,8 +106,12 @@ const DiaryEdit = ({ memberNo, cropNo, baseUrl }) => {
                     },
                 );
                 // 성공적으로 수정되었으면 리다이렉션을 수행
-                alert('수정 완료');
-                navigate('/diary', { state: { memberNo, cropNo } });
+                setResultMessage({
+                    title: '',
+                    content: '수정되었습니다.',
+                    type: 'success',
+                });
+                
             } catch (error) {
                 console.error('Error modifying diary:', error);
             }
@@ -117,6 +123,11 @@ const DiaryEdit = ({ memberNo, cropNo, baseUrl }) => {
         });
     }, [diaryNo]);
     console.log('imagePaths' + imagePaths);
+
+    const closeModal = () => {
+        setResultMessage(null);
+        navigate('/diary', { state: { memberNo, cropNo } });
+    };
     return (
         <>
             <StyledContainer>
@@ -167,6 +178,13 @@ const DiaryEdit = ({ memberNo, cropNo, baseUrl }) => {
                 </Content>
             </StyledContainer>
             <FullButton name="수정하기" onClick={save} />
+            {resultMessage && (
+                <ResultModal
+                    title={resultMessage.title}
+                    content={resultMessage.content}
+                    callbackFnc={closeModal}
+                />
+            )}
         </>
     );
 };

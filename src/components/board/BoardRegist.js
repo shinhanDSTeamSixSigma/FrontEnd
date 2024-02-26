@@ -1,13 +1,12 @@
 import styled from "styled-components";
 import axios from "axios";
-import { IoArrowBackSharp} from 'react-icons/io5';
+import { IoArrowBackSharp } from 'react-icons/io5';
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import BoardTitle from "./BoardTitle";
-import {
-    getMemberNo
-}from '../../api/farmApi'
-
+import ResultModal from "../modal/ResultModal"; // 1. ResultModal 불러오기
+import { getMemberNo } from '../../api/farmApi';
+import useCustomMove from "../../hooks/useCustomMove";
 const StyledContainer = styled.div`
     background-color:white;
     font-size:1em;
@@ -48,6 +47,7 @@ const BackButton = styled(IoArrowBackSharp)`
     margin-bottom: 1rem;
     cursor: pointer;
 `;
+
 const baseUrl = process.env.REACT_APP_BASE_URL;
 
 const BoardRegist = ({ title: initialTitle, content: initialContent, boardNo, isEdit }) => {
@@ -57,7 +57,8 @@ const BoardRegist = ({ title: initialTitle, content: initialContent, boardNo, is
     const [content, setContent] = useState(initialContent || '');
     const navigate = useNavigate();
     const [memberData, setMemberData] = useState();
-
+    const [response, setResponse] = useState(null);
+    const { memberMoveToRead } = useCustomMove();
     useEffect(() => {
         if (isEdit && initialTitle && initialContent) {
             setTitle(initialTitle);
@@ -76,18 +77,21 @@ const BoardRegist = ({ title: initialTitle, content: initialContent, boardNo, is
     const handleBack = () => {
         navigate(-1);
     };
+    const closeModal = () => {
+        setResponse(null);
+        memberMoveToRead(farmNo); //moveToList( )호출
+    };
     useEffect(() => {
         // 서버에서 사용자 정보 가져오기
         getMemberNo()
             .then((res) => {
                 setMemberData(res);
                 console.log(res);
-
                 console.log('멤버데이터 ', JSON.stringify(res.memberNo));
                 if (res.role !== 'FARMER') {
-                    console.log(res.role);
-                    alert('농부만 들어갈 수 있는 페이지 입니다!');
-                    window.location.href = '/';
+                    // console.log(res.role);
+                    // alert('농부만 들어갈 수 있는 페이지 입니다!');
+                    // window.location.href = '/';
                 }
             })
             .catch((error) => {
@@ -112,19 +116,21 @@ const BoardRegist = ({ title: initialTitle, content: initialContent, boardNo, is
                 isReplied: false,
                 isDeleted: false,
                 memberNo: memberData.memberNo,
-                farmNo:farmNo,
+                farmNo: farmNo,
                 withCredentials: true,
             }
         }).then((response) => {
             if (isEdit) {
-                alert("문의가 수정되었습니다.");
-                navigate(`/inquiry/${memberNo}`); // 수정된 경우 memberNo로 이동
+                // 수정된 경우 ResultModal을 통해 메시지 표시
+                setResponse({ message: "문의가 수정되었습니다." });
             } else {
-                alert("문의가 등록되었습니다.");
-                navigate(`/farm/inquiry/${farmNo}`); // 등록된 경우 farmNo로 이동
+                // 등록된 경우 ResultModal을 통해 메시지 표시
+                setResponse({ message: "문의가 등록되었습니다."});
             }
         }).catch((error) => {
             console.error(isEdit ? "Error occured while updating the board:" : "Error occured while registering the board:", error);
+            // 에러가 발생한 경우 ResultModal을 통해 메시지 표시
+            setResponse({ message: isEdit ? "문의 수정 중 오류가 발생했습니다." : "문의 등록 중 오류가 발생했습니다.", type: "error" });
         });
     };
 
@@ -153,6 +159,14 @@ const BoardRegist = ({ title: initialTitle, content: initialContent, boardNo, is
                     placeholder="내용을 입력해 주세요"
                 ></textarea>
             </FormItem>
+            {/* 2. Response에 따라 ResultModal을 렌더링 */}
+            {response && (
+                <ResultModal
+                    title={response.type}
+                    content={response.message}
+                    callbackFnc={closeModal}
+                />
+            )}
         </StyledContainer>
     );
 };

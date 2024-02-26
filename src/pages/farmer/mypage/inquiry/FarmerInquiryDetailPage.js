@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { getMemberNo } from '../../../../api/farmApi';
-
+import ResultModal from '../../../../components/modal/ResultModal';
 const StyledContainer = styled.div`
     background-color: white;
     border-radius: 0.6rem;
@@ -106,7 +106,7 @@ const FarmerInquiryDetailPage = () => {
     const [commentList, setCommentList] = useState(null);
     const isCommentListEmpty = !commentList || commentList.length === 0;
     const [memberData, setMemberData] = useState();
-
+    const [resultMessage, setResultMessage] = useState(null);
     console.log(isCommentListEmpty);
     const navigate = useNavigate();
 
@@ -201,7 +201,11 @@ const FarmerInquiryDetailPage = () => {
                 commentDate: new Date().toISOString(),
                 withCredentials: true,
             });
-            alert('답변이 등록되었습니다.');
+            setResultMessage({
+                title: '',
+                content: '답변이 성공적으로 등록되었습니다.',
+                type: 'success',
+            });
             // 답변이 등록되면 문의 상세 페이지를 다시 불러옵니다.
             fetchInquiryDetail();
             // 답변을 등록한 후에 textarea 내용을 초기화합니다.
@@ -237,7 +241,9 @@ const FarmerInquiryDetailPage = () => {
             console.error('Error fetching comment list:', error);
         }
     };
-
+    const closeModal = () => {
+        setResultMessage(null);
+    };
     return (
         <>
             <StyledContainer>
@@ -290,6 +296,15 @@ const FarmerInquiryDetailPage = () => {
                     </>
                 )}
             </StyledContainer>
+
+            {resultMessage && (
+                <ResultModal
+                    title={resultMessage.title}
+                    content={resultMessage.content}
+                    type={resultMessage.type}
+                    callbackFnc={closeModal}
+                />
+            )}
         </>
     );
 };

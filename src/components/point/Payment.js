@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import FullButton from '../FullButton';
+import ResultModal from '../modal/ResultModal';
 
 const Payment = ({
     userInfo,
@@ -16,6 +17,8 @@ const Payment = ({
     const buyerTel = userInfo.phone;
     const buyerAddr = userInfo.address1;
     const buyerPostcode = userInfo.zipcode;
+
+    const [resultMessage, setResultMessage] = useState(null);
 
     useEffect(() => {
         // 외부 스크립트 동적 로딩
@@ -43,7 +46,12 @@ const Payment = ({
             const uniqueOrderNumber = new Date().getTime() + memberNo;
             console.log(selectedAmount);
             if (selectedAmount === undefined || selectedAmount === null) {
-                alert('충전할 금액을 선택해주세요.');
+                //alert('충전 금액을 선택해주세요.');
+                setResultMessage({
+                    title: '',
+                    content: '충전할 금액을 선택해주세요.',
+                    type: 'error',
+                });
                 console.log(selectedAmount);
                 return;
             }
@@ -52,7 +60,12 @@ const Payment = ({
                 selectedPaymentOption === undefined ||
                 selectedPaymentOption === null
             ) {
-                alert('충전 방식을 설정해주세요.');
+                //alert('충전 방식을 설정해주세요.');
+                setResultMessage({
+                    title: '',
+                    content: '충전 방식을 설정해주세요.',
+                    type: 'error',
+                });
                 console.log(selectedPaymentOption);
                 return;
             }
@@ -114,33 +127,69 @@ const Payment = ({
                                     },
                                 );
                                 if (pointResponse.data.result === 'success') {
-                                    alert('결제 성공');
+                                    //alert('결제 성공');
+                                    setResultMessage({
+                                        title: '',
+                                        content: '결제 성공',
+                                        type: 'success',
+                                    });
                                     navigate('/pay/detail');
                                 } else {
-                                    alert('결제 실패');
+                                    //alert('결제 실패');
+                                    setResultMessage({
+                                        title: '',
+                                        content: '결제 실패',
+                                        type: 'error',
+                                    });
                                 }
                             } else {
                                 // 결제 오류 시
-                                alert('결제 오류');
+                                //alert('결제 오류');
+                                setResultMessage({
+                                    title: '',
+                                    content: '결제 오류',
+                                    type: 'error',
+                                });
                             }
                         } catch (error) {
                             // 포인트 충전 실패 또는 예외 발생 시
-                            alert('포인트 충전 실패, 결제 취소 처리됨');
+                            //alert('포인트 충전 실패, 결제 취소 처리됨');
+                            setResultMessage({
+                                title: '',
+                                content: '포인트 충전 실패, 결제 취소 처리됨',
+                                type: 'error',
+                            });
                         }
                     },
                 );
             });
         } catch (error) {
             console.error('Error while processing payment:', error);
-            alert('결제 오류');
+            //alert('결제 오류');
+            setResultMessage({
+                title: '',
+                content: '결제 오류',
+                type: 'error',
+            });
         }
     };
-
+    const closeModal = () => {
+        setResultMessage(null);
+    };
+    
     return (
         <div>
             <FullButton name="충전하기" onClick={requestPay}></FullButton>
-        </div>
+            {resultMessage && (
+                <ResultModal
+                    title={resultMessage.title}
+                    content={resultMessage.content}
+                    callbackFnc={closeModal}
+                />
+            )}
+        </div>     
     );
+    
 };
 
 export default Payment;
