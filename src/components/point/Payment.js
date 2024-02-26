@@ -75,7 +75,7 @@ const Payment = ({
                         buyer_addr: buyerAddr,
                         buyer_postcode: buyerPostcode,
                         digital: true,
-                        m_redirect_url: 'http://localhost:3000/pay/detail',
+                        //m_redirect_url: 'http://localhost:3000/pay/detail',
                     },
                     async (rsp) => {
                         try {

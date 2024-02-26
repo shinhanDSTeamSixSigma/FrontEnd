@@ -71,7 +71,7 @@ export default function MyPoint({ userInfo, baseUrl }) {
         <>
             <FlexRow>
                 {/*포인트 총 합계*/}
-                <MyPointValue />
+                <MyPointValue memberNo={memberNo} baseUrl={baseUrl} />
                 <Link
                     to="/pay/charge"
                     style={{ marginLeft: 'auto', textDecoration: 'none' }}
