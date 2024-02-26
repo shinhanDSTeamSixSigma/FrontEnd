@@ -52,7 +52,6 @@ export default function MyFarmList() {
     const [farmCrop, setFarmCrop] = useState({ ...cropInit });
     // const navigate = useNavigate();
 
-
     const [serverData, setServerData] = useState(initState);
     const [sortByReview, setSortByReview] = useState(false); // 필터링
     const [memberData, setMemberData] = useState(null); // 농부의 memberNo
@@ -69,7 +68,7 @@ export default function MyFarmList() {
                 console.log('데이터 안옴!!!!!!');
                 console.error(error);
             });
-    }, [memberData]);
+    }, []);
 
     useEffect(() => {
         fetchData();
@@ -181,9 +180,9 @@ export default function MyFarmList() {
                         </select>
                     </div>
                 </div>
-                <ul>
+                <div>
                     {serverData.dtoList.map((key, idx) => (
-                        <li key={key.farmNo} className="">
+                        <div key={key.farmNo} className="">
                             <div
                                 className="shadow-xl h-28   mt-2 mb-1 rounded-2xl flex cursor-pointer justify-between"
                                 onClick={() => handleFarmItemClick(key.farmNo)}
@@ -256,9 +255,9 @@ export default function MyFarmList() {
                                     )}
                                 </div>
                             </div>
-                        </li>
+                        </div>
                     ))}
-                </ul>
+                </div>
             </StyledBody>
             <Paging serverData={serverData} movePage={moveToList} />
         </>
