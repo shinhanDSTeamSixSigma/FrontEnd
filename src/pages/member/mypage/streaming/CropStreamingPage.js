@@ -1,4 +1,5 @@
-import { useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Button from '../../../../components/Button';
 import StyledBody from '../../../../components/StyledBody';
 import StyledHeader from '../../../../components/StyledHeader';
@@ -15,6 +16,19 @@ const calculateDaysSince = (startDate) => {
 export default function CropStreamingPage() {
     const location = useLocation();
     const crop = location.state.crop;
+
+    const farmNo = crop.farmEntity.farmNo;
+
+    const navigate = useNavigate();
+
+    const handlePayment2 = () => {
+        // 결제하기 버튼 클릭 시 실행되는 함수
+        navigate(`/farm/pay/${farmNo}`, { state: crop }); // 페이지 이동 및 상태 전달
+    };
+
+    useEffect(() => {
+        handlePayment2();
+    }, []);
 
     return (
         <>
@@ -70,6 +84,7 @@ export default function CropStreamingPage() {
                         className="d-flex justify-content-center mt-8"
                         name={'영양제 주기'}
                         widthHeight={'w-40 h-11'}
+                        onClick={handlePayment2(farmNo)}
                     />
                     <div style={{ width: '2rem' }}></div>
                     <Button
