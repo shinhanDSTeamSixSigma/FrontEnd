@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { diaryAddFile } from '../../api/diaryApi';
 import { FaCircle } from 'react-icons/fa';
 import { LuImagePlus } from 'react-icons/lu';
 import axios from 'axios';
@@ -41,8 +42,13 @@ const Height = styled.div`
     align-items: center;
     height: 8rem;
 `;
+const fileInitState = {
+    files: [],
+    manageDiv: 'DIARY',
+    fileManageNo: 0,
+};
 
-const DiaryRegist = () => {
+const DiaryRegist = ({ memberNo, cropNo, baseUrl }) => {
     const marginLeft = {
         margin: '0.2rem',
         fontSize: '0.8em',
@@ -52,18 +58,23 @@ const DiaryRegist = () => {
     };
 
     const navigate = useNavigate();
+    const { diaryDate: urlDiaryDate } = useParams();
+
+    // URL 파라미터에서 받아온 값이 없을 경우 현재 날짜를 기본값으로 사용
+    const [diaryDate, setDiaryDate] = useState(
+        urlDiaryDate ? new Date(urlDiaryDate) : new Date(),
+    );
 
     const contentRef = useRef();
     const [content, setContent] = useState('');
 
-    const [memberNo, setMemberNo] = useState(1);
-    const [cropNo, setCropNo] = useState(1);
-
-    const [diaryDate, setDiaryDate] = useState(new Date());
     const [cropBuyDate, setCropBuyDate] = useState(null);
     const [dateDifferenceInDays, setDateDifferenceInDays] = useState(null);
 
     const [sensorInfo, setSensorInfo] = useState([]);
+
+    const [file, setFile] = useState({ ...fileInitState });
+    const [fileReuslt, setFileResult] = useState(null); // 파일 결과
 
     useEffect(() => {
         getCropBuyDate();
@@ -79,12 +90,13 @@ const DiaryRegist = () => {
     const getCropBuyDate = async () => {
         try {
             const response = await axios.get(
-                'http://localhost:8080/calendar/crop/buy-date',
+                `${baseUrl}/calendar/crop/buy-date`,
                 {
                     params: {
                         memberNo: memberNo,
                         cropNo: cropNo,
                     },
+                    withCredentials: true,
                 },
             );
 
@@ -99,12 +111,13 @@ const DiaryRegist = () => {
         const formattedDiaryDate = new Date(diaryDate);
 
         axios
-            .get('http://localhost:8080/calendar/sensor-info', {
+            .get(`${baseUrl}/calendar/sensor-info`, {
                 params: {
                     memberNo: memberNo,
                     cropNo: cropNo,
                     diaryDate: formattedDiaryDate,
                 },
+                withCredentials: true,
             })
             .then((res) => {
                 setSensorInfo(res.data);
@@ -122,6 +135,14 @@ const DiaryRegist = () => {
         setDateDifferenceInDays(differenceInDays);
     };
 
+    const handleChangeFile = (e) => {
+        setFile({ ...file, files: e.target.files });
+        const updatedFileData = { ...file, files: e.target.files };
+        setFile(updatedFileData);
+    };
+
+    const fileData = { ...file };
+
     const save = async () => {
         try {
             const requestData = {
@@ -134,13 +155,37 @@ const DiaryRegist = () => {
 
             // 일기 등록 요청
             const response = await axios.post(
-                'http://localhost:8080/diary/register',
+                `${baseUrl}/diary/register`,
                 requestData,
+                {
+                    withCredentials: true,
+                },
             );
 
             // 일기 등록 성공 시 처리
             console.log('일기 등록 성공:', response.data);
-            navigate('/diary');
+
+            const diaryNo = response.data.Result;
+            console.log(diaryNo);
+            const formData = new FormData();
+
+            if (fileData.files && fileData.files.length > 0) {
+                formData.append('files', fileData.files[0]);
+            }
+            formData.append('manageDiv', 'DIARY');
+            formData.append('fileManageNo', diaryNo);
+
+            diaryAddFile(formData)
+                .then((fileReuslt) => {
+                    console.log(fileReuslt);
+                    setFileResult(fileReuslt['FileNo']);
+                    setFile({ ...fileInitState });
+                })
+                .catch((e) => {
+                    console.error(e);
+                });
+
+            navigate(-1);
         } catch (error) {
             console.error('Error registering diary:', error);
         }
@@ -158,6 +203,11 @@ const DiaryRegist = () => {
                         <LuImagePlus />
                     </Height>
                 </Picture>
+                <input
+                    id="dropzone-file"
+                    type="file"
+                    onChange={handleChangeFile}
+                />
                 {sensorInfo.length > 0 && (
                     <FlexRow style={{ margin: '0 0.5rem 0.5rem' }}>
                         {sensorInfo.map((data, index) => (

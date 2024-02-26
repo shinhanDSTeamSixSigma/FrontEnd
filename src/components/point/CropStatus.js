@@ -20,24 +20,21 @@ const Textmargin = styled.div`
     font-weight: ${(props) => (props.isCompleted ? 'bold' : 'normal')};
 `;
 
-const CropStatus = () => {
+const CropStatus = ({ memberNo, cropNo, baseUrl }) => {
     const [status, setStatus] = useState();
-
-    //데이터
-    const [memberNo, setMemberNo] = useState(1); // 추후 변경
-    const [cropNo, setCropNo] = useState(1); // 추후 변경
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [memberNo, cropNo, baseUrl]);
 
     const fetchData = () => {
         axios
-            .get('http://localhost:8080/receipt/crop-status', {
+            .get(`${baseUrl}/receipt/crop-status`, {
                 params: {
                     memberNo: memberNo,
                     cropNo: cropNo,
                 },
+                withCredentials: true,
             })
             .then((res) => {
                 setStatus(res.data);

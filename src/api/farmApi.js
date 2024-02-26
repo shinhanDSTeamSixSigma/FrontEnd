@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-export const API_SERVER_HOST = 'http://localhost:8090';
+// export const API_SERVER_HOST = 'http://localhost:8080';
+
+export const API_SERVER_HOST = process.env.REACT_APP_API_URL;
 
 export const prefix = `${API_SERVER_HOST}/api/farm`;
 
@@ -27,6 +29,7 @@ export async function getPaging(pageParam) {
     const { page, size } = pageParam;
     const res = await axios.get(`${prefix}/list`, {
         params: { page: page, size: size },
+        withCredentials: true,
     });
     return res.data;
 }
@@ -61,7 +64,9 @@ export async function deleteOne(farmNo) {
 
 // 사진 조회
 export async function getListAllFile(farmNo) {
-    const res = await axios.get(`${prefix}/view/FARM/${farmNo}`);
+    const res = await axios.get(`${prefix}/view/FARM/${farmNo}`, {
+        withCredentials: true,
+    });
     return res.data;
 }
 
@@ -74,7 +79,9 @@ export async function deleteFile(farmNo, fileName) {
 }
 // 작물리스트 가져오기
 export async function getFarmCrop() {
-    const res = await axios.get(`${API_SERVER_HOST}/crop-dict/list`);
+    const res = await axios.get(`${API_SERVER_HOST}/crop-dict/list`, {
+        withCredentials: true,
+    });
     return res.data;
 }
 
@@ -86,7 +93,9 @@ export async function postFarmCrop(farmCropObj) {
 
 // 농장 작물 가져오기
 export async function getFarmCropAll(farmNo) {
-    const res = await axios.get(`${prefix}/${farmNo}/farmCropGet`);
+    const res = await axios.get(`${prefix}/${farmNo}/farmCropGet`, {
+        withCredentials: true,
+    });
     return res.data;
 }
 // 농장 작물 수정하기
@@ -94,19 +103,30 @@ export async function putFarmCrop(farmCropObj) {
     const res = await axios.put(
         `${prefix}/${farmCropObj.farmNo}/farmCropModify`,
         farmCropObj,
+        {
+            withCredentials: true,
+        },
     );
     return res.data;
 }
 // 농장 작물 삭제하기
 export async function deleteFarmCrop(farmNo) {
-    const res = await axios.delete(`${prefix}/${farmNo}/farmCropDelete`);
+    const res = await axios.delete(`${prefix}/${farmNo}/farmCropDelete`, {
+        withCredentials: true,
+    });
     return res.data;
 }
 
 // 로그인 멤버 가져오기
 export async function getMemberNo() {
-    const res = await axios.get(`${API_SERVER_HOST}/user`, {
+    const res = await axios.get(`${process.env.REACT_APP_API_URL}/user`, {
         withCredentials: true,
     });
+    return res.data;
+}
+
+// 농장의 멤버 데이터 가져오기
+export async function getFarmMember(farmNo) {
+    const res = await axios.get(`${prefix}/memberData/${farmNo}`);
     return res.data;
 }

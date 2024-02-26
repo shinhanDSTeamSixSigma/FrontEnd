@@ -264,15 +264,8 @@ export default function FarmRead({ farmNo }) {
                 )}
             </div>
 
-            <Button
-                name={'수정'}
-                widthHeight={'w-20'}
-                moveToModifyFunc={moveToModifyFunc}
-            />
             <div className="fixed bottom-0 left-0 w-full bg-[#80BCBD] px-2.5 py-1.5 text-base font-semibold text-white p-3 flex justify-center text-[20px]">
-                <button onClick={() => moveToModify(farmNo)}>
-                    농장 수정하기
-                </button>
+                <button onClick={() => moveToPay(farmNo)}>농장 신청하기</button>
             </div>
         </>
     );

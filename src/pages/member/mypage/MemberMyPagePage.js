@@ -12,8 +12,9 @@ import { PiNotePencilLight } from 'react-icons/pi';
 import Growing from '../../../components/member/Growing';
 import Nowing from '../../../components/member/Nowing';
 import StyledBody from '../../../components/StyledBody';
-import StyledHeader from '../../../components/StyledHeader';
 import NoFarm from '../../../components/member/NoFarm';
+
+import { useNavigate } from 'react-router-dom';
 
 const FlexRow = styled.div`
     // row로 붙여주는 느낌
@@ -23,8 +24,8 @@ const FlexRow = styled.div`
 `;
 
 const Container = styled.div`
-  display: flex;
-  align-itmes = center;
+    display: flex;
+    align-itmes: center;
 `;
 
 const Box = styled.div`
@@ -50,6 +51,8 @@ const boxStyle = {
     margin: 'auto',
 };
 
+const baseUrl = process.env.REACT_APP_BASE_URL;
+
 export default function MemberMyPagePage() {
     const [userInfo, setUserInfo] = useState({
         memberNo:'',
@@ -71,7 +74,7 @@ export default function MemberMyPagePage() {
 
     const fetchUserInfo = () => {
         axios
-            .get('http://localhost:8090/user', {
+            .get(`${baseUrl}/user`, {
                 withCredentials: true,
             })
             .then((res) => {
@@ -94,7 +97,7 @@ export default function MemberMyPagePage() {
 
     const fetchCrops = () => {
         axios
-            .get(`http://localhost:8090/crops`, {
+            .get(`${baseUrl}/crops`, {
                 withCredentials: true,
             })
             .then((res) => {
@@ -105,6 +108,13 @@ export default function MemberMyPagePage() {
                 console.log('농작물 정보를 가져오는 데 실패했습니다.');
                 console.error(error);
             });
+    };
+
+    // 포인트 페이지로 user 정보 보내기
+    const navigate = useNavigate();
+
+    const handleClick = (userInfo) => {
+        navigate('/pay/detail', { state: { userInfo } });
     };
 
     return (
@@ -156,9 +166,9 @@ export default function MemberMyPagePage() {
                     <FlexRow
                         style={{
                             justifyContent: 'space-between',
-
                             marginLeft: '1rem',
                         }}
+                        onClick={() => handleClick(userInfo)}
                     >
                         <FlexRow>
                             <div>
@@ -189,6 +199,7 @@ export default function MemberMyPagePage() {
                             재배 내역
                         </Step>
                     </Box>
+
                     <Link to={`/review/${userInfo.memberNo}`}>
                         <Box>
                             
@@ -218,6 +229,7 @@ export default function MemberMyPagePage() {
                             </Step>                       
                         </Box>
                     </Link>
+
                     {/* <Box>
                         <PiNotePencilLight style={boxStyle} color="#73A9AD" />
                         <Step
