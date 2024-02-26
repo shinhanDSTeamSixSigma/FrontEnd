@@ -48,9 +48,11 @@ const Nowing = ({ crops }) => {
     };
 
     const handleClickDiary = (crop) => {
+
         const memberNo = crop.memberEntity.memberNo;
         const cropNo = crop.cropNo;
         navigate('/diary/calendar', { state: { memberNo, cropNo } });
+
     };
 
     return (

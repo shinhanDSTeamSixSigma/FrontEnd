@@ -200,6 +200,7 @@ export default function MemberMyPagePage() {
                         </Step>
                     </Box>
 
+
                     <Link to={`/review/${userInfo.memberNo}`}>
                         <Box>
                             
@@ -229,6 +230,7 @@ export default function MemberMyPagePage() {
                             </Step>                       
                         </Box>
                     </Link>
+
 
                     {/* <Box>
                         <PiNotePencilLight style={boxStyle} color="#73A9AD" />
