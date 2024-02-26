@@ -27,3 +27,11 @@ body {
     border-bottom: solid #ffffff;
     box-shadow: 0px 2px 1px 0 rgba(0, 0, 0, 0.15);
 }
+.hide-scrollbar {
+    /* 웹킷 기반 브라우저를 위한 설정 */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+.hide-scrollbar::-webkit-scrollbar {
+    display: none; /* 웹킷 기반 브라우저(Chrome, Safari 등) */
+}

@@ -61,6 +61,12 @@ export default function useCustomMove() {
             search: queryParams.toString(), // 기존 쿼리 스트링 유지
         });
     };
+    const memberMoveToRead = (num) => {
+        navigate({
+            pathname: `/farm/member/read/${num}`,
+            search: queryParams.toString(), // 기존 쿼리 스트링 유지
+        });
+    };
 
     const moveToPay = (num) => {
         navigate({
@@ -74,6 +80,7 @@ export default function useCustomMove() {
         moveToModify,
         moveToRead,
         moveToPay,
+        memberMoveToRead,
         page,
         size,
         refresh,

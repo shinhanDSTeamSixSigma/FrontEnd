@@ -6,6 +6,7 @@ import {
     getListAllFile,
     prefix,
     getFarmCropAll,
+    getMemberNo,
 } from '../../api/farmApi';
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -45,13 +46,29 @@ const cropInit = {
     highTemp: 0,
 };
 export default function MyFarmList() {
-    const { page, size, moveToList, moveToRead } = useCustomMove();
+    const { page, size, moveToList, moveToRead, memberMoveToRead } =
+        useCustomMove();
     const [imagePaths, setImagePaths] = useState({});
     const [farmCrop, setFarmCrop] = useState({ ...cropInit });
     // const navigate = useNavigate();
 
     const [serverData, setServerData] = useState(initState);
     const [sortByReview, setSortByReview] = useState(false); // 필터링
+    const [memberData, setMemberData] = useState(null); // 농부의 memberNo
+    useEffect(() => {
+        // 서버에서 사용자 정보 가져오기
+        getMemberNo()
+            .then((res) => {
+                setMemberData(res);
+                console.log(res);
+
+                console.log('멤버데이터 ', JSON.stringify(memberData));
+            })
+            .catch((error) => {
+                console.log('데이터 안옴!!!!!!');
+                console.error(error);
+            });
+    }, [memberData]);
 
     useEffect(() => {
         fetchData();
@@ -93,7 +110,11 @@ export default function MyFarmList() {
     }, [serverData]);
 
     const handleFarmItemClick = (farmNo) => {
-        moveToRead(farmNo);
+        if (memberData.role === 'farmer') {
+            moveToRead(farmNo);
+        } else {
+            memberMoveToRead(farmNo);
+        }
     };
 
     useEffect(() => {

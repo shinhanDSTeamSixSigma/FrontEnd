@@ -70,7 +70,7 @@ const InquiryItem = styled.div`
 const FarmerInquiryListPage = ({ farm }) => {
     const [inquires, setInquiries] = useState([]);
     const [totalInquiries, setTotalInquiries] = useState(0);
-    const farmNo = farm.farmNo; //농장번호 50번의 문의글 목록
+    const farmNo = farm.farmNo; //농장번호
 
     useEffect(() => {
         const fetchData = async () => {

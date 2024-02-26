@@ -6,11 +6,9 @@ import './styles/App.css';
 
 function App() {
     return (
-        <>
-            <RouterProvider router={root}>
-                <Layout />
-            </RouterProvider>
-        </>
+        <RouterProvider router={root}>
+            <Layout />
+        </RouterProvider>
     );
 }
 
