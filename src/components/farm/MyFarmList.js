@@ -1,12 +1,20 @@
 import StyledHeader from '../StyledHeader';
 import StyledBody from '../StyledBody';
-import { getAllList, getPaging } from '../../api/farmApi';
+import {
+    getAllList,
+    getPaging,
+    getListAllFile,
+    prefix,
+    getFarmCropAll,
+    getMemberNo,
+} from '../../api/farmApi';
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../Button';
 import useCustomMove from '../../hooks/useCustomMove';
 import Paging from '../paging/Paging';
 
+const url = `${prefix}`;
 const initState = {
     dtoList: [],
     pageNumList: [],
@@ -19,102 +27,234 @@ const initState = {
     totalPage: 0,
     current: 0,
 };
+const cropInit = {
+    cropCategoryEntity: { cropCateNo: 0, cropCateName: '' },
+    cropContent: '',
+    cropDictNo: 0,
+    cropName: '',
+    effect: '',
+    spring: 0,
+    summer: 0,
+    fall: 0,
+    winter: 0,
+    level: 0,
+    summary: '',
+    term: 0,
+    tip: '',
+    nutrient: '',
+    lowTemp: 0,
+    highTemp: 0,
+};
 export default function MyFarmList() {
-    // const [farm, setFarm] = useState(initState);
+    const { page, size, moveToList, moveToRead, memberMoveToRead } =
+        useCustomMove();
+    const [imagePaths, setImagePaths] = useState({});
+    const [farmCrop, setFarmCrop] = useState({ ...cropInit });
+    // const navigate = useNavigate();
 
-    const { page, size, moveToList, moveToRead } = useCustomMove();
-    const navigate = useNavigate();
-
-    // useEffect(() => {
-    //     getAllList().then((data) => {
-    //         console.log(data);
-    //         setFarm(data);
-    //     });
-    // }, []);
 
     const [serverData, setServerData] = useState(initState);
+    const [sortByReview, setSortByReview] = useState(false); // 필터링
+    const [memberData, setMemberData] = useState(null); // 농부의 memberNo
     useEffect(() => {
-        getPaging({ page, size }).then((data) => {
-            console.log(data);
-            setServerData(data);
-        });
-    }, [page, size]);
+        // 서버에서 사용자 정보 가져오기
+        getMemberNo()
+            .then((res) => {
+                setMemberData(res);
+                console.log(res);
 
-    const handleFarmItemClick = (farmNo) => {
-        moveToRead(farmNo);
+                console.log('멤버데이터 ', JSON.stringify(memberData));
+            })
+            .catch((error) => {
+                console.log('데이터 안옴!!!!!!');
+                console.error(error);
+            });
+    }, [memberData]);
+
+    useEffect(() => {
+        fetchData();
+    }, [page, sortByReview]); // page와 sortByReview가 변경될 때마다 데이터를 다시 가져옴
+
+    const fetchData = async () => {
+        const data = await getPaging({ page, size, sortByReview });
+        sortFarmList(data.dtoList); // 정렬
+        setServerData(data);
     };
-    function FarmObject(props) {
-        return (
-            <div className="d-flex shadow border rounded w-full">
-                <div className="ml-3">
-                    <div>
-                        <h2 className="text-xl font-bold text-gray-900">
-                            {props.farm.farmName}
-                        </h2>
-                    </div>
-                    <div className="d-flex bd-highlight mt-1">
-                        {/*<p className="text-sm text-gray-500">
-                            {props.farm.farm_rating}
-        </p>*/}
-                        <p className="text-lg">⭐</p>
-                        <p className="mt-1 font-bold">
-                            {props.farm.farmRating}
-                        </p>{' '}
-                        <p className="mt-2 ml-1 text-sm">
-                            ({props.farm.farmOrderNum})
-                        </p>
-                        <p className="ml-2 mr-2 mt-1 text-sm">|</p>
-                        <p className="mt-1 text-sm">
-                            경력 {props.farm.farmCareer}년
-                        </p>
-                        <p className="ml-2 mr-2 mt-1 text-sm">|</p>
-                        <p className="mt-1 text-sm">{props.farm.farmAddress}</p>
-                    </div>
-                    <div>
-                        <p className="text-sm text-gray-500 mt-3">
-                            {props.farm.farmContent}
-                        </p>
-                    </div>
-                </div>
-                <img
-                    className="w-25 h-25 rounded flex-shrink-1 bd-highlight ms-auto shadows mt-2 mb-2 mr-2 ml-2"
-                    src={props.farm.image}
-                    alt=""
-                />
-            </div>
-        );
-    }
+
+    useEffect(() => {
+        const fetchImages = async () => {
+            const updatedImagePaths = {}; // 새로운 객체 생성
+            const promises = serverData.dtoList.map((farm) => {
+                return getListAllFile(farm.farmNo)
+                    .then((data) => ({
+                        farmNo: farm.farmNo,
+                        imagePath: data, // 이미지 데이터 형태에 따라 수정 필요
+                    }))
+                    .catch((error) => ({
+                        farmNo: farm.farmNo,
+                        images: [],
+                    }));
+            });
+
+            const imageDataList = await Promise.all(promises);
+            // 새로운 객체에 이미지 경로 할당
+            imageDataList.forEach((imageData) => {
+                updatedImagePaths[imageData.farmNo] = imageData.imagePath;
+            });
+
+            setImagePaths(updatedImagePaths);
+        };
+
+        if (serverData.dtoList.length > 0) {
+            fetchImages();
+        }
+    }, [serverData]);
+
+    // member가 farmer면 농부의 농장 상세 member면 멤버의 농장 상세
+    const handleFarmItemClick = (farmNo) => {
+        if (memberData.role === 'farmer') {
+            moveToRead(farmNo);
+        } else {
+            memberMoveToRead(farmNo);
+        }
+    };
+
+    useEffect(() => {
+        const fetchCrop = async () => {
+            const updatedfarmCrop = {}; // 새로운 객체 생성
+            const promises = serverData.dtoList.map((farm) => {
+                return getFarmCropAll(farm.farmNo)
+                    .then((data) => ({
+                        farmNo: farm.farmNo,
+                        farmCropData: data.getResult,
+                    }))
+                    .catch((error) => ({
+                        farmNo: farm.farmNo,
+                        farmCropData: {},
+                    }));
+            });
+
+            const cropDataList = await Promise.all(promises);
+
+            cropDataList.forEach((cropData) => {
+                updatedfarmCrop[cropData.farmNo] = cropData.farmCropData;
+            });
+
+            setFarmCrop(updatedfarmCrop);
+        };
+
+        if (serverData.dtoList.length > 0) {
+            fetchCrop();
+        }
+    }, [serverData]);
+    useEffect(() => {
+        console.log(JSON.stringify(farmCrop));
+        console.log(JSON.stringify(imagePaths));
+    });
+
+    // 정렬
+    const sortFarmList = (list) => {
+        if (sortByReview) {
+            list.sort((a, b) => b.reviewCnt - a.reviewCnt); // 리뷰 많은 순
+        } else {
+            list.sort((a, b) => a.farmNo - b.farmNo); // 기본 순서
+        }
+    };
+
+    const handleSortChange = (value) => {
+        if (value === 'review') {
+            setSortByReview(true);
+        } else {
+            setSortByReview(false);
+        }
+    };
     return (
         <>
-            <StyledHeader>농장 목록 </StyledHeader>
             <StyledBody>
-                <ul className="divide-y divide-gray-200">
+                <div className="flex justify-end text-[1rem] text-[#4F6F52]">
+                    <div>
+                        <select
+                            onChange={(e) => handleSortChange(e.target.value)}
+                        >
+                            <option value="default">기본순</option>
+                            <option value="review">리뷰 많은 순</option>
+                        </select>
+                    </div>
+                </div>
+                <ul>
                     {serverData.dtoList.map((key, idx) => (
-                        <li key={key.farmNo} className="py-4 ">
+                        <li key={key.farmNo} className="">
                             <div
+                                className="shadow-xl h-28   mt-2 mb-1 rounded-2xl flex cursor-pointer justify-between"
                                 onClick={() => handleFarmItemClick(key.farmNo)}
-                                style={{ cursor: 'pointer' }}
-                                // to={moveToRead(key.farmNo)}
-                                // to={`/farm/read/${key.farmNo}`}
-                                className="w-full flex"
                             >
-                                {/* <img
-                                className="h-10 w-10 rounded-full"
-                                src={farm[key['img']]}
-                                alt="일단 비우기"
-                            /> */}
-                                {/*<div className="font-extrabold text-2xl ">
-                                    {idx + 1}
-                        </div>
-                                <div className="ml-5">
-                                    <p className="text-xl font-medium text-gray-900">
+                                <div className="mt-auto mb-auto ml-6 ">
+                                    <div className="text-[1.1rem] font-semibold mt-1">
                                         {key.farmName}
-                                    </p>
+                                    </div>
+                                    {farmCrop &&
+                                        farmCrop[key.farmNo] &&
+                                        farmCrop[key.farmNo][
+                                            'cropCategoryEntity'
+                                        ] && (
+                                            <p className="text-xs mb-[2px]">
+                                                {
+                                                    farmCrop[key.farmNo][
+                                                        'cropCategoryEntity'
+                                                    ]['cropCateName']
+                                                }{' '}
+                                                전문 농장
+                                            </p>
+                                        )}
+                                    <div className="flex text-[0.79rem] mb-1">
+                                        <div className="text-[0.79rem] font-semibold flex justify-center items-center">
+                                            <img
+                                                src={
+                                                    process.env.PUBLIC_URL +
+                                                    `/img/star.png`
+                                                }
+                                                alt=""
+                                                className="mr-1 w-4 h-4"
+                                            />
+                                            <span>
+                                                {key.farmRating.toFixed(1)}
+                                            </span>
+                                            <span className="text-[0.7rem] ml-1">
+                                                ({key.reviewCnt})
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <span className="ml-1">
+                                                | 경력 {key.farmCareer}년
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <span className="ml-1">
+                                                |{' '}
+                                                {key.farmAddress.replace(
+                                                    / .*/,
+                                                    '',
+                                                )}
+                                            </span>
+                                        </div>
+                                    </div>
+
                                     <p className="text-xs text-gray-500">
                                         {key.farmContent}
                                     </p>
-                                </div>*/}
-                                <FarmObject farm={key} />
+                                </div>
+                                <div className=" rounded-2xl w-20 h-20 flex justify-center items-center mr-3">
+                                    {imagePaths && imagePaths[key.farmNo] && (
+                                        <img
+                                            key={0}
+                                            src={`${url}/${
+                                                imagePaths[key.farmNo][0]
+                                            }`}
+                                            alt={`image ${0}`}
+                                            className="h-full rounded-2xl shadow-xl mt-[2rem] "
+                                        />
+                                    )}
+                                </div>
                             </div>
                         </li>
                     ))}

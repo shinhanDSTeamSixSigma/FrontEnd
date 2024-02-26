@@ -25,7 +25,7 @@ const CropStatus = ({ memberNo, cropNo, baseUrl }) => {
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [memberNo, cropNo, baseUrl]);
 
     const fetchData = () => {
         axios

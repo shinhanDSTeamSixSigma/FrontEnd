@@ -6,6 +6,7 @@ import FarmerInquiryDetailPage from '../pages/farmer/mypage/inquiry/FarmerInquir
 import FarmerInquiryRegistPage from '../pages/farmer/mypage/inquiry/FarmerInquiryRegistPage.js';
 import FarmerReviewListPage from '../pages/farmer/mypage/review/FarmerReviewListPage.js';
 import FarmerReviewDetail from '../pages/farmer/mypage/review/FarmerReviewDetail.js';
+
 const { createBrowserRouter } = require('react-router-dom');
 
 const Loading = <LoadingModal />;
@@ -13,8 +14,12 @@ const Loading = <LoadingModal />;
 const Main = lazy(() => import('../pages/main/MainPage'));
 // 농장 리스트
 const Farm = lazy(() => import('../pages/member/farm/FarmListPage'));
-// 농장 상세
+// 농부 농장 상세
 const FarmEdit = lazy(() => import('../pages/member/farm/FarmDetailPage'));
+// 멤버 농장 상세
+const MemberFarmEdit = lazy(() =>
+    import('../pages/member/farm/MemberDetailFarmpage.js'),
+);
 
 // 레이아웃
 const Layout = lazy(() => import('../layouts/Layout'));
@@ -22,22 +27,23 @@ const Layout = lazy(() => import('../layouts/Layout'));
 const MemberMyPage = lazy(() =>
     import('../pages/member/mypage/MemberMyPagePage'),
 );
+// 농부 마이페이지
+const FarmerMyPage = lazy(() =>
+    import('../pages/farmer/mypage/FarmerMyPagePage.js'),
+);
+
 // 멤버 수정
 const MemberInfoEdit = lazy(() =>
     import('../pages/member/mypage/MemberInfoPage'),
-);
-// 농부 마이페이지
-const FarmerMyPage = lazy(() =>
-    import('../pages/farmer/mypage/FarmerMyPagePage'),
 );
 // 농부 수정
 const FarmerInfoEdit = lazy(() =>
     import('../pages/farmer/mypage/FarmerInfoPage'),
 );
-// 멤버 마이페이지 - 내 농장 목록
-const MyFarmList = lazy(() =>
-    import('../pages/member/mypage/farm/MyfarmListPage'),
-);
+// // 멤버 마이페이지 - 내 농장 목록
+// const MyFarmList = lazy(() =>
+//     import('../pages/member/mypage/farm/MyfarmListPage'),
+// );
 // 멤버 마이페이지 - 작물 스트리밍
 const CropStreaming = lazy(() =>
     import('../pages/member/mypage/streaming/CropStreamingPage'),
@@ -50,7 +56,9 @@ const CropAlbum = lazy(() =>
 const MyCrop = lazy(() => import('../pages/member/mypage/MyCropPage'));
 
 //식물 기록 - 다이어리
-const Diary = lazy(() => import('../pages/member/mypage/diary/DiaryPage'));
+const DiaryList = lazy(() =>
+    import('../pages/member/mypage/diary/DiaryListPage'),
+);
 const DiaryRegist = lazy(() =>
     import('../pages/member/mypage/diary/DiaryRegistPage'),
 );
@@ -205,6 +213,14 @@ const root = createBrowserRouter([
                 ),
             },
             {
+                path: 'member/read/:farmNo',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <MemberFarmEdit />
+                    </Suspense>
+                ),
+            },
+            {
                 path: 'regist',
                 element: (
                     <Suspense fallback={Loading}>
@@ -298,6 +314,14 @@ const root = createBrowserRouter([
                 ),
             },
             {
+                path: 'farmerMypage',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <FarmerMyPage />
+                    </Suspense>
+                ),
+            },
+            {
                 path: 'info-edit',
                 element: (
                     <Suspense fallback={Loading}>
@@ -305,27 +329,12 @@ const root = createBrowserRouter([
                     </Suspense>
                 ),
             },
-            {
-                path: 'myfarm',
-                element: (
-                    <Suspense fallback={Loading}>
-                        <MyFarmList />
-                    </Suspense>
-                ),
-            },
+
             {
                 path: 'streaming',
                 element: (
                     <Suspense fallback={Loading}>
                         <CropStreaming />
-                    </Suspense>
-                ),
-            },
-            {
-                path: 'album',
-                element: (
-                    <Suspense fallback={Loading}>
-                        <CropAlbum />
                     </Suspense>
                 ),
             },
@@ -361,7 +370,7 @@ const root = createBrowserRouter([
                 path: '',
                 element: (
                     <Suspense fallback={Loading}>
-                        <Diary />
+                        <DiaryList />
                     </Suspense>
                 ),
             },
@@ -381,18 +390,16 @@ const root = createBrowserRouter([
                     </Suspense>
                 ),
             },
-        ],
-    },
-    {
-        path: 'calendar',
-        element: (
-            <Suspense fallback={Loading}>
-                <Layout />
-            </Suspense>
-        ),
-        children: [
             {
-                path: '',
+                path: 'album',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <CropAlbum />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'calendar',
                 element: (
                     <Suspense fallback={Loading}>
                         <DiaryCalendar />

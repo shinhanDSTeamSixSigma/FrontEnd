@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FaCircle } from 'react-icons/fa';
+import { getDiaryFile } from '../../api/diaryApi';
 import styled from 'styled-components';
 import axios from 'axios';
 import FullButton from '../FullButton';
@@ -14,11 +15,12 @@ const FlexRow = styled.div`
     display: flex;
     flex-direction: row;
 `;
-const Picture = styled.div`
+const Picture = styled.img`
     background-color: #d9d9d9;
     border-radius: 0.8rem;
     margin-bottom: 1rem;
-    height: 8rem;
+    height: 10rem;
+    width: 100%;
 `;
 const Content = styled.div`
     background-color: white;
@@ -35,7 +37,7 @@ const Content = styled.div`
     }
 `;
 
-const DiaryEdit = (baseUrl) => {
+const DiaryEdit = ({ memberNo, cropNo, baseUrl }) => {
     const marginLeft = {
         margin: '0.2rem',
         fontSize: '0.8em',
@@ -49,6 +51,8 @@ const DiaryEdit = (baseUrl) => {
     const { diaryNo } = useParams();
     const [diaryDetail, setDiaryDetail] = useState({});
     const contentRef = useRef();
+
+    const [imagePaths, setImagePaths] = useState([]);
 
     useEffect(() => {
         diaryListData();
@@ -101,12 +105,18 @@ const DiaryEdit = (baseUrl) => {
                 );
                 // 성공적으로 수정되었으면 리다이렉션을 수행
                 alert('수정 완료');
-                navigate('/diary');
+                navigate('/diary', { state: { memberNo, cropNo } });
             } catch (error) {
                 console.error('Error modifying diary:', error);
             }
         }
     };
+    useEffect(() => {
+        getDiaryFile(diaryNo).then((data) => {
+            setImagePaths(data);
+        });
+    }, [diaryNo]);
+    console.log('imagePaths' + imagePaths);
     return (
         <>
             <StyledContainer>
@@ -116,7 +126,7 @@ const DiaryEdit = (baseUrl) => {
                     </div>
                     <div>({diaryDetail.dateDifferenceInDays}일차)</div>
                 </FlexRow>
-                <Picture></Picture>
+                <Picture src={`${baseUrl}/img/${imagePaths}`} />
                 <FlexRow style={{ margin: '0 0.5rem 0.5rem' }}>
                     <FlexRow style={{ margin: 'auto' }}>
                         <div

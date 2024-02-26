@@ -8,6 +8,7 @@ const StyledContainer = styled.div`
     border-radius:0.6rem;
     margin:1.5rem;
 `;
+const baseUrl = process.env.REACT_APP_BASE_URL;
 const ReviewEdit = () => {
     const { reviewNo, memberNo, farmNo } = useParams();
     const [reviewDetail, setReviewDetail] = useState(null);
@@ -15,7 +16,9 @@ const ReviewEdit = () => {
     useEffect(() => {
         const fetchReviewDetail = async () => {
             try {
-                const response = await axios.get(`http://localhost:8090/review/${reviewNo}`);
+                const response = await axios.get(`${baseUrl}/review/${reviewNo}`, {
+                    withCredentials: true,
+                });
                 setReviewDetail(response.data);
             } catch (error) {
                 console.error("Error fetching inquiry detail:", error);

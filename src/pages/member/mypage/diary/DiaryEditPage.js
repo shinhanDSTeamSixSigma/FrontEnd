@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import DiaryDetailTitle from '../../../../components/diary/DiaryDetailTitle';
 import DiaryEdit from '../../../../components/diary/DiaryEdit';
@@ -12,8 +13,11 @@ const StyledContainer = styled.div`
 `;
 
 const DiaryEditPage = () => {
-    const [memberNo, setMemberNo] = useState(1); // 추후 변경
-    const [cropNo, setCropNo] = useState(1); // 추후 변경
+    const location = useLocation(); // 현재 위치
+    const { memberNo, cropNo } = location.state;
+
+    console.log('수정 페이지' + memberNo);
+    console.log('수정 페이지' + cropNo);
 
     return (
         <>
@@ -24,7 +28,7 @@ const DiaryEditPage = () => {
                     baseUrl={baseUrl}
                 />
             </StyledContainer>
-            <DiaryEdit baseUrl={baseUrl} />
+            <DiaryEdit memberNo={memberNo} cropNo={cropNo} baseUrl={baseUrl} />
         </>
     );
 };

@@ -5,13 +5,17 @@ import { IoArrowBackSharp } from 'react-icons/io5';
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import {
+    getMemberNo
+} from '../../../../api/farmApi'
+
 const StyledContainer = styled.div`
     background-color:white;
     border-radius:0.6rem;
     margin:1.5rem;
 `;
 const Title=styled.div`
-    font-size:1.2rem;
+    font-size:1rem;
     font-weight: 600;
     margin:1rem;
     margin-top:1.5rem;
@@ -19,7 +23,8 @@ const Title=styled.div`
 const FlexRowGap=styled.div`
     display:flex;
     flex-direction:row;
-    gap:2rem;
+    gap:1rem;
+    font-size:0.8rem;
     margin:1rem;
     color:#878787;
 `;
@@ -96,19 +101,23 @@ export const BackButton = styled(IoArrowBackSharp)`
   color: var(--color-textgrey);
   cursor: pointer;
 `;
+const baseUrl = process.env.REACT_APP_BASE_URL;
 const FarmerInquiryDetailPage =()=>{
     const { boardNo } = useParams();
     const [inquiryDetail, setInquiryDetail] = useState(null);
     const [commentContent, setCommentContent] = useState("");
     const [commentList, setCommentList] = useState(null);
     const isCommentListEmpty = !commentList || commentList.length === 0;
-    
+    const [memberData, setMemberData] = useState();
+
     console.log(isCommentListEmpty);
     const navigate = useNavigate();
 
     const fetchInquiryDetail = async () => {
     try {
-        const response = await axios.get(`http://localhost:8090/board/detail/${boardNo}`);
+        const response = await axios.get(`${baseUrl}/board/detail/${boardNo}`, {
+            withCredentials: true,
+        });
         
         const inquiryData = response.data;
 
@@ -127,9 +136,32 @@ const FarmerInquiryDetailPage =()=>{
         console.error("Error fetching inquiry detail:", error);
         }
     };
+
+   
+    
     useEffect(() => {
         fetchInquiryDetail();
-    }, [boardNo]);
+    }, [boardNo,memberData]);
+
+    useEffect(() => {
+        // 서버에서 사용자 정보 가져오기
+        getMemberNo()
+            .then((res) => {
+                setMemberData(res);
+                console.log(res);
+
+                console.log('멤버데이터 ', JSON.stringify(res.memberNo));
+                if (res.role !== 'FARMER') {
+                    console.log(res.role);
+                    alert('농부만 들어갈 수 있는 페이지 입니다!');
+                    window.location.href = '/';
+                }
+            })
+            .catch((error) => {
+                console.log('데이터 안옴!!!!!!');
+                console.error(error);
+            });
+    }, []);
      
     const CommentList = ({ commentList }) => {
         return (
@@ -154,10 +186,11 @@ const FarmerInquiryDetailPage =()=>{
     
     const handleCommentSubmit = async () =>{
         try{
-            await axios.post(`http://localhost:8090/board/${boardNo}/comment`, {
+            await axios.post(`${baseUrl}/board/${boardNo}/comment`, {
                 content:commentContent,
-                memberNo: 1,
-                commentDate:new Date().toISOString()               
+                memberNo: memberData.memberNo,
+                commentDate:new Date().toISOString(),
+                withCredentials: true,          
             });
             alert("답변이 등록되었습니다.");
             // 답변이 등록되면 문의 상세 페이지를 다시 불러옵니다.
@@ -170,7 +203,9 @@ const FarmerInquiryDetailPage =()=>{
     };
     const handleCommentList = async ()=>{
         try {
-            const response = await axios.get(`http://localhost:8090/board/${boardNo}/commentlist`);
+            const response = await axios.get(`${baseUrl}/board/${boardNo}/commentlist`, {
+                withCredentials: true,
+            });
             const commentList = response.data.map(comment => {
                 const commentDate = new Date(comment.commentDate);
                 const formattedDate = `${commentDate.getFullYear()}-${('0' + (commentDate.getMonth() + 1)).slice(-2)}-${('0' + commentDate.getDate()).slice(-2)} ${('0' + commentDate.getHours()).slice(-2)}:${('0' + commentDate.getMinutes()).slice(-2)}`;

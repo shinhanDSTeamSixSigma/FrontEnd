@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { FaCircle } from 'react-icons/fa';
 import axios from 'axios';
 import styled from 'styled-components';
@@ -26,10 +26,17 @@ export default function DiaryTitle({ memberNo, cropNo, baseUrl }) {
         width: '30%',
     };
 
+    const navigate = useNavigate();
+    const handleButtonClick = (path) => {
+        navigate(path, { state: { memberNo, cropNo } });
+    };
+
+    const [cropData, setCropData] = useState([]);
+
     const location = useLocation();
-    const isCalendarPage = location.pathname === '/calendar';
+    const isCalendarPage = location.pathname === '/diary/calendar';
     const isDiaryPage = location.pathname === '/diary';
-    const isAlbumPage = location.pathname === '/mypage/album';
+    const isAlbumPage = location.pathname === '/diary/album';
 
     const sharedColor = '#C4C4C4';
 
@@ -48,11 +55,9 @@ export default function DiaryTitle({ memberNo, cropNo, baseUrl }) {
         hoverBackgroundColor: isAlbumPage ? '#C4DFAA' : '#C4DFAA',
     };
 
-    const [cropData, setCropData] = useState([]);
-
     useEffect(() => {
         cropInfoData();
-    }, []);
+    }, [memberNo, cropNo]);
 
     const cropInfoData = () => {
         axios
@@ -87,7 +92,9 @@ export default function DiaryTitle({ memberNo, cropNo, baseUrl }) {
                                     hoverBackgroundColor={
                                         calendarButtonStyle.hoverBackgroundColor
                                     }
-                                    to="/calendar"
+                                    onClick={() =>
+                                        handleButtonClick('/diary/calendar')
+                                    }
                                 />
                                 <SelectButton
                                     name="다이어리"
@@ -97,7 +104,7 @@ export default function DiaryTitle({ memberNo, cropNo, baseUrl }) {
                                     hoverBackgroundColor={
                                         diaryButtonStyle.hoverBackgroundColor
                                     }
-                                    to="/diary"
+                                    onClick={() => handleButtonClick('/diary')}
                                 />
                                 <SelectButton
                                     name="앨범"
@@ -107,7 +114,9 @@ export default function DiaryTitle({ memberNo, cropNo, baseUrl }) {
                                     hoverBackgroundColor={
                                         albumButtonStyle.hoverBackgroundColor
                                     }
-                                    to="/mypage/album"
+                                    onClick={() =>
+                                        handleButtonClick('/diary/album')
+                                    }
                                 />
                             </FlexRow>
                         </FlexRow>

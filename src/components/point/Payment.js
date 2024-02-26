@@ -4,13 +4,18 @@ import axios from 'axios';
 import FullButton from '../FullButton';
 
 const Payment = ({
-    memberNo,
-    cropNo,
+    userInfo,
     baseUrl,
     selectedAmount,
     selectedPaymentOption,
 }) => {
     const navigate = useNavigate();
+    const memberNo = userInfo.memberNo;
+    const buyerEmail = userInfo.memberId;
+    const buyerName = userInfo.memberName;
+    const buyerTel = userInfo.phone;
+    const buyerAddr = userInfo.address1;
+    const buyerPostcode = userInfo.zipcode;
 
     useEffect(() => {
         // 외부 스크립트 동적 로딩
@@ -28,7 +33,7 @@ const Payment = ({
             document.head.removeChild(jquery);
             document.head.removeChild(iamport);
         };
-    }, [selectedAmount, selectedPaymentOption]);
+    }, [memberNo, selectedAmount, selectedPaymentOption]);
 
     const requestPay = async () => {
         try {
@@ -64,13 +69,13 @@ const Payment = ({
                         merchant_uid: uniqueOrderNumber,
                         name: '포인트 충전',
                         amount: selectedAmount,
-                        buyer_email: 'test@naver.com',
-                        buyer_name: '나용',
-                        buyer_tel: '010-1234-5678',
-                        buyer_addr: '서울특별시',
-                        buyer_postcode: '123-456',
+                        buyer_email: buyerEmail,
+                        buyer_name: buyerName,
+                        buyer_tel: buyerTel,
+                        buyer_addr: buyerAddr,
+                        buyer_postcode: buyerPostcode,
                         digital: true,
-                        m_redirect_url: 'http://localhost:3000/pay/detail',
+                        //m_redirect_url: 'http://localhost:3000/pay/detail',
                     },
                     async (rsp) => {
                         try {
@@ -102,7 +107,6 @@ const Payment = ({
                                         changeValue: 0,
                                         changeCause: 0,
                                         memberNo: memberNo,
-                                        cropNo: cropNo,
                                         billNo: billNo,
                                     },
                                     {

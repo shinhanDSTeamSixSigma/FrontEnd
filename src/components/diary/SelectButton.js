@@ -21,6 +21,12 @@ export default function Button(props) {
     ring-gray-300
     hover:bg-${buttonStyle.hoverBackgroundColor}
   `;
+    const handleClick = () => {
+        // props로 전달받은 onClick 함수 호출
+        if (props.onClick) {
+            props.onClick();
+        }
+    };
 
     // 만약에 to prop이 전달되면 Link 컴포넌트로 감싸고, 아니면 일반 button을 렌더링합니다.
     const ButtonElement = props.to ? (
@@ -36,6 +42,7 @@ export default function Button(props) {
             type="button"
             style={{ ...buttonStyle }}
             className={buttonClassName}
+            onClick={handleClick}
         >
             {props.name}
         </button>

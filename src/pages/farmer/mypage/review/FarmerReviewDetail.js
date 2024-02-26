@@ -15,6 +15,7 @@ const FlexRowGap=styled.div`
     display:flex;
     flex-direction:row;
     gap:0.5rem;
+    font-size:0.6rem;
     margin:1rem;
     color:#878787;
 `;
@@ -25,7 +26,7 @@ const DivLine=styled.div`
     margin-top:1.5rem;
 `
 const Content=styled.div`
-    font-size : 1rem;
+    font-size : 0.8rem;
     margin:2rem 0 2rem 1rem;   
     height: 15rem;
 `
@@ -49,18 +50,18 @@ export const FormItem = styled.div`
     }
 `;
 const Writer=styled.div`
-    font-size:1.2rem;
+    font-size:1rem;
     font-weight:600;
     margin: 1rem;
 `
 const TextRating=styled.div`
-    font-size:1.2rem;
+    font-size:1rem;
     font-weight:600;
     color:#878787;
 `
 const DateText=styled.div`
     margin:1rem;
-    font-size:1rem;
+    font-size:0.8rem;
     color:#878787;
     text-align:left;
 `
@@ -68,6 +69,7 @@ export const BackButton = styled(IoArrowBackSharp)`
   color: var(--color-textgrey);
   cursor: pointer;
 `;
+const baseUrl = process.env.REACT_APP_BASE_URL;
 const FarmerReviewDetail =()=>{
     const { reviewNo } = useParams();
     const [reviewDetail, setReviewDetail] = useState(null);
@@ -75,7 +77,9 @@ const FarmerReviewDetail =()=>{
 
     const fetchReviewDetail = async () => {
     try {
-        const response = await axios.get(`http://localhost:8090/review/${reviewNo}`);
+        const response = await axios.get(`${baseUrl}/review/${reviewNo}`, {
+            withCredentials: true,
+        });
         
         const reviewData = response.data;
 

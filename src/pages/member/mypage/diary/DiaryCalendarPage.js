@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import DiaryTitle from '../../../../components/diary/DiaryTitle';
 import DiaryCalendar from '../../../../components/diary/DiaryCalendar';
@@ -13,8 +14,8 @@ const StyledContainer = styled.div`
 `;
 
 const DiaryCalendarPage = () => {
-    const [memberNo, setMemberNo] = useState(1); // 추후 변경
-    const [cropNo, setCropNo] = useState(1); // 추후 변경
+    const location = useLocation(); // 현재 위치
+    const { memberNo, cropNo } = location.state;
 
     return (
         <>

@@ -21,7 +21,7 @@ const ContentMargin = styled.div`
 const ButtonCss = styled.div`
     width: 4rem;
     height: 2.4rem;
-    font-size: 0.9em;
+    font-size: 0.8em;
     margin: auto 0.5rem 0.5rem;
     align-items: center;
 `;
@@ -50,7 +50,7 @@ const PointCharge = ({
                     }`}
                     onClick={() => handleAmountClick('10000')}
                 >
-                    1만원
+                    1만
                 </ButtonCss>
                 <ButtonCss
                     type="button"
@@ -59,7 +59,7 @@ const PointCharge = ({
                     }`}
                     onClick={() => handleAmountClick('30000')}
                 >
-                    3만원
+                    3만
                 </ButtonCss>
                 <ButtonCss
                     type="button"
@@ -68,7 +68,7 @@ const PointCharge = ({
                     }`}
                     onClick={() => handleAmountClick('50000')}
                 >
-                    5만원
+                    5만
                 </ButtonCss>
                 <ButtonCss
                     type="button"
@@ -77,7 +77,7 @@ const PointCharge = ({
                     }`}
                     onClick={() => handleAmountClick('70000')}
                 >
-                    7만원
+                    7만
                 </ButtonCss>
                 <ButtonCss
                     type="button"
@@ -86,7 +86,7 @@ const PointCharge = ({
                     }`}
                     onClick={() => handleAmountClick('100000')}
                 >
-                    10만원
+                    10만
                 </ButtonCss>
                 <ButtonCss
                     type="button"
@@ -95,7 +95,7 @@ const PointCharge = ({
                     }`}
                     onClick={() => handleAmountClick('500000')}
                 >
-                    50만원
+                    50만
                 </ButtonCss>
             </ContentMargin>
             {/*포인트 결제 방식 설정*/}

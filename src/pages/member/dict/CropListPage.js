@@ -11,9 +11,9 @@ const StyledContainer = styled.div`
     margin: auto 1.5rem auto;
 `;
 const Title=styled.div`
-    font-size:1.2em;
+    font-size:1em;
     font-weight:600;
-    margin-left:1.5rem;
+    margin-left:1rem;
 `
 const CropItemList = styled.div`
     display: flex;
@@ -35,8 +35,8 @@ const ItemContent = styled.div`
     justify-content: center;
 `;
 const ImageContainer = styled.div`
-    width: 28vw; /* viewport 너비의 28% */
-    height: 28vw; /* viewport 너비의 28% */
+    width: 26vw; /* viewport 너비의 28% */
+    height: 26vw; /* viewport 너비의 28% */
     max-width: 200px; /* 최대 너비 */
     max-height: 200px; /* 최대 높이 */
     box-sizing: border-box;
@@ -64,8 +64,8 @@ function CropListPage() {
       }
     };
  
-    fetchData(); // 데이터 가져오기 함수 호출
-  }, []); // 빈 배열을 전달하여 컴포넌트가 마운트될 때 한 번만 실행
+    fetchData();
+  }, []);
 
   return (
     <StyledContainer>
