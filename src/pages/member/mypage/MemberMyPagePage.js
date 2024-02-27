@@ -108,9 +108,8 @@ export default function MemberMyPagePage() {
 
     // 포인트 페이지로 user 정보 보내기
     const navigate = useNavigate();
-
     const handleClick = (userInfo) => {
-        navigate('/pay/detail', { state: { userInfo } });
+        navigate('/mypage/detail', { state: { userInfo } });
     };
 
     return (
@@ -183,18 +182,20 @@ export default function MemberMyPagePage() {
                     }}
                 ></hr>
                 <FlexRow style={{ justifyContent: 'space-evenly' }}>
-                    <Box>
-                        <IoHomeOutline style={boxStyle} color="#73A9AD" />
-                        <Step
-                            style={{
-                                justifyContent: 'center',
-                                display: 'flex',
-                            }}
-                            className="text-xs"
-                        >
-                            재배 내역
-                        </Step>
-                    </Box>
+                    <Link to={`/mypage/mycrop`}>
+                        <Box>
+                            <IoHomeOutline style={boxStyle} color="#73A9AD" />
+                            <Step
+                                style={{
+                                    justifyContent: 'center',
+                                    display: 'flex',
+                                }}
+                                className="text-xs"
+                            >
+                                재배 내역
+                            </Step>
+                        </Box>
+                    </Link>
 
                     <Link to={`/review/${userInfo.memberNo}`}>
                         <Box>
