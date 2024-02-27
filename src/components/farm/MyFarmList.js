@@ -57,6 +57,7 @@ export default function MyFarmList({ numberOfItems }) {
     const [memberData, setMemberData] = useState(null); // 농부의 memberNo
 
     useEffect(() => {
+        console.log(process.env.REACT_APP_BASE_URL);
         // 서버에서 사용자 정보 가져오기
         getMemberNo()
             .then((res) => {

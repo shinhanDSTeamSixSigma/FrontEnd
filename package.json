@@ -3,6 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
+        "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
         "@emotion/react": "^11.11.3",
         "@emotion/styled": "^11.11.0",
         "@fullcalendar/core": "^6.1.10",
@@ -36,9 +37,9 @@
         "react-router-dom": "^6.22.1",
         "react-scripts": "5.0.1",
         "react-tiny-fab": "^4.0.4",
+        "serve": "^14.2.1",
         "swiper": "^11.0.6",
-        "web-vitals": "^2.1.0",
-        "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+        "web-vitals": "^2.1.0"
     },
     "proxy": "http://mam675.synology.me:49575",
     "scripts": {
