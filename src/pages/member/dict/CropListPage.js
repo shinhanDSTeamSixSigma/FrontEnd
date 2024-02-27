@@ -9,6 +9,7 @@ const StyledContainer = styled.div`
     font-size: 1em;
     border-radius: 0.8rem;
     margin: auto 1.5rem auto;
+    margin-top: 2rem;
 `;
 const Title = styled.div`
     font-size: 1em;

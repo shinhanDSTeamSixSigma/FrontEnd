@@ -24,6 +24,14 @@ export default function Header({ handleModalToggle }) {
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [memberData, setMemberData] = useState(null); // 농부의 memberNo
 
+    const handleLogout = () => {
+        console.log('로그아웃 함수가 호출되었습니다.');
+        // 쿠키 만료
+        document.cookie = 'auth=; max-age=0; path=/;';
+        setMemberData(null); // memberData 상태를 초기화하여 로그아웃 상태로 변경
+        setSelectedIndex(3); // "로그인" 항목을 선택되도록 설정
+    };
+
     useEffect(() => {
         // 서버에서 사용자 정보 가져오기
         getMemberNo()
@@ -36,12 +44,6 @@ export default function Header({ handleModalToggle }) {
                 console.error(error);
             });
     }, [memberData]);
-
-    const handleLogout = () => {
-        // 로그아웃 처리
-        setMemberData(null); // memberData 상태를 초기화하여 로그아웃 상태로 변경
-        setSelectedIndex(3); // 선택된 인덱스를 로그인 상태의 인덱스로 초기화
-    };
 
     const navigation = [
         { name: '메인', href: '/', current: selectedIndex === 0 },
@@ -60,10 +62,10 @@ export default function Header({ handleModalToggle }) {
         ? [
               {
                   name: '마이페이지',
-                  href: '/mypage/memberMypage',
+                  href: '/mypage',
                   current: selectedIndex === 3,
               },
-              { name: '로그아웃', href: '/', onClick: handleLogout }, // 로그아웃 상태에서는 로그아웃 링크를 표시
+              { name: '로그아웃', href: '/', onClick: () => handleLogout() }, // 로그아웃 상태에서는 로그아웃 링크를 표시
           ]
         : [
               { name: '로그인', href: '/login', current: selectedIndex === 3 }, // 로그아웃 상태에서는 로그인 링크를 표시

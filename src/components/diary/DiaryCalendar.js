@@ -49,7 +49,13 @@ const modalStyle = {
     },
 };
 
-const DiaryCalendar = ({ memberNo, cropNo, baseUrl }) => {
+const DiaryCalendar = ({
+    memberNo,
+    cropNo,
+    baseUrl,
+    cropNickname,
+    buyDate,
+}) => {
     const image = {
         margin: 'auto 0.1rem',
     };
@@ -343,7 +349,13 @@ const DiaryCalendar = ({ memberNo, cropNo, baseUrl }) => {
                         <FlexRow style={{ justifyContent: 'center' }}>
                             <Link
                                 to={`/mypage/streaming`}
-                                state={{ memberNo, cropNo, baseUrl }}
+                                state={{
+                                    memberNo,
+                                    cropNo,
+                                    baseUrl,
+                                    cropNickname,
+                                    buyDate,
+                                }}
                             >
                                 <Button name="상태보러가기"></Button>
                             </Link>

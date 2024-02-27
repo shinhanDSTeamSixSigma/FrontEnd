@@ -58,7 +58,7 @@ const BoardRegist = ({ title: initialTitle, content: initialContent, boardNo, is
     const navigate = useNavigate();
     const [memberData, setMemberData] = useState();
     const [response, setResponse] = useState(null);
-    const { memberMoveToRead } = useCustomMove();
+    const { memberMoveToRead, moveToMyInquiry } = useCustomMove();
     useEffect(() => {
         if (isEdit && initialTitle && initialContent) {
             setTitle(initialTitle);
@@ -79,7 +79,12 @@ const BoardRegist = ({ title: initialTitle, content: initialContent, boardNo, is
     };
     const closeModal = () => {
         setResponse(null);
-        memberMoveToRead(farmNo); //moveToList( )호출
+        if (isEdit) {
+            moveToMyInquiry(memberNo); 
+            
+        } else {
+            memberMoveToRead(farmNo);
+        }
     };
     useEffect(() => {
         // 서버에서 사용자 정보 가져오기
@@ -123,9 +128,11 @@ const BoardRegist = ({ title: initialTitle, content: initialContent, boardNo, is
             if (isEdit) {
                 // 수정된 경우 ResultModal을 통해 메시지 표시
                 setResponse({ message: "문의가 수정되었습니다." });
+                navigate(`/inquiry/${memberNo}`);
             } else {
                 // 등록된 경우 ResultModal을 통해 메시지 표시
                 setResponse({ message: "문의가 등록되었습니다."});
+                navigate(`/farm/member/read/${farmNo}`);
             }
         }).catch((error) => {
             console.error(isEdit ? "Error occured while updating the board:" : "Error occured while registering the board:", error);

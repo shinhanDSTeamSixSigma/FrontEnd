@@ -57,6 +57,7 @@ export default function MyFarmList({ numberOfItems }) {
     const [memberData, setMemberData] = useState(null); // 농부의 memberNo
 
     useEffect(() => {
+        console.log(process.env.REACT_APP_BASE_URL);
         // 서버에서 사용자 정보 가져오기
         getMemberNo()
             .then((res) => {
@@ -112,9 +113,13 @@ export default function MyFarmList({ numberOfItems }) {
 
     // member가 farmer면 농부의 농장 상세 member면 멤버의 농장 상세
     const handleFarmItemClick = (farmNo) => {
+        if (!memberData) {
+            memberMoveToRead(farmNo);
+            return;
+        }
         if (memberData.role === 'FARMER') {
             moveToRead(farmNo);
-        } else {
+        } else if (memberData.role === 'USER') {
             memberMoveToRead(farmNo);
         }
     };

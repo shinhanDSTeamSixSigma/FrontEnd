@@ -4,7 +4,7 @@ import axios from 'axios';
 import TitleDetailName from './TitleDetailName';
 import TitleDivisionLine from '../TitleDivisionLine';
 import styled from 'styled-components';
-import 'bootstrap/dist/css/bootstrap.min.css';
+//import 'bootstrap/dist/css/bootstrap.min.css';
 import ResultModal from '../modal/ResultModal';
 
 const FlexRow = styled.div`
@@ -76,7 +76,7 @@ const PointApply = ({ memberNo, baseUrl, isOff, onToggle }) => {
             <TitleDetailName name="포인트" />
             {/*포인트 결제란*/}
             <div style={{ margin: '1rem 1rem 2rem 1rem' }}>
-                <FlexRow style={{ justifyContent: 'center' }}>
+                <FlexRow>
                     <div
                         className="input-group mb-3"
                         style={{ width: '12rem', marginRight: '1rem' }}

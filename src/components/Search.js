@@ -29,6 +29,11 @@ export default function Search({ isModalOpen, handleCloseModal }) {
         handleCloseModal();
     };
 
+    const handleModalClose = () => {
+        setSearchTerm(''); // 모달이 닫힐 때 searchTerm 초기화
+        handleCloseModal();
+    };
+
     return (
         <>
             {isModalOpen && (
@@ -40,6 +45,7 @@ export default function Search({ isModalOpen, handleCloseModal }) {
                             className="block w-10/12 pl-4 pr-4 border-none text-sm rounded-lg bg-[#D9D9D9]  focus:outline-none dark:text-[#878787] ml-auto mr-3 "
                             placeholder="농장을 검색하세요..."
                             required
+                            value={searchTerm}
                             onChange={(e) => {
                                 setSearchTerm(e.target.value);
                             }}
@@ -53,7 +59,7 @@ export default function Search({ isModalOpen, handleCloseModal }) {
                     {error && <p>Error: {error.message}</p>}
                     {Array.isArray(searchResult) && searchResult.length > 0 ? (
                         <div>
-                            <h3 style={{ paddingTop: '2rem' }}>검색 결과:</h3>
+                            <h2 style={{ paddingTop: '2rem' }}>검색 결과:</h2>
                             <ul className="divide-y divide-gray-200">
                                 {searchResult.map((result) => (
                                     <li key={result.farmNo} className="py-4 ">

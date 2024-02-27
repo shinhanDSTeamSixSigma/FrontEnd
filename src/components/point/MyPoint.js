@@ -5,7 +5,6 @@ import axios from 'axios';
 import Button from '../Button';
 import styled from 'styled-components';
 import 'react-datepicker/dist/react-datepicker.module.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import MyPointValue from './MyPointValue';
 
 const FlexRow = styled.div`
