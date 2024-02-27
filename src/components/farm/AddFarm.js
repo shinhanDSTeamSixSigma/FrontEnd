@@ -52,6 +52,7 @@ export default function AddFarm() {
     const { moveToList } = useCustomMove(); //useCustomMove 활용
 
     useEffect(() => {});
+
     useEffect(() => {
         // 서버에서 사용자 정보 가져오기
         getMemberNo()
