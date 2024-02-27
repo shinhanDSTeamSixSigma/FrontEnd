@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import StyledHeader from '../../components/StyledHeader';
 import StyledBody from '../../components/StyledBody';
 import React, { useState } from 'react';
+import DaumPostcode from 'react-daum-postcode';
+import { Link } from 'react-router-dom';
 
 const FlexRow = styled.div`
     // row로 붙여주는 느낌
@@ -21,6 +23,16 @@ const RegisterForm = ({ onSubmit }) => {
     const [memberPoint, setMemberPoint] = useState('');
     const [zipcode, setZipcode] = useState('');
     const [farmer, setFarmer] = useState(false); // 농부 여부 체크
+    const [showPostcode, setShowPostcode] = useState(false);
+
+    const handleComplete = (data) => {
+        setAddress1(data.address);
+        setZipcode(data.zonecode);
+    };
+
+    const handlePostcodeClick = () => {
+        setShowPostcode(true); // "주소 검색" 버튼 클릭 시 팝업창 표시
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -49,14 +61,16 @@ const RegisterForm = ({ onSubmit }) => {
                         paddingBottom: '3rem',
                     }}
                 >
-                    <img
-                        className="greenwavelogo"
-                        alt="greenwavelogo"
-                        src={
-                            process.env.PUBLIC_URL +
-                            '/img/memberMypage/logo.png'
-                        }
-                    />
+                    <Link to="/">
+                        <img
+                            className="greenwavelogo"
+                            alt="greenwavelogo"
+                            src={
+                                process.env.PUBLIC_URL +
+                                '/img/memberMypage/logo.png'
+                            }
+                        />
+                    </Link>
                 </div>
                 <div style={{ justifyContent: 'center', display: 'flex' }}>
                     <form onSubmit={handleSubmit}>
@@ -133,6 +147,31 @@ const RegisterForm = ({ onSubmit }) => {
                                 />
                             </label>
                         </div>
+
+                        {/* "주소 검색" 버튼 */}
+                        <button
+                            type="button"
+                            onClick={handlePostcodeClick}
+                            style={{
+                                padding: '4px 6px',
+                                backgroundColor: '#C4DFAA',
+                                color: 'black',
+                                border: 'none',
+                                borderRadius: '5px',
+                                cursor: 'pointer',
+                                marginBottom: '1rem',
+                                fontSize: '1rem',
+                            }}
+                        >
+                            주소 검색
+                        </button>
+                        {/* 우편번호 팝업창 */}
+                        {showPostcode && (
+                            <div style={{ marginTop: '10px' }}>
+                                <DaumPostcode onComplete={handleComplete} />
+                            </div>
+                        )}
+
                         {/* 주소 1 입력란 */}
                         <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md mb-4">
                             <label className="block w-full text-sm font-medium leading-6 text-gray-900">
@@ -163,14 +202,14 @@ const RegisterForm = ({ onSubmit }) => {
                                 />
                             </label>
                         </div>
-                        {/* 프로필 입력란 */}
+                        {/* 우편번호 입력란 */}
                         <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md mb-4">
                             <label className="block w-full text-sm font-medium leading-6 text-gray-900">
-                                프로필
+                                우편번호
                                 <input
                                     type="text"
                                     value={zipcode}
-                                    placeholder="프로필을 입력하세요"
+                                    placeholder="우편번호를 입력하세요"
                                     className="block w-full border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                                     onChange={(e) => setZipcode(e.target.value)}
                                 />

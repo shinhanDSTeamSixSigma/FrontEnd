@@ -11,10 +11,11 @@ const Box = styled.div`
 
 const FlexRow = styled.div`
     // row로 붙여주는 느낌
-    width: 15rem;
-    height: 5rem;
+    width: 19em;
+    height: 7rem;
     background-color: #f5f0bb;
     display: flex;
+    gap: 1rem;
     flex-direction: row;
     align-items: center;
     border-radius: 0.8rem; //모서리 둥글게
@@ -30,7 +31,7 @@ const Growing = () => {
     return (
         <>
             <div>
-                <span className="text-base font-black">작물의 단계</span>
+                <span className="mb-1 text-base font-black">작물의 단계</span>
             </div>
             <FlexRow>
                 <Box>
