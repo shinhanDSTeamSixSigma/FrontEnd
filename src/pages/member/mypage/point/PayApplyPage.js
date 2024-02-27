@@ -19,8 +19,8 @@ const StyledContainer = styled.div`
 `;
 
 const PayApplyPage = () => {
-    const crop = location.state.crop;
-    const cropNo = crop.cropNo;
+    //const crop = location.state.crop;
+    const cropNo =1;
 
     const [memberData, setMemberData] = useState(null); // 농부의 memberNo
 

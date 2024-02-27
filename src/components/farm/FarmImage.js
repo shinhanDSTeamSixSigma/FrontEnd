@@ -7,15 +7,18 @@ export default function FarmImage({ imagePaths }) {
         <div>
             <div className="my-6 font-semibold">농장사진</div>
 
-            <div className="rounded-2xl w-full flex flex-wrap mb-20">
+            <div className="rounded-2xl w-full flex flex-wrap">
                 {imagePaths ? (
                     imagePaths.map((imagePath, idx) => (
-                        <img
-                            key={idx}
-                            src={`${url}/${imagePath}`}
-                            alt={`image ${idx}`}
-                            className="w-[45%] h-28 rounded-2xl shadow-xl mb-4 mx-[2.5%]"
-                        />
+                        <div className="flex flex-col w-[33%]">
+                            <img
+                                key={idx}
+                                src={`${url}/${imagePath}`}
+                                alt={`image ${idx}`}
+                                className="h-36 rounded-2xl shadow-xl  ml-[1rem] mt-[1rem] "
+                            />
+
+                        </div>
                     ))
                 ) : (
                     <></>
