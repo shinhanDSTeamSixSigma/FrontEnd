@@ -277,71 +277,77 @@ export default function ModifyFarm({ farmNo, moveList, moveRead }) {
                                         />
                                     </div>
                                 </div>
-
-                                <div class="flex items-center justify-center w-full">
-                                    <label
-                                        for="dropzone-file"
-                                        class="flex flex-col items-center justify-center w-full h-48 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
-                                    >
-                                        <div class="flex flex-col items-center justify-center pt-3 pb-4">
-                                            <svg
-                                                class="w-6 h-6 mb-3 text-gray-500 dark:text-gray-400"
-                                                aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                fill="none"
-                                                viewBox="0 0 20 16"
+                            </div>
+                            <label
+                                htmlFor="농장 사진"
+                                className="block text-sm font-medium leading-6 text-gray-900 mt-4"
+                            >
+                                농장 사진
+                            </label>
+                            <div class="flex items-center justify-center w-[35rem] ml-[5rem] mt-6">
+                                <label
+                                    for="dropzone-file"
+                                    className="flex flex-col items-center justify-center w-full h-48 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                                >
+                                    <div class="flex flex-col items-center justify-center pt-3 pb-4 w-28">
+                                        <svg
+                                            class="w-6 h-6 mb-3 text-gray-500 dark:text-gray-400"
+                                            aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 20 16"
+                                        >
+                                            <path
+                                                stroke="currentColor"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                                            />
+                                        </svg>
+                                        <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                                            <span class="font-semibold">
+                                                Click to upload or drag and drop
+                                            </span>
+                                        </p>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                                            SVG, PNG, JPG or GIF (MAX.
+                                            800x400px)
+                                        </p>
+                                    </div>
+                                    <input
+                                        id="dropzone-file"
+                                        type="file"
+                                        class="hidden"
+                                        onChange={handleChangeFile}
+                                        multiple={true}
+                                    />
+                                </label>
+                            </div>
+                            <div className="rounded-2xl w-full flex flex-wrap">
+                                {imagePaths ? (
+                                    imagePaths.map((imagePath, idx) => (
+                                        <div className="flex flex-col w-[33%]">
+                                            <img
+                                                key={idx}
+                                                src={`${url}/${imagePath}`}
+                                                alt={`image ${idx}`}
+                                                className="h-36 rounded-2xl shadow-xl  ml-[1rem] mt-[1rem] "
+                                            />
+                                            <button
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    onDeleteImage(idx);
+                                                }}
+                                                className=" rounded text-sm  h-8 ml-[1rem] text-white bg-[#90C8AC]"
                                             >
-                                                <path
-                                                    stroke="currentColor"
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    stroke-width="2"
-                                                    d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-                                                />
-                                            </svg>
-                                            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                                                <span class="font-semibold">
-                                                    Click to upload
-                                                </span>{' '}
-                                                or drag and drop
-                                            </p>
-                                            <p class="text-xs text-gray-500 dark:text-gray-400">
-                                                SVG, PNG, JPG or GIF (MAX.
-                                                800x400px)
-                                            </p>
+                                                삭제
+                                            </button>
                                         </div>
-                                        <input
-                                            id="dropzone-file"
-                                            type="file"
-                                            class="hidden"
-                                            onChange={handleChangeFile}
-                                            multiple={true}
-                                        />
-                                    </label>
-                                </div>
-                                <div>
-                                    {imagePaths ? (
-                                        imagePaths.map((imagePath, idx) => (
-                                            <>
-                                                <img
-                                                    key={idx}
-                                                    src={`${url}/${imagePath}`}
-                                                    alt={`image ${idx}`}
-                                                />
-                                                <button
-                                                    onClick={(e) => {
-                                                        e.preventDefault();
-                                                        onDeleteImage(idx);
-                                                    }}
-                                                >
-                                                    삭제
-                                                </button>
-                                            </>
-                                        ))
-                                    ) : (
-                                        <></>
-                                    )}
-                                </div>
+                                    ))
+                                ) : (
+                                    <></>
+                                )}
                             </div>
                         </div>
 
@@ -403,7 +409,7 @@ export default function ModifyFarm({ farmNo, moveList, moveRead }) {
                                     </div>
                                 </div>
 
-                                <div className="sm:col-span-3">
+                                {/* <div className="sm:col-span-3">
                                     <label
                                         htmlFor="농장 카테고리"
                                         className="block text-sm font-medium leading-6 text-gray-900"
@@ -431,7 +437,7 @@ export default function ModifyFarm({ farmNo, moveList, moveRead }) {
                                             <option>콩과</option>
                                         </select>
                                     </div>
-                                </div>
+                                </div> */}
                                 <div className="sm:col-span-3">
                                     <label
                                         htmlFor="대표 작물"
@@ -507,7 +513,7 @@ export default function ModifyFarm({ farmNo, moveList, moveRead }) {
 
     return (
         <>
-            <div className=" border-2  mt-10 m-2 p-4">
+            <div className=" mt-10 m-2 p-4">
                 {result ? (
                     <ResultModal
                         title={'처리결과'}
@@ -527,17 +533,17 @@ export default function ModifyFarm({ farmNo, moveList, moveRead }) {
                 <div className="flex justify-end p-4">
                     <button
                         type="button"
-                        className="inline-block rounded p-4 m-2 text-xl w-32  text-white bg-red-500"
+                        className="inline-block rounded m-2 text-xl w-28 h-12  text-white bg-[#4F6F52]"
                         onClick={handleClickDelete}
                     >
-                        Delete
+                        삭제하기
                     </button>
                     <button
                         type="button"
-                        className="rounded p-4 m-2 text-xl w-32 text-white bg-blue-500"
+                        className="inline-block rounded m-2 text-xl w-28 h-12 text-white bg-[#90C8AC]"
                         onClick={handleClickModify}
                     >
-                        Modify
+                        수정하기
                     </button>
                 </div>
             </div>

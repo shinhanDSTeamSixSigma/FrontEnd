@@ -20,27 +20,27 @@ const FlexRow = styled.div`
     margin: 0.5rem 1rem 1rem 0;
 `;
 
-const FlexRowGap=styled.div`
-    display:flex;
-    flex-direction:row;
-    gap:1rem;
-    font-size:0.6rem;
-    color:#878787;
+const FlexRowGap = styled.div`
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    font-size: 0.6rem;
+    color: #878787;
 `;
-const Totalcnt=styled.div`
+const Totalcnt = styled.div`
     font-size: 0.8rem;
-    font-weight:500;
-    color:#878787;
+    font-weight: 500;
+    color: #878787;
     margin: 0 0 0 0.2rem;
-`
-const AvgRating=styled.div`
-    font-size:1rem;
-    font-weight:600;
-    color:#878787;
-    margin:0 0.2rem 0 0.5rem;
-`
-const Content=styled.div`
-    font-size:0.8rem;
+`;
+const AvgRating = styled.div`
+    font-size: 1rem;
+    font-weight: 600;
+    color: #878787;
+    margin: 0 0.2rem 0 0.5rem;
+`;
+const Content = styled.div`
+    font-size: 0.8rem;
     font-weight: 500;
 `;
 const TitleContainer = styled.div`
@@ -58,6 +58,10 @@ const InquiryItem = styled.div`
     padding: 1.5rem 1.5rem;
     margin-top: 1rem;
     cursor: pointer;
+    a {
+        text-decoration: none; /* 밑줄 제거 */
+        color: inherit; /* 상위 요소의 색상 상속 */
+    }
 `;
 const baseUrl = process.env.REACT_APP_BASE_URL;
 
@@ -76,12 +80,11 @@ const FarmerReviewListPage = ({
         const fetchData = async () => {
             try {
                 const response = await axios.get(
-                    `http://localhost:8090/review/list?farmNo=${farmNo}`,
+                    `${baseUrl}/review/list?farmNo=${farmNo}`,
                 );
 
                 // 날짜 형식 변환
                 const formattedData = response.data.map((item) => ({
-
                     ...item,
 
                     createdDate: new Date(item.createdDate).toLocaleDateString(
@@ -108,7 +111,6 @@ const FarmerReviewListPage = ({
             } catch (error) {
                 console.error('Error fetching reviews:', error);
             }
-
         };
 
         fetchData(); // 데이터 가져오기 함수 호출
@@ -116,7 +118,6 @@ const FarmerReviewListPage = ({
 
     return (
         <>
-
             <StyledContainer>
                 <FlexRow>
                     <FlexRow style={{ marginRight: '1rem' }}>

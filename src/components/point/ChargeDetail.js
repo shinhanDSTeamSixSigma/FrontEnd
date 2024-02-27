@@ -26,6 +26,8 @@ const ChargeDetail = ({ memberNo, cropNo, baseUrl }) => {
         justifyContent: 'center',
         width: '1rem',
     };
+    console.log(memberNo);
+    console.log(cropNo);
 
     const [totalPoint, setTotalPoint] = useState();
     const [landInfo, setLandInfo] = useState({});
@@ -36,7 +38,7 @@ const ChargeDetail = ({ memberNo, cropNo, baseUrl }) => {
     useEffect(() => {
         fetchCropChargeData();
         fetchCropStatusData();
-    }, []);
+    }, [memberNo, cropNo]);
 
     const fetchCropChargeData = () => {
         axios
@@ -136,7 +138,7 @@ const ChargeDetail = ({ memberNo, cropNo, baseUrl }) => {
             </FlexRow>
             {/*작물 수확 금액*/}
             {status === 4 ? (
-                <CropPoint />
+                <CropPoint memberNo={memberNo} cropNo={cropNo} />
             ) : (
                 <div style={{ marginBottom: '3rem' }}></div>
             )}

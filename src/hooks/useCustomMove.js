@@ -74,6 +74,18 @@ export default function useCustomMove() {
             search: queryParams.toString(), // 기존 쿼리 스트링 유지
         });
     };
+    const moveToMyInquiry = (num) => {
+        navigate({
+            pathname: `/inquiry/${num}`,
+            search: queryParams.toString(), // 기존 쿼리 스트링 유지
+        });
+    };
+    const moveToMyReview = (num) => {
+        navigate({
+            pathname: `/review/${num}`,
+            search: queryParams.toString(), // 기존 쿼리 스트링 유지
+        });
+    };
 
     return {
         moveToList,
@@ -81,6 +93,8 @@ export default function useCustomMove() {
         moveToRead,
         moveToPay,
         memberMoveToRead,
+        moveToMyInquiry,
+        moveToMyReview,
         page,
         size,
         refresh,

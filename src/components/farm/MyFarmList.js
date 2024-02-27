@@ -45,23 +45,23 @@ const cropInit = {
     lowTemp: 0,
     highTemp: 0,
 };
-export default function MyFarmList() {
+export default function MyFarmList({ numberOfItems }) {
     const { page, size, moveToList, moveToRead, memberMoveToRead } =
         useCustomMove();
     const [imagePaths, setImagePaths] = useState({});
     const [farmCrop, setFarmCrop] = useState({ ...cropInit });
     // const navigate = useNavigate();
 
-
     const [serverData, setServerData] = useState(initState);
     const [sortByReview, setSortByReview] = useState(false); // 필터링
     const [memberData, setMemberData] = useState(null); // 농부의 memberNo
+
     useEffect(() => {
         // 서버에서 사용자 정보 가져오기
         getMemberNo()
             .then((res) => {
                 setMemberData(res);
-                console.log(res);
+                console.log('memberdata', res);
 
                 console.log('멤버데이터 ', JSON.stringify(memberData));
             })
@@ -69,7 +69,7 @@ export default function MyFarmList() {
                 console.log('데이터 안옴!!!!!!');
                 console.error(error);
             });
-    }, [memberData]);
+    }, []);
 
     useEffect(() => {
         fetchData();
@@ -112,7 +112,7 @@ export default function MyFarmList() {
 
     // member가 farmer면 농부의 농장 상세 member면 멤버의 농장 상세
     const handleFarmItemClick = (farmNo) => {
-        if (memberData.role === 'farmer') {
+        if (memberData.role === 'FARMER') {
             moveToRead(farmNo);
         } else {
             memberMoveToRead(farmNo);
@@ -168,6 +168,8 @@ export default function MyFarmList() {
             setSortByReview(false);
         }
     };
+
+    const limitData = serverData.dtoList.slice(0, numberOfItems);
     return (
         <>
             <StyledBody>
@@ -181,9 +183,9 @@ export default function MyFarmList() {
                         </select>
                     </div>
                 </div>
-                <ul>
-                    {serverData.dtoList.map((key, idx) => (
-                        <li key={key.farmNo} className="">
+                <div>
+                    {limitData.map((key, idx) => (
+                        <div key={key.farmNo} className="">
                             <div
                                 className="shadow-xl h-28   mt-2 mb-1 rounded-2xl flex cursor-pointer justify-between"
                                 onClick={() => handleFarmItemClick(key.farmNo)}
@@ -256,9 +258,9 @@ export default function MyFarmList() {
                                     )}
                                 </div>
                             </div>
-                        </li>
+                        </div>
                     ))}
-                </ul>
+                </div>
             </StyledBody>
             <Paging serverData={serverData} movePage={moveToList} />
         </>

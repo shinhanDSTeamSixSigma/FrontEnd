@@ -23,7 +23,7 @@ function MyCropUnit({ crop }) {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate('/pay/receipt', { state: { crop } });
+        navigate('/mypage/receipt', { state: { crop } });
     };
 
     return (

@@ -1,15 +1,17 @@
 import { Fragment } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/header.css';
 import { useState } from 'react';
+import { getMemberNo } from '../api/farmApi';
 import Search from '../components/Search';
 import ReactDOM from 'react-dom';
 
 const user = {
     name: '토심이',
-    email: 'tom@example.com',
+    email: 'tom@kky.com',
     imageUrl:
         'https://ilovecharacter.com/news/data/20230731/p1065542571400847_461_thum.jpg',
 };
@@ -20,6 +22,26 @@ function classNames(...classes) {
 
 export default function Header({ handleModalToggle }) {
     const [selectedIndex, setSelectedIndex] = useState(0);
+    const [memberData, setMemberData] = useState(null); // 농부의 memberNo
+
+    useEffect(() => {
+        // 서버에서 사용자 정보 가져오기
+        getMemberNo()
+            .then((res) => {
+                setMemberData(res.memberNo);
+                console.log(res);
+            })
+            .catch((error) => {
+                console.log('데이터 안옴!!!!!!');
+                console.error(error);
+            });
+    }, [memberData]);
+
+    const handleLogout = () => {
+        // 로그아웃 처리
+        setMemberData(null); // memberData 상태를 초기화하여 로그아웃 상태로 변경
+        setSelectedIndex(3); // 선택된 인덱스를 로그인 상태의 인덱스로 초기화
+    };
 
     const navigation = [
         { name: '메인', href: '/', current: selectedIndex === 0 },
@@ -34,15 +56,18 @@ export default function Header({ handleModalToggle }) {
             current: selectedIndex === 2,
         },
     ];
-    const userNavigation = [
-        { name: '마이페이지', href: '/mypage', current: selectedIndex === 3 },
-        {
-            name: '정보수정',
-            href: '/mypage/info-edit',
-            current: selectedIndex === 4,
-        },
-        { name: '로그아웃', href: '/', current: selectedIndex === 5 },
-    ];
+    const userNavigation = memberData
+        ? [
+              {
+                  name: '마이페이지',
+                  href: '/mypage/memberMypage',
+                  current: selectedIndex === 3,
+              },
+              { name: '로그아웃', href: '/', onClick: handleLogout }, // 로그아웃 상태에서는 로그아웃 링크를 표시
+          ]
+        : [
+              { name: '로그인', href: '/login', current: selectedIndex === 3 }, // 로그아웃 상태에서는 로그인 링크를 표시
+          ];
 
     const handleItemClick = (index) => {
         setSelectedIndex(index); // 항목을 클릭하면 해당 인덱스를 선택된 인덱스로 업데이트

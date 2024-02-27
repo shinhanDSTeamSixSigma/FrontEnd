@@ -2,22 +2,31 @@ import React, { useState, useEffect } from 'react';
 import StyledHeader from './StyledHeader';
 import Button from './Button';
 import { searchFarm } from '../api/farmApi';
+import { useNavigate } from 'react-router-dom';
 
 export default function Search({ isModalOpen, handleCloseModal }) {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResult, setSearchResult] = useState([]);
     const [error, setError] = useState(null);
+    const navigate = useNavigate(); // react-router-dom의 useNavigate 훅 사용
 
     const handleSearch = async () => {
         try {
             console.log(searchTerm);
             const searchData = await searchFarm(searchTerm);
             setSearchResult(searchData);
-            console.log(searchData);
+            console.log('searchData', searchData);
         } catch (error) {
             setError(error);
             console.log(error);
         }
+    };
+
+    const handleFarmItemClick = (farmNo) => {
+        // 농장 상세 페이지로 이동
+        navigate(`/farm/read/${farmNo}`);
+        // 모달 닫기
+        handleCloseModal();
     };
 
     return (
@@ -44,11 +53,19 @@ export default function Search({ isModalOpen, handleCloseModal }) {
                     {error && <p>Error: {error.message}</p>}
                     {Array.isArray(searchResult) && searchResult.length > 0 ? (
                         <div>
-                            <h2 style={{ paddingTop: '2rem' }}>검색 결과:</h2>
+                            <h3 style={{ paddingTop: '2rem' }}>검색 결과:</h3>
                             <ul className="divide-y divide-gray-200">
                                 {searchResult.map((result) => (
                                     <li key={result.farmNo} className="py-4 ">
-                                        <div className="w-full flex">
+                                        <div
+                                            className="w-full flex"
+                                            onClick={() =>
+                                                handleFarmItemClick(
+                                                    result.farmNo,
+                                                )
+                                            } // 농장 클릭 이벤트 추가
+                                            style={{ cursor: 'pointer' }}
+                                        >
                                             <div className="d-flex shadow border rounded w-full">
                                                 <div className="ml-3">
                                                     <div>

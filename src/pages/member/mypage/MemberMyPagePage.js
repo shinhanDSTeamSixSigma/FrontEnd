@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 import { IoSettingsOutline } from 'react-icons/io5';
@@ -55,7 +55,7 @@ const baseUrl = process.env.REACT_APP_BASE_URL;
 
 export default function MemberMyPagePage() {
     const [userInfo, setUserInfo] = useState({
-        memberNo:'',
+        memberNo: '',
         memberId: '',
         memberName: '',
         phone: '',
@@ -79,11 +79,7 @@ export default function MemberMyPagePage() {
             })
             .then((res) => {
                 setUserInfo(res.data);
-                if (res.data.role !== 'FARMER') {
-                    console.log(res.data.role);
-                    alert('농부만 들어갈 수 있는 페이지 입니다!');
-                    window.location.href = '/';
-                }
+
                 // 사용자 정보를 가져온 후 농작물 정보를 가져옴
                 fetchCrops();
             })
@@ -112,9 +108,32 @@ export default function MemberMyPagePage() {
 
     // 포인트 페이지로 user 정보 보내기
     const navigate = useNavigate();
-
     const handleClick = (userInfo) => {
-        navigate('/pay/detail', { state: { userInfo } });
+        navigate('/mypage/detail', { state: { userInfo } });
+    };
+
+    const [memberPoint, setMemberPoint] = useState(null);
+    useEffect(() => {
+        // 서버에서 사용자 정보 가져오기
+        fetchPointData();
+    }, [userInfo.memberNo]);
+
+    const fetchPointData = () => {
+        axios
+            .get(`${baseUrl}/pay/current-point`, {
+                withCredentials: true,
+                params: {
+                    memberNo: userInfo.memberNo,
+                },
+            })
+            .then((res) => {
+                console.log(res);
+                setMemberPoint(res.data);
+            })
+            .catch((error) => {
+                console.log('농작물 정보를 가져오는 데 실패했습니다.');
+                console.error(error);
+            });
     };
 
     return (
@@ -149,7 +168,7 @@ export default function MemberMyPagePage() {
                     </FlexRow>
                     <FlexRow>
                         <div className="text-sm mr-[3px]">내 포인트 : </div>
-                        <div className="text-sm">{userInfo.memberPoint}</div>
+                        <div className="text-sm">{memberPoint}</div>
                     </FlexRow>
                     <IoSettingsOutline />
                 </FlexRow>
@@ -187,24 +206,27 @@ export default function MemberMyPagePage() {
                     }}
                 ></hr>
                 <FlexRow style={{ justifyContent: 'space-evenly' }}>
-                    <Box>
-                        <IoHomeOutline style={boxStyle} color="#73A9AD" />
-                        <Step
-                            style={{
-                                justifyContent: 'center',
-                                display: 'flex',
-                            }}
-                            className="text-xs"
-                        >
-                            재배 내역
-                        </Step>
-                    </Box>
-
+                    <Link to={`/mypage/mycrop`}>
+                        <Box>
+                            <IoHomeOutline style={boxStyle} color="#73A9AD" />
+                            <Step
+                                style={{
+                                    justifyContent: 'center',
+                                    display: 'flex',
+                                }}
+                                className="text-xs"
+                            >
+                                재배 내역
+                            </Step>
+                        </Box>
+                    </Link>
 
                     <Link to={`/review/${userInfo.memberNo}`}>
                         <Box>
-                            
-                            <LiaCommentDotsSolid style={boxStyle} color="#73A9AD" />
+                            <LiaCommentDotsSolid
+                                style={boxStyle}
+                                color="#73A9AD"
+                            />
                             <Step
                                 style={{
                                     justifyContent: 'center',
@@ -213,12 +235,15 @@ export default function MemberMyPagePage() {
                                 className="text-xs"
                             >
                                 리뷰 관리
-                            </Step>                      
+                            </Step>
                         </Box>
                     </Link>
                     <Link to={`/inquiry/${userInfo.memberNo}`}>
-                        <Box>                        
-                            <RiQuestionnaireLine style={boxStyle} color="#73A9AD" />
+                        <Box>
+                            <RiQuestionnaireLine
+                                style={boxStyle}
+                                color="#73A9AD"
+                            />
                             <Step
                                 style={{
                                     justifyContent: 'center',
@@ -227,10 +252,9 @@ export default function MemberMyPagePage() {
                                 className="text-xs"
                             >
                                 문의 관리
-                            </Step>                       
+                            </Step>
                         </Box>
                     </Link>
-
 
                     {/* <Box>
                         <PiNotePencilLight style={boxStyle} color="#73A9AD" />
