@@ -112,6 +112,30 @@ export default function MemberMyPagePage() {
         navigate('/mypage/detail', { state: { userInfo } });
     };
 
+    const [memberPoint, setMemberPoint] = useState(null);
+    useEffect(() => {
+        // 서버에서 사용자 정보 가져오기
+        fetchPointData();
+    }, [userInfo.memberNo]);
+
+    const fetchPointData = () => {
+        axios
+            .get(`${baseUrl}/pay/current-point`, {
+                withCredentials: true,
+                params: {
+                    memberNo: userInfo.memberNo,
+                },
+            })
+            .then((res) => {
+                console.log(res);
+                setMemberPoint(res.data);
+            })
+            .catch((error) => {
+                console.log('농작물 정보를 가져오는 데 실패했습니다.');
+                console.error(error);
+            });
+    };
+
     return (
         <>
             <StyledBody>
@@ -144,7 +168,7 @@ export default function MemberMyPagePage() {
                     </FlexRow>
                     <FlexRow>
                         <div className="text-sm mr-[3px]">내 포인트 : </div>
-                        <div className="text-sm">{userInfo.memberPoint}</div>
+                        <div className="text-sm">{memberPoint}</div>
                     </FlexRow>
                     <IoSettingsOutline />
                 </FlexRow>
