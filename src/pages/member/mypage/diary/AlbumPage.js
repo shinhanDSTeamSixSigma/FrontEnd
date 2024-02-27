@@ -87,7 +87,7 @@ export default function AlbumPage() {
                                 className="h-32 w-32 border mr-auto mb-3"
                             >
                                 <CropImage
-                                    src={`${baseUrl}/img${image}`}
+                                    src={`${baseUrl}/img/${image}`}
                                 ></CropImage>
                             </div>
                         ))}

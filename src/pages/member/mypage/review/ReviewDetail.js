@@ -126,6 +126,7 @@ const ReviewDetail =()=>{
                 content: '리뷰가 삭제되었습니다.',
                 type: 'success',
             });
+            
         }catch(error){
             console.log("Error deleting review:", error);
         }
