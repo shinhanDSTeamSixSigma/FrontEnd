@@ -8,6 +8,7 @@ import TitleDetailName from '../../../../components/point/TitleDetailName';
 import CropInfo from '../../../../components/point/CropInfo';
 import FullButton from '../../../../components/FullButton';
 import PointApply from '../../../../components/point/PointApply';
+import ResultModal from '../../../../components/modal/ResultModal';
 
 const baseUrl = process.env.REACT_APP_BASE_URL;
 
@@ -26,6 +27,7 @@ const PayApplyPage = () => {
     const navigate = useNavigate();
     const location = useLocation(); // 현재 위치
     const { cartItems, totalPrice, myCrop, myFarm } = location.state;
+    const [resultMessage, setResultMessage] = useState(null);
 
     //버튼 토글 상태
     const [isOff, setIsOff] = useState(true);
@@ -82,14 +84,28 @@ const PayApplyPage = () => {
             // 포인트 결제 등록 성공 시 처리
             console.log('포인트 결제 내역 등록 성공:', response.data);
             if (status === 2) {
-                alert('비료 구매가 완료되었습니다.');
+                //alert('비료 구매가 완료되었습니다.');
+                setResultMessage({
+                    title: '',
+                    content: '비료 구매가 완료되었습니다.',
+                    type: 'success',
+                });
             } else if (status === 1) {
-                alert('땅 등록이 완료되었습니다.');
+                //alert('땅 등록이 완료되었습니다.');
+                setResultMessage({
+                    title: '',
+                    content: '땅 등록이 완료되었습니다.',
+                    type: 'success',
+                });
             }
             navigate('/mypage');
         } catch (error) {
             console.error('Error registering point:', error);
         }
+    };
+
+    const closeModal = () => {
+        setResultMessage(null);
     };
     useEffect(() => {
         // 서버에서 사용자 정보 가져오기
@@ -102,6 +118,7 @@ const PayApplyPage = () => {
                 console.error(error);
             });
     }, [memberData]);
+
 
     return (
         <>
@@ -124,10 +141,22 @@ const PayApplyPage = () => {
                 name="결제하기"
                 onClick={() =>
                     isOff
-                        ? alert('포인트 사용을 선택해주세요.')
+                        ? //alert('포인트 사용을 선택해주세요.')
+                        setResultMessage({
+                            title: '',
+                            content: '포인트 사용을 선택해주세요.',
+                            type: 'success',
+                        })
                         : handleButtonClick()
                 }
             />
+            {resultMessage && (
+                <ResultModal
+                    title={resultMessage.title}
+                    content={resultMessage.content}
+                    callbackFnc={closeModal}
+                />
+            )}
         </>
     );
 };

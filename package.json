@@ -39,6 +39,7 @@
         "swiper": "^11.0.6",
         "web-vitals": "^2.1.0"
     },
+    "proxy": "http://mam675.synology.me:49575",
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",

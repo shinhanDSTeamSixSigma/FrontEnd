@@ -5,6 +5,8 @@ import { getDiaryFile } from '../../api/diaryApi';
 import styled from 'styled-components';
 import axios from 'axios';
 import FullButton from '../FullButton';
+import ResultModal from '../modal/ResultModal';
+import ConfirmModal from '../modal/ConfirmModal'; // ConfirmModal을 불러옵니다.
 
 const StyledContainer = styled.div`
     background-color: #f9f7c9;
@@ -53,6 +55,8 @@ const DiaryEdit = ({ memberNo, cropNo, baseUrl }) => {
     const contentRef = useRef();
 
     const [imagePaths, setImagePaths] = useState([]);
+    const [resultMessage, setResultMessage] = useState(null);
+    const [showConfirmModal, setShowConfirmModal] = useState(false); // ConfirmModal을 보일지 여부를 상태로 관리합니다.
 
     useEffect(() => {
         diaryListData();
@@ -84,39 +88,58 @@ const DiaryEdit = ({ memberNo, cropNo, baseUrl }) => {
     };
 
     const save = async () => {
-        if (window.confirm('일기를 수정하시겠습니까?')) {
-            try {
-                const diaryDto = {
-                    diaryNo: diaryDetail.diaryNo,
-                    diaryDate: diaryDetail.diaryDate,
-                    content: contentRef.current.value,
+        setShowConfirmModal(true); // 저장하기 전에 ConfirmModal을 보이도록 설정합니다.
+    };
 
-                    memberNo: diaryDetail.memberNo,
-                    cropNo: diaryDetail.cropNo,
-                };
+    const handleConfirm = async () => {
+        setShowConfirmModal(false); // ConfirmModal을 닫습니다.
+        
+        try {
+            const diaryDto = {
+                diaryNo: diaryDetail.diaryNo,
+                diaryDate: diaryDetail.diaryDate,
+                content: contentRef.current.value,
 
-                // HTTP PUT 요청 보내기
-                await axios.put(
-                    `${baseUrl}/diary/modify/${diaryDto.diaryNo}`,
-                    diaryDto,
-                    {
-                        withCredentials: true,
-                    },
-                );
-                // 성공적으로 수정되었으면 리다이렉션을 수행
-                alert('수정 완료');
-                navigate('/diary', { state: { memberNo, cropNo } });
-            } catch (error) {
-                console.error('Error modifying diary:', error);
-            }
+                memberNo: diaryDetail.memberNo,
+                cropNo: diaryDetail.cropNo,
+            };
+
+            // HTTP PUT 요청 보내기
+            await axios.put(
+                `${baseUrl}/diary/modify/${diaryDto.diaryNo}`,
+                diaryDto,
+                {
+                    withCredentials: true,
+                },
+            );
+            // 성공적으로 수정되었으면 리다이렉션을 수행
+            setResultMessage({
+                title: '',
+                content: '수정되었습니다.',
+                type: 'success',
+            });
+            
+        } catch (error) {
+            console.error('Error modifying diary:', error);
         }
     };
+
+    const handleCancel = () => {
+        setShowConfirmModal(false); // ConfirmModal을 닫습니다.
+    };
+
     useEffect(() => {
         getDiaryFile(diaryNo).then((data) => {
             setImagePaths(data);
         });
     }, [diaryNo]);
     console.log('imagePaths' + imagePaths);
+
+    const closeModal = () => {
+        setResultMessage(null);
+        navigate('/diary', { state: { memberNo, cropNo } });
+    };
+
     return (
         <>
             <StyledContainer>
@@ -167,6 +190,23 @@ const DiaryEdit = ({ memberNo, cropNo, baseUrl }) => {
                 </Content>
             </StyledContainer>
             <FullButton name="수정하기" onClick={save} />
+            {resultMessage && (
+                <ResultModal
+                    title={resultMessage.title}
+                    content={resultMessage.content}
+                    callbackFnc={closeModal}
+                />
+            )}
+            {showConfirmModal && (
+                <ConfirmModal
+                    title=""
+                    content="일기를 수정하시겠습니까?"
+                    confirmText="확인"
+                    cancelText="취소"
+                    onConfirm={handleConfirm}
+                    onCancel={handleCancel}
+                />
+            )}
         </>
     );
 };

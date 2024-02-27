@@ -79,7 +79,7 @@ const InquiryItem = styled.div`
         color: inherit; /* 상위 요소의 색상 상속 */
     }
 `;
-
+const baseUrl = process.env.REACT_APP_BASE_URL;
 const FarmerInquiryListPage = ({ farm }) => {
     const [inquires, setInquiries] = useState([]);
     const [totalInquiries, setTotalInquiries] = useState(0);
@@ -89,7 +89,7 @@ const FarmerInquiryListPage = ({ farm }) => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(
-                    `http://localhost:8090/board/inquiryList?farmNo=${farmNo}&categoryNo=1`,
+                    `${baseUrl}/board/inquiryList?farmNo=${farmNo}&categoryNo=1`,
                 );
                 // 날짜 형식 변환
                 const formattedData = response.data.map((item) => ({
@@ -138,11 +138,11 @@ const FarmerInquiryListPage = ({ farm }) => {
                         <BoardTitle name="농부 문의 내역" />
                         <Totalcnt>총 {totalInquiries}개의 문의</Totalcnt>
                     </FlexRow>
-                    {memberData === 'farmer' && (
+                    {/* {memberData === 'MEMBER' && ( */}
                         <Link to={`/farm/inquiry/${farmNo}/regist`}>
                             <Button name="작성" widthHeight="w-14 h-8" />
                         </Link>
-                    )}
+                    {/* )} */}
                 </FlexRow>
 
                 {inquires.length === 0 ? (

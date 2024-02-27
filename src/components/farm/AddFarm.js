@@ -220,12 +220,12 @@ export default function AddFarm() {
                                     </div>
                                 </div>
 
-                                <div class="flex items-center justify-center w-full">
+                                <div class="flex items-center justify-center w-[35rem] ml-[5rem] ">
                                     <label
                                         for="dropzone-file"
                                         class="flex flex-col items-center justify-center w-full h-48 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
                                     >
-                                        <div class="flex flex-col items-center justify-center pt-3 pb-4">
+                                        <div class="flex flex-col items-center justify-center pt-3 pb-4 w-28">
                                             <svg
                                                 class="w-6 h-6 mb-3 text-gray-500 dark:text-gray-400"
                                                 aria-hidden="true"
@@ -319,7 +319,7 @@ export default function AddFarm() {
                                     </div>
                                 </div>
 
-                                <div className="sm:col-span-3">
+                                {/* <div className="sm:col-span-3">
                                     <label
                                         htmlFor="농장 카테고리"
                                         className="block text-sm font-medium leading-6 text-gray-900"
@@ -346,7 +346,7 @@ export default function AddFarm() {
                                             <option>콩과</option>
                                         </select>
                                     </div>
-                                </div>
+                                </div> */}
                                 <div className="sm:col-span-3">
                                     <label
                                         htmlFor="대표 작물"
@@ -468,7 +468,7 @@ export default function AddFarm() {
     };
 
     return (
-        <div className="border-2  mt-10 m-2 p-4">
+        <div className="mt-10 m-2 p-4">
             {/* 모달 처리 */}
 
             {result ? (
