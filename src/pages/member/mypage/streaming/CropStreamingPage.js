@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { getMemberNo } from '../../../../api/farmApi';
 import Button from '../../../../components/Button';
 import StyledBody from '../../../../components/StyledBody';
 import StyledHeader from '../../../../components/StyledHeader';
@@ -13,22 +14,34 @@ const calculateDaysSince = (startDate) => {
     const daysDiff = Math.round((currentDate - new Date(startDate)) / oneDay);
     return daysDiff;
 };
-export default function CropStreamingPage() {
+export default function CropStreamingPage({}) {
     const location = useLocation();
     const crop = location.state.crop;
+    const cropNickname = location.state.cropNickname;
+    const buyDate = location.state.buyDate;
 
-    const farmNo = crop.farmEntity.farmNo;
+    let cropNicknameData = '';
+    let cropBuyDate = '';
+    if (crop != null) {
+        cropNicknameData = crop.cropNickname;
+        cropBuyDate = crop.buyDate;
+    } else {
+        cropNicknameData = cropNickname;
+        cropBuyDate = buyDate;
+    }
+    console.log(crop);
 
-    const navigate = useNavigate();
+    // const farmNo = crop.farmEntity.farmNo;
+    // const navigate = useNavigate();
 
-    const handlePayment2 = () => {
-        // 결제하기 버튼 클릭 시 실행되는 함수
-        navigate(`/farm/pay/${farmNo}`, { state: crop }); // 페이지 이동 및 상태 전달
-    };
+    // const handlePayment2 = () => {
+    //     // 결제하기 버튼 클릭 시 실행되는 함수
+    //     navigate(`/farm/pay/${farmNo}`, { state: crop }); // 페이지 이동 및 상태 전달
+    // };
 
-    useEffect(() => {
-        handlePayment2();
-    }, []);
+    // useEffect(() => {
+    //     handlePayment2();
+    // }, []);
 
     return (
         <>
@@ -36,12 +49,12 @@ export default function CropStreamingPage() {
                 <div className="flex justify-between items-center">
                     <div>
                         <span className="text-2xl font-black">
-                            {crop.cropNickname}
+                            {cropNicknameData}
                         </span>
                         는 지금?
                     </div>
                     <div className="text-sm pt-2">
-                        함께한지 {calculateDaysSince(crop.createdDate)} 일째
+                        함께한지 {calculateDaysSince(cropBuyDate)} 일째
                     </div>
                 </div>
             </StyledHeader>
@@ -80,12 +93,12 @@ export default function CropStreamingPage() {
                         widthHeight={'w-40 h-11'}
                     />
                     <div style={{ width: '2rem' }}></div>
-                    <Button
+                    {/* <Button
                         className="d-flex justify-content-center mt-8"
                         name={'영양제 주기'}
                         widthHeight={'w-40 h-11'}
-                        onClick={handlePayment2(farmNo)}
-                    />
+                        //onClick={handlePayment2(farmNo)}
+                    /> */}
                     <div style={{ width: '2rem' }}></div>
                     <Button
                         className="d-flex justify-content-center mt-8"

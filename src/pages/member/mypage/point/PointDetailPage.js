@@ -12,6 +12,7 @@ const StyledContainer = styled.div`
     color: black;
     font-size: 0.8em;
     margin: auto 1.5rem auto;
+    margin-top: 2rem;
 `;
 const PointDetailPage = () => {
     const [memberData, setMemberData] = useState(null); // 농부의 memberNo
