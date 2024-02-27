@@ -76,7 +76,7 @@ const ReviewListPage = () => {
     const navigate = useNavigate();
 
     const handleBack = () => {
-        navigate('/mypage/memberMypage'); // 마이페이지로 이동
+        navigate('/mypage'); // 마이페이지로 이동
     };
     console.log(baseUrl);
     useEffect(()=>{

@@ -59,7 +59,7 @@ const ReviewRegist = ({ rating: initialRating, content: initialContent, reviewNo
     const navigate = useNavigate();
     const [memberData, setMemberData] = useState();
     const [response, setResponse] = useState(null); // 결과 메시지 상태 추가
-    const { memberMoveToRead } = useCustomMove();
+    const { memberMoveToRead, moveToMyReview } = useCustomMove();
     useEffect(() => {
         if (isEdit && initialRating && initialContent) {
             setRating(initialRating);
@@ -80,7 +80,11 @@ const ReviewRegist = ({ rating: initialRating, content: initialContent, reviewNo
     };
     const closeModal = () => {
         setResponse(null);
-        memberMoveToRead(farmNo); //moveToList( )호출
+        if (isEdit) {
+            moveToMyReview(memberNo); // 수정된 리뷰일 경우 moveToMyReview로 이동
+        } else {
+            memberMoveToRead(farmNo); // 등록된 리뷰일 경우 memberMoveToRead로 이동
+        }
     };
     useEffect(() => {
         // 서버에서 사용자 정보 가져오기
@@ -117,13 +121,13 @@ const ReviewRegist = ({ rating: initialRating, content: initialContent, reviewNo
             
         }).then((response) => {
             if (isEdit) {
-                setResponse({ message: '리뷰가 수정되었습니다.', type: 'success' }); // 2. 성공 메시지 설정
+                setResponse({ message: '리뷰가 수정되었습니다.', type: 'success' }); 
             } else {
-                setResponse({ message: '리뷰가 등록되었습니다.', type: 'success' }); // 2. 성공 메시지 설정
+                setResponse({ message: '리뷰가 등록되었습니다.', type: 'success' }); 
             }
         }).catch((error) => {
             console.error("Error occured while registering the review:", error);
-            setResponse({ message: '리뷰 등록 중 오류가 발생했습니다.', type: 'error' }); // 2. 오류 메시지 설정
+            setResponse({ message: '리뷰 등록 중 오류가 발생했습니다.', type: 'error' }); 
         });
     };
 
