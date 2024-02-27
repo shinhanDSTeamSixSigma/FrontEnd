@@ -513,7 +513,7 @@ export default function ModifyFarm({ farmNo, moveList, moveRead }) {
 
     return (
         <>
-            <div className="  mt-10 m-2 p-4">
+            <div className=" mt-10 m-2 p-4">
                 {result ? (
                     <ResultModal
                         title={'처리결과'}
