@@ -35,8 +35,8 @@ const ItemContent = styled.div`
     justify-content: center;
 `;
 const ImageContainer = styled.div`
-    width: 26vw; /* viewport 너비의 28% */
-    height: 26vw; /* viewport 너비의 28% */
+    width: 25vw; /* viewport 너비의 28% */
+    height: 25vw; /* viewport 너비의 28% */
     max-width: 200px; /* 최대 너비 */
     max-height: 200px; /* 최대 높이 */
     box-sizing: border-box;
