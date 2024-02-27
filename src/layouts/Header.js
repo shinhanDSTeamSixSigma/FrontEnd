@@ -1,16 +1,17 @@
 import { Fragment } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/header.css';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { getMemberNo } from '../api/farmApi';
 import Search from '../components/Search';
 import ReactDOM from 'react-dom';
-import { getMemberNo } from '../api/farmApi';
 
 const user = {
     name: '토심이',
-    email: 'tom@example.com',
+    email: 'tom@kky.com',
     imageUrl:
         'https://ilovecharacter.com/news/data/20230731/p1065542571400847_461_thum.jpg',
 };
@@ -21,6 +22,26 @@ function classNames(...classes) {
 
 export default function Header({ handleModalToggle }) {
     const [selectedIndex, setSelectedIndex] = useState(0);
+    const [memberData, setMemberData] = useState(null); // 농부의 memberNo
+
+    useEffect(() => {
+        // 서버에서 사용자 정보 가져오기
+        getMemberNo()
+            .then((res) => {
+                setMemberData(res.memberNo);
+                console.log(res);
+            })
+            .catch((error) => {
+                console.log('데이터 안옴!!!!!!');
+                console.error(error);
+            });
+    }, [memberData]);
+
+    const handleLogout = () => {
+        // 로그아웃 처리
+        setMemberData(null); // memberData 상태를 초기화하여 로그아웃 상태로 변경
+        setSelectedIndex(3); // 선택된 인덱스를 로그인 상태의 인덱스로 초기화
+    };
 
     const navigation = [
         { name: '메인', href: '/', current: selectedIndex === 0 },
@@ -35,19 +56,18 @@ export default function Header({ handleModalToggle }) {
             current: selectedIndex === 2,
         },
     ];
-    const userNavigation = [
-        {
-            name: '마이페이지',
-            href: '/mypage/memberMypage',
-            current: selectedIndex === 3,
-        },
-        {
-            name: '정보수정',
-            href: '/mypage/info-edit',
-            current: selectedIndex === 4,
-        },
-        { name: '로그아웃', href: '/', current: selectedIndex === 5 },
-    ];
+    const userNavigation = memberData
+        ? [
+              {
+                  name: '마이페이지',
+                  href: '/mypage/memberMypage',
+                  current: selectedIndex === 3,
+              },
+              { name: '로그아웃', href: '/', onClick: handleLogout }, // 로그아웃 상태에서는 로그아웃 링크를 표시
+          ]
+        : [
+              { name: '로그인', href: '/login', current: selectedIndex === 3 }, // 로그아웃 상태에서는 로그인 링크를 표시
+          ];
 
     const handleItemClick = (index) => {
         setSelectedIndex(index); // 항목을 클릭하면 해당 인덱스를 선택된 인덱스로 업데이트
@@ -92,7 +112,7 @@ export default function Header({ handleModalToggle }) {
                                                                 item.current
                                                                     ? 'bg-[#80BCBD] text-white'
                                                                     : 'text-gray-700 hover:bg-[#80BCBD] hover:text-white',
-                                                                'rounded-md px-3 py-2 text-sm font-medium no-underline',
+                                                                'rounded-md px-3 py-2 text-sm font-medium',
                                                             )}
                                                             aria-current={
                                                                 item.current
@@ -159,7 +179,6 @@ export default function Header({ handleModalToggle }) {
                                                                     key={
                                                                         item.name
                                                                     }
-                                                                    className="no-underline"
                                                                 >
                                                                     {({
                                                                         active,
@@ -244,7 +263,7 @@ export default function Header({ handleModalToggle }) {
                                                     item.current
                                                         ? 'bg-gray-700 text-white'
                                                         : 'text-black hover:bg-gray-700 hover:text-white',
-                                                    'block rounded-md px-3 py-2 text-base font-medium no-underline',
+                                                    'block rounded-md px-3 py-2 text-base font-medium',
                                                 )}
                                                 aria-current={
                                                     item.current
@@ -267,7 +286,7 @@ export default function Header({ handleModalToggle }) {
                                                 alt=""
                                             />
                                         </div>
-                                        <div className="ml-3 no-underline">
+                                        <div className="ml-3">
                                             <div className="text-base font-medium leading-none text-white">
                                                 {user.name}
                                             </div>
@@ -300,12 +319,7 @@ export default function Header({ handleModalToggle }) {
                                                             index + 3,
                                                         )
                                                     } // 항목을 클릭하면 해당 인덱스로 업데이트하는 함수 호출
-                                                    className={classNames(
-                                                        item.current
-                                                            ? 'bg-gray-700 text-white'
-                                                            : 'text-black hover:bg-gray-700 hover:text-white',
-                                                        'block rounded-md px-3 py-2 text-base font-medium no-underline',
-                                                    )}
+                                                    className="block rounded-md px-3 py-2 text-base font-medium text-black hover:bg-gray-700 hover:text-white"
                                                     aria-current={
                                                         item.current
                                                             ? 'page'

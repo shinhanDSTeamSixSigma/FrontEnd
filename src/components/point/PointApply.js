@@ -5,6 +5,7 @@ import TitleDetailName from './TitleDetailName';
 import TitleDivisionLine from '../TitleDivisionLine';
 import styled from 'styled-components';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import ResultModal from '../modal/ResultModal';
 
 const FlexRow = styled.div`
     display: flex;
@@ -26,6 +27,7 @@ const PointApply = ({ memberNo, baseUrl, isOff, onToggle }) => {
     const { totalPrice } = location.state;
 
     const [points, setPoint] = useState(0);
+    const [resultMessage, setResultMessage] = useState(null);
 
     useEffect(() => {
         fetchData();
@@ -49,7 +51,11 @@ const PointApply = ({ memberNo, baseUrl, isOff, onToggle }) => {
 
     const handleMinusPoint = () => {
         if (totalPrice > points) {
-            alert('포인트가 부족합니다. 충전이 필요합니다.');
+            setResultMessage({
+                title: '',
+                content: '포인트가 부족합니다. 충전이 필요합니다.',
+                type: 'success',
+            });
             return;
         }
 
@@ -62,7 +68,9 @@ const PointApply = ({ memberNo, baseUrl, isOff, onToggle }) => {
         //setIsOff(true);
         onToggle(true);
     };
-
+    const closeModal = () => {
+        setResultMessage(null);
+    };
     return (
         <>
             <TitleDetailName name="포인트" />
@@ -122,6 +130,13 @@ const PointApply = ({ memberNo, baseUrl, isOff, onToggle }) => {
                 </FlexRow>
                 <TitleDivisionLine />
             </div>
+            {resultMessage && (
+                <ResultModal
+                    title={resultMessage.title}
+                    content={resultMessage.content}
+                    callbackFnc={closeModal}
+                />
+            )}
         </>
     );
 };

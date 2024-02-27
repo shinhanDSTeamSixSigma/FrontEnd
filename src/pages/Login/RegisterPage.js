@@ -3,11 +3,12 @@ import LoginForm from './LoginForm';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
+const baseUrl = process.env.REACT_APP_BASE_URL;
 const RegisterPage = () => {
     const [error, setError] = useState(null); // 에러 상태 추가
     const handleSubmit = (formData) => {
         axios
-            .post('http://192.168.0.73:8090/register', formData)
+            .post(`${baseUrl}/register`, formData)
             .then((response) => {
                 document.cookie = 'auth = 1; path = /';
                 console.log('Registration successful:', response.data);
@@ -25,7 +26,7 @@ const RegisterPage = () => {
     };
 
     return (
-        <div>
+        <>
             {/* 에러 메시지 출력 */}
             {error && (
                 <div
@@ -51,7 +52,7 @@ const RegisterPage = () => {
                 <Link to="/login">이미 회원이신가요? 로그인</Link>
             </div>
             {/* "/login" 페이지로 이동하는 링크 */}
-        </div>
+        </>
     );
 };
 

@@ -6,6 +6,7 @@ import { RiDeleteBinLine } from 'react-icons/ri';
 import styled from 'styled-components';
 import axios from 'axios';
 import DiaryBlank from '../diary/DiaryBlank';
+import ResultModal from '../modal/ResultModal';
 
 const baseUrl = process.env.REACT_APP_BASE_URL;
 
@@ -43,6 +44,7 @@ const DiaryContentDetail = ({ memberNo, cropNo, baseUrl }) => {
 
     const [diaryList, setDiaryList] = useState([]);
     //const [diaryDate, setDiaryDate] = useState();
+    const [resultMessage, setResultMessage] = useState(null);
 
     useEffect(() => {
         diaryListData();
@@ -94,7 +96,11 @@ const DiaryContentDetail = ({ memberNo, cropNo, baseUrl }) => {
 
             // 성공 시에 다른 로직 수행 가능
             console.log('일기 삭제 성공');
-            alert('삭제되었습니다');
+            setResultMessage({
+                title: '',
+                content: '삭제되었습니다.',
+                type: 'success',
+            });
 
             diaryListData();
         } catch (error) {
@@ -102,6 +108,9 @@ const DiaryContentDetail = ({ memberNo, cropNo, baseUrl }) => {
         }
     };
     console.log(diaryList);
+    const closeModal = () => {
+        setResultMessage(null);
+    };
     return (
         <>
             {diaryList && diaryList.length > 0 ? (
@@ -178,6 +187,13 @@ const DiaryContentDetail = ({ memberNo, cropNo, baseUrl }) => {
                 <Height>
                     <DiaryBlank />
                 </Height>
+            )}
+             {resultMessage && (
+                <ResultModal
+                    title={resultMessage.title}
+                    content={resultMessage.content}
+                    callbackFnc={closeModal}
+                />
             )}
         </>
     );

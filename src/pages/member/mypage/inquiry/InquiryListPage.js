@@ -135,11 +135,11 @@ const InquiryListPage = () => {
                     console.log(res);
     
                     console.log('멤버데이터 ', JSON.stringify(res.memberNo));
-                    if (res.role !== 'FARMER') {
-                        console.log(res.role);
-                        alert('농부만 들어갈 수 있는 페이지 입니다!');
-                        window.location.href = '/';
-                    }
+                    // if (res.role !== 'FARMER') {
+                    //     console.log(res.role);
+                    //     alert('농부만 들어갈 수 있는 페이지 입니다!');
+                    //     window.location.href = '/';
+                    // }
                 })
                 .catch((error) => {
                     console.log('데이터 안옴!!!!!!');

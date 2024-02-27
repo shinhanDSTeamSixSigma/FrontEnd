@@ -45,7 +45,7 @@ const cropInit = {
     lowTemp: 0,
     highTemp: 0,
 };
-export default function MyFarmList() {
+export default function MyFarmList({ numberOfItems }) {
     const { page, size, moveToList, moveToRead, memberMoveToRead } =
         useCustomMove();
     const [imagePaths, setImagePaths] = useState({});
@@ -55,12 +55,13 @@ export default function MyFarmList() {
     const [serverData, setServerData] = useState(initState);
     const [sortByReview, setSortByReview] = useState(false); // 필터링
     const [memberData, setMemberData] = useState(null); // 농부의 memberNo
+
     useEffect(() => {
         // 서버에서 사용자 정보 가져오기
         getMemberNo()
             .then((res) => {
                 setMemberData(res);
-                console.log(res);
+                console.log('memberdata', res);
 
                 console.log('멤버데이터 ', JSON.stringify(memberData));
             })
@@ -111,7 +112,7 @@ export default function MyFarmList() {
 
     // member가 farmer면 농부의 농장 상세 member면 멤버의 농장 상세
     const handleFarmItemClick = (farmNo) => {
-        if (memberData.role === 'farmer') {
+        if (memberData.role === 'FARMER') {
             moveToRead(farmNo);
         } else {
             memberMoveToRead(farmNo);
@@ -167,6 +168,8 @@ export default function MyFarmList() {
             setSortByReview(false);
         }
     };
+
+    const limitData = serverData.dtoList.slice(0, numberOfItems);
     return (
         <>
             <StyledBody>
@@ -181,7 +184,7 @@ export default function MyFarmList() {
                     </div>
                 </div>
                 <div>
-                    {serverData.dtoList.map((key, idx) => (
+                    {limitData.map((key, idx) => (
                         <div key={key.farmNo} className="">
                             <div
                                 className="shadow-xl h-28   mt-2 mb-1 rounded-2xl flex cursor-pointer justify-between"
