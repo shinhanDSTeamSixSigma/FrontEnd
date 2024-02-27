@@ -133,7 +133,9 @@ const Payment = ({
                                         content: '결제 성공',
                                         type: 'success',
                                     });
-                                    navigate('/pay/detail');
+                                    navigate('/mypage/detail', {
+                                        state: { userInfo },
+                                    });
                                 } else {
                                     //alert('결제 실패');
                                     setResultMessage({
@@ -176,7 +178,7 @@ const Payment = ({
     const closeModal = () => {
         setResultMessage(null);
     };
-    
+
     return (
         <div>
             <FullButton name="충전하기" onClick={requestPay}></FullButton>
@@ -187,9 +189,8 @@ const Payment = ({
                     callbackFnc={closeModal}
                 />
             )}
-        </div>     
+        </div>
     );
-    
 };
 
 export default Payment;
