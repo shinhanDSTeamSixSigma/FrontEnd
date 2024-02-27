@@ -16,11 +16,13 @@ const StyledContainer = styled.div`
     color: black;
     font-size: 0.8em;
     margin: auto 1.5rem auto;
+    margin-top: 2rem;
 `;
 
 const PayApplyPage = () => {
-    //const crop = location.state.crop;
-    const cropNo =1;
+    // const crop = location.state.crop;
+    // const cropNo = crop.cropNo;
+    const cropNo = 1;
 
     const [memberData, setMemberData] = useState(null); // 농부의 memberNo
 
@@ -119,7 +121,6 @@ const PayApplyPage = () => {
             });
     }, [memberData]);
 
-
     return (
         <>
             <StyledContainer>
@@ -142,11 +143,11 @@ const PayApplyPage = () => {
                 onClick={() =>
                     isOff
                         ? //alert('포인트 사용을 선택해주세요.')
-                        setResultMessage({
-                            title: '',
-                            content: '포인트 사용을 선택해주세요.',
-                            type: 'success',
-                        })
+                          setResultMessage({
+                              title: '',
+                              content: '포인트 사용을 선택해주세요.',
+                              type: 'success',
+                          })
                         : handleButtonClick()
                 }
             />

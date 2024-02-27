@@ -9,8 +9,8 @@ import DiaryTitle from '../../../../components/diary/DiaryTitle';
 const baseUrl = process.env.REACT_APP_BASE_URL;
 
 const CropImage = styled.img`
-    width: 6rem;
-    height: 6rem;
+    width: 8rem;
+    height: 8rem;
     border-radius: 0.8rem;
 `;
 export default function AlbumPage() {
@@ -84,7 +84,7 @@ export default function AlbumPage() {
                         crops.images.map((image, index) => (
                             <div
                                 key={index}
-                                className="h-24 w-24 border ml-auto mb-3"
+                                className="h-32 w-32 border mr-auto mb-3"
                             >
                                 <CropImage
                                     src={`${baseUrl}/img/${image}`}

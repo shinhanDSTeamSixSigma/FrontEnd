@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-
 const FlexRow = styled.div`
     // row로 붙여주는 느낌
     width: 100%;
@@ -11,11 +10,18 @@ const FlexRow = styled.div`
     align-items: center;
     border-radius: 0.8rem; //모서리 둥글게
 `;
-const Row = styled.div`
+const FlexRowGap = styled.div`
+    // row로 붙여주는 느낌
+    width: 100%;
+    height: 8rem;
+    background-color: #aad9bb;
     display: flex;
     flex-direction: row;
     align-items: center;
+    gap: 0.5rem;
+    border-radius: 0.8rem; //모서리 둥글게
 `;
+
 const FlexRowBasic = styled.div`
     // row로 붙여주는 느낌
     display: flex;
@@ -53,7 +59,12 @@ const Nowing = ({ crops }) => {
     const handleClickDiary = (crop) => {
         const memberNo = crop.memberEntity.memberNo;
         const cropNo = crop.cropNo;
-        navigate('/diary/calendar', { state: { memberNo, cropNo } });
+        const cropNickname = crop.cropNickname;
+        const buyDate = crop.buyDate;
+
+        navigate('/diary/calendar', {
+            state: { memberNo, cropNo, cropNickname, buyDate },
+        });
     };
 
     return (
@@ -86,19 +97,25 @@ const Nowing = ({ crops }) => {
                                           '/img/memberMypage/4step.png'
                                         : null // 또는 다른 이미지 경로 또는 값
                                 }
-                                style={{ width: '5rem', height: '5rem' }}
+                                style={{
+                                    width: '5rem',
+                                    height: '5rem',
+                                    marginLeft: '1rem',
+                                }}
                             />
                         </Box>
 
                         <div style={{ marginLeft: '1rem' }}>
-                            <div>{crop.cropNickname}</div>
+                            <div style={{ fontWeight: 'bold' }}>
+                                {crop.cropNickname}
+                            </div>
                             <FlexRowBasic>
                                 <div className="text-sm">D+</div>
                                 <div className="text-sm">
                                     {calculateDaysSince(crop.createdDate)}
                                 </div>
                             </FlexRowBasic>
-                            <FlexRowBasic style={{ fontSize: '0.6rem' }}>
+                            <FlexRowBasic style={{ fontSize: '0.7rem' }}>
                                 <div>
                                     {new Date(
                                         crop.createdDate,
@@ -109,31 +126,30 @@ const Nowing = ({ crops }) => {
                         </div>
                     </FlexRow>
 
-                    <div>
-                        <div>
-                            <button
-                                onClick={() => handleClickDiary(crop)}
-                                className="flex-none rounded-md ml-2 bg-[#D5F0C1] px-2 py-1 text-xs shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 mt-2"
-                            >
-                                다이어리
-                            </button>
-                            <button
-                                onClick={() => handleClick(crop)}
-                                className="flex-none rounded-md ml-2 bg-[#D5F0C1] px-2 py-1 text-xs shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 mt-2"
-                            >
-                                통계
-                            </button>
-                        </div>
-                        <div key={crop.cropNo}>
+                    <FlexRowGap>
+                        <button
+                            onClick={() => handleClickDiary(crop)}
+                            className="ml-1 flex-none rounded-md bg-[#D5F0C1] px-3.5 py-2.5 text-base shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 mt-2"
+                        >
+                            다이어리
+                        </button>
+                        <button
+                            onClick={() => handleClick(crop)}
+                            className="ml-1 flex-none rounded-md bg-[#D5F0C1] px-3.5 py-2.5 text-base shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 mt-2"
+                        >
+                            통계
+                        </button>
+
+                        <div className="button-container" key={crop.cropNo}>
                             <button
                                 onClick={() => handleClickStreaming(crop)}
-                                className="flex-none rounded-full bg-[#F5F0BB] px-3.5 py-2.5 text-base shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 mt-2"
+                                className="ml-1 flex-none rounded-md bg-[#F5F0BB] px-3.5 py-2.5 text-base shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 mt-2"
                             >
                                 <b>{crop.cropNickname}</b>
                                 (이)는 지금?
                             </button>
                         </div>
-                    </div>
+                    </FlexRowGap>
                 </FlexRow>
             ))}
         </>

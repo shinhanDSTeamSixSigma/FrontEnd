@@ -29,8 +29,8 @@ const Container = styled.div`
 `;
 
 const Box = styled.div`
-    width: 4rem;
-    height: 4rem;
+    width: 5rem;
+    height: 5rem;
     background-color: #f5f0bb;
     margin: auto 0.3rem auto;
     border-radius: 0.8rem; //모서리 둥글게
@@ -39,7 +39,7 @@ const Box = styled.div`
     flex-direction: column;
 `;
 const Step = styled.div`
-    font-size: 0.6rem;
+    font-size: 0.8rem;
 `;
 
 const Fontsize = styled.div`
@@ -156,10 +156,18 @@ export default function MemberMyPagePage() {
                         />
                         <div>
                             <FlexRow>
-                                <div className="text-sm mr-[3px]">
+                                <div
+                                    className="text-base mr-[3px]"
+                                    style={{ fontWeight: 'bold' }}
+                                >
                                     {userInfo.nickname}
                                 </div>
-                                <div className="text-sm">농부님</div>
+                                <div
+                                    className="text-base"
+                                    style={{ fontWeight: 'bold' }}
+                                >
+                                    농부님
+                                </div>
                             </FlexRow>
                             <Step style={{ color: '#999999' }}>
                                 {userInfo.memberId}
@@ -167,8 +175,13 @@ export default function MemberMyPagePage() {
                         </div>
                     </FlexRow>
                     <FlexRow>
-                        <div className="text-sm mr-[3px]">내 포인트 : </div>
-                        <div className="text-sm">{memberPoint}</div>
+                        <div className="text-base mr-[3px]">내 포인트 : </div>
+                        {memberPoint !== null && (
+                            <div className="text-base">
+                                {memberPoint.toLocaleString()}
+                            </div>
+                        )}
+                        <div className="text-base">원</div>
                     </FlexRow>
                     <IoSettingsOutline />
                 </FlexRow>
@@ -193,7 +206,7 @@ export default function MemberMyPagePage() {
                             <div>
                                 <IoIosLogOut color="#73A9AD" />
                             </div>
-                            <span className="text-xs">내 포인트 확인/충전</span>
+                            <span className="text-sm">내 포인트 확인/충전</span>
                         </FlexRow>
                         <IoChevronForwardOutline color="#C4C4C4" />
                     </FlexRow>
