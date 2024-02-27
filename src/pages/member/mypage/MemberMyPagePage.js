@@ -175,13 +175,13 @@ export default function MemberMyPagePage() {
                         </div>
                     </FlexRow>
                     <FlexRow>
-                        <div className="text-base mr-[3px]">내 포인트 : </div>
+                        <div className="text-sm mr-[3px]">내 포인트 : </div>
                         {memberPoint !== null && (
-                            <div className="text-base">
+                            <div className="text-sm">
                                 {memberPoint.toLocaleString()}
                             </div>
                         )}
-                        <div className="text-base">원</div>
+                        <div className="text-sm">원</div>
                     </FlexRow>
                     <IoSettingsOutline />
                 </FlexRow>
@@ -206,7 +206,12 @@ export default function MemberMyPagePage() {
                             <div>
                                 <IoIosLogOut color="#73A9AD" />
                             </div>
-                            <span className="text-sm">내 포인트 확인/충전</span>
+                            <span
+                                className="text-sm"
+                                style={{ cursor: 'pointer' }}
+                            >
+                                내 포인트 확인/충전
+                            </span>
                         </FlexRow>
                         <IoChevronForwardOutline color="#C4C4C4" />
                     </FlexRow>

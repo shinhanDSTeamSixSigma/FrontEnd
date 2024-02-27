@@ -11,7 +11,7 @@ const Box = styled.div`
 
 const FlexRow = styled.div`
     // row로 붙여주는 느낌
-    width: 19em;
+    width: 20rem;
     height: 7rem;
     background-color: #f5f0bb;
     display: flex;
