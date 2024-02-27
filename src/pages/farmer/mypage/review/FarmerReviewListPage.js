@@ -80,7 +80,7 @@ const FarmerReviewListPage = ({
         const fetchData = async () => {
             try {
                 const response = await axios.get(
-                    `http://localhost:8090/review/list?farmNo=${farmNo}`,
+                    `${baseUrl}/review/list?farmNo=${farmNo}`,
                 );
 
                 // 날짜 형식 변환
