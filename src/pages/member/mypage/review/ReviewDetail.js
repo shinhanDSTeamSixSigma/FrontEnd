@@ -5,6 +5,8 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import StarRating from "../../../../components/board/StarRating";
+import ResultModal from "../../../../components/modal/ResultModal";
+import useCustomMove from "../../../../hooks/useCustomMove";
 
 const StyledContainer = styled.div`
     background-color:white;
@@ -81,7 +83,8 @@ const ReviewDetail =()=>{
     const { reviewNo } = useParams();
     const [reviewDetail, setReviewDetail] = useState(null);
     const navigate = useNavigate();
-
+    const [resultMessage, setResultMessage] = useState(null);
+    const { moveToMyReview } = useCustomMove();
     const fetchReviewDetail = async () => {
     try {
         const response = await axios.get(`${baseUrl}/review/${reviewNo}`, {
@@ -118,11 +121,18 @@ const ReviewDetail =()=>{
             await axios.delete(`${baseUrl}/review/delete/${reviewNo}`, {
                 withCredentials: true,
             });
-            alert("리뷰가 삭제되었습니다.");
-            navigate(-1);
+            setResultMessage({
+                title: '',
+                content: '리뷰가 삭제되었습니다.',
+                type: 'success',
+            });
         }catch(error){
             console.log("Error deleting review:", error);
         }
+    };
+    const closeModal = () => {
+        setResultMessage(null);
+        moveToMyReview(reviewDetail.memberNo);
     };
  
     return (
@@ -150,6 +160,13 @@ const ReviewDetail =()=>{
                     style={{ fontSize: '0.8rem' }}>삭제</button>
             </Buttons>
         </StyledContainer>
+        {resultMessage && (
+                <ResultModal
+                    title={resultMessage.title}
+                    content={resultMessage.content}
+                    callbackFnc={closeModal}
+                />
+            )}
         </>
     )
 };
