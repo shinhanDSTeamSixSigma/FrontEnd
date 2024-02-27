@@ -26,7 +26,8 @@ export default function Header({ handleModalToggle }) {
 
     const handleLogout = () => {
         console.log('로그아웃 함수가 호출되었습니다.');
-        // 로그아웃 처리
+        // 쿠키 만료
+        document.cookie = 'auth=; max-age=0; path=/;';
         setMemberData(null); // memberData 상태를 초기화하여 로그아웃 상태로 변경
         setSelectedIndex(3); // "로그인" 항목을 선택되도록 설정
     };
@@ -64,7 +65,7 @@ export default function Header({ handleModalToggle }) {
                   href: '/mypage',
                   current: selectedIndex === 3,
               },
-              { name: '로그아웃', href: '/', onClick: handleLogout }, // 로그아웃 상태에서는 로그아웃 링크를 표시
+              { name: '로그아웃', href: '/', onClick: () => handleLogout() }, // 로그아웃 상태에서는 로그아웃 링크를 표시
           ]
         : [
               { name: '로그인', href: '/login', current: selectedIndex === 3 }, // 로그아웃 상태에서는 로그인 링크를 표시
