@@ -46,13 +46,14 @@ const Nowing = ({ crops }) => {
         // 클릭된 버튼의 cropNo를 사용하여 이동
         navigate('/mypage/temperature', { state: { crop } });
     };
-
+    const handleClickStreaming = (crop) => {
+        // 클릭된 버튼의 cropNo를 사용하여 이동
+        navigate('/mypage/streaming', { state: { crop } });
+    };
     const handleClickDiary = (crop) => {
-
         const memberNo = crop.memberEntity.memberNo;
         const cropNo = crop.cropNo;
         navigate('/diary/calendar', { state: { memberNo, cropNo } });
-
     };
 
     return (
@@ -116,10 +117,16 @@ const Nowing = ({ crops }) => {
                             >
                                 다이어리
                             </button>
+                            <button
+                                onClick={() => handleClick(crop)}
+                                className="flex-none rounded-md ml-2 bg-[#D5F0C1] px-2 py-1 text-xs shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 mt-2"
+                            >
+                                통계
+                            </button>
                         </div>
                         <div key={crop.cropNo}>
                             <button
-                                onClick={() => handleClick(crop)}
+                                onClick={() => handleClickStreaming(crop)}
                                 className="flex-none rounded-full bg-[#F5F0BB] px-3.5 py-2.5 text-base shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 mt-2"
                             >
                                 <b>{crop.cropNickname}</b>

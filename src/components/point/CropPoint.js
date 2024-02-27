@@ -20,12 +20,8 @@ const FinalPayCss = styled.div`
     color: #4f6f52;
 `;
 
-const CropPoint = () => {
+const CropPoint = ({ memberNo, cropNo }) => {
     const [point, setPoint] = useState();
-
-    //데이터
-    const [memberNo, setMemberNo] = useState(1); // 추후 변경
-    const [cropNo, setCropNo] = useState(1); // 추후 변경
 
     useEffect(() => {
         fetchData();

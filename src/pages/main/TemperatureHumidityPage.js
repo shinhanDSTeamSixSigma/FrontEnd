@@ -6,6 +6,7 @@ import { Line } from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
+import TitleDivisionLine from '../../components/TitleDivisionLine';
 
 const FlexRow = styled.div`
     display: flex;
@@ -220,15 +221,8 @@ const TemperaturHumidityPage = () => {
                     </div>
                 </div>
             </StyledHeader>
+            <TitleDivisionLine />
             <StyledBody>
-                <hr
-                    style={{
-                        marginTop: '1rem',
-                        marginBottom: '1rem',
-                        color: '#90C8AC',
-                    }}
-                ></hr>
-
                 <div
                     className="flex justify-end"
                     style={{ paddingBottom: '1rem' }}
