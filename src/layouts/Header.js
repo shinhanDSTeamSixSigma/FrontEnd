@@ -60,7 +60,7 @@ export default function Header({ handleModalToggle }) {
         ? [
               {
                   name: '마이페이지',
-                  href: '/mypage/memberMypage',
+                  href: '/mypage',
                   current: selectedIndex === 3,
               },
               { name: '로그아웃', href: '/', onClick: handleLogout }, // 로그아웃 상태에서는 로그아웃 링크를 표시
