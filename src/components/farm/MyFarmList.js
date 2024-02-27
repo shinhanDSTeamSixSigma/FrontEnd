@@ -55,12 +55,13 @@ export default function MyFarmList({ numberOfItems }) {
     const [serverData, setServerData] = useState(initState);
     const [sortByReview, setSortByReview] = useState(false); // 필터링
     const [memberData, setMemberData] = useState(null); // 농부의 memberNo
+
     useEffect(() => {
         // 서버에서 사용자 정보 가져오기
         getMemberNo()
             .then((res) => {
                 setMemberData(res);
-                console.log(res);
+                console.log('memberdata', res);
 
                 console.log('멤버데이터 ', JSON.stringify(memberData));
             })
