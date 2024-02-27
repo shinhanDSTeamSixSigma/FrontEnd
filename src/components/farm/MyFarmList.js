@@ -45,7 +45,7 @@ const cropInit = {
     lowTemp: 0,
     highTemp: 0,
 };
-export default function MyFarmList() {
+export default function MyFarmList({ numberOfItems }) {
     const { page, size, moveToList, moveToRead, memberMoveToRead } =
         useCustomMove();
     const [imagePaths, setImagePaths] = useState({});
@@ -111,7 +111,7 @@ export default function MyFarmList() {
 
     // member가 farmer면 농부의 농장 상세 member면 멤버의 농장 상세
     const handleFarmItemClick = (farmNo) => {
-        if (memberData.role === 'farmer') {
+        if (memberData.role === 'FARMER') {
             moveToRead(farmNo);
         } else {
             memberMoveToRead(farmNo);
@@ -167,6 +167,8 @@ export default function MyFarmList() {
             setSortByReview(false);
         }
     };
+
+    const limitData = serverData.dtoList.slice(0, numberOfItems);
     return (
         <>
             <StyledBody>
@@ -181,7 +183,7 @@ export default function MyFarmList() {
                     </div>
                 </div>
                 <div>
-                    {serverData.dtoList.map((key, idx) => (
+                    {limitData.map((key, idx) => (
                         <div key={key.farmNo} className="">
                             <div
                                 className="shadow-xl h-28   mt-2 mb-1 rounded-2xl flex cursor-pointer justify-between"

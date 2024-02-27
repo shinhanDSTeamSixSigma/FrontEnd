@@ -306,7 +306,7 @@ const root = createBrowserRouter([
 
         children: [
             {
-                path: 'memberMypage',
+                path: '',
                 element: (
                     <Suspense fallback={Loading}>
                         <MemberMyPage />
@@ -339,6 +339,14 @@ const root = createBrowserRouter([
                 ),
             },
             {
+                path: 'temperature',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <TemperaturHumidityPage />
+                    </Suspense>
+                ),
+            },
+            {
                 path: 'mycrop',
                 element: (
                     <Suspense fallback={Loading}>
@@ -346,12 +354,19 @@ const root = createBrowserRouter([
                     </Suspense>
                 ),
             },
-
             {
-                path: 'temperature',
+                path: 'receipt',
                 element: (
                     <Suspense fallback={Loading}>
-                        <TemperaturHumidityPage />
+                        <PaymentDetail />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'detail',
+                element: (
+                    <Suspense fallback={Loading}>
+                        <PointDetail />
                     </Suspense>
                 ),
             },
@@ -426,26 +441,10 @@ const root = createBrowserRouter([
                 ),
             },
             {
-                path: 'receipt',
-                element: (
-                    <Suspense fallback={Loading}>
-                        <PaymentDetail />
-                    </Suspense>
-                ),
-            },
-            {
                 path: 'charge',
                 element: (
                     <Suspense fallback={Loading}>
                         <PointCharge />
-                    </Suspense>
-                ),
-            },
-            {
-                path: 'detail',
-                element: (
-                    <Suspense fallback={Loading}>
-                        <PointDetail />
                     </Suspense>
                 ),
             },
