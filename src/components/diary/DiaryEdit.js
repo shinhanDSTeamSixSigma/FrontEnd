@@ -21,7 +21,7 @@ const Picture = styled.img`
     background-color: #d9d9d9;
     border-radius: 0.8rem;
     margin-bottom: 1rem;
-    height: 10rem;
+    height: 25rem;
     width: 100%;
 `;
 const Content = styled.div`

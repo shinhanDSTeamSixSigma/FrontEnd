@@ -101,7 +101,7 @@ const PointApply = ({ memberNo, baseUrl, isOff, onToggle }) => {
                         style={{
                             width: '5rem',
                             height: '2.4rem',
-                            fontSize: '1em',
+                            fontSize: '0.8em',
                         }}
                     >
                         전체 사용
