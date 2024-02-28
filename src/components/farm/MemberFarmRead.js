@@ -11,6 +11,7 @@ import Button from '../Button';
 import { useNavigate, useParams } from 'react-router-dom';
 import { prefix } from '../../api/farmApi';
 import StyledHeader from '../StyledHeader';
+import StyledBody from '../StyledBody';
 import FarmFarmerInfo from './FarmFarmerInfo';
 import FarmReview from './FarmReview';
 import FarmCropInfo from './FarmCropInfo';
@@ -154,6 +155,20 @@ export default function FarmRead({ farmNo }) {
         };
     }, [farm]); // farm 상태가 변경될 때마다 실행
 
+    // 경로 복사
+    const handleCopyCurrentPath = () => {
+        const currentPath = window.location.href;
+        navigator.clipboard
+            .writeText(currentPath)
+            .then(() => {
+                console.log('현재 경로가 클립보드에 복사되었습니다.');
+                alert('현재 경로 클립보드에 복사');
+            })
+            .catch((error) => {
+                console.error('클립보드 복사 중 오류가 발생했습니다:', error);
+            });
+    };
+
     const renderFields = () => {
         return (
             <div className="w-full">
@@ -192,11 +207,16 @@ export default function FarmRead({ farmNo }) {
                         </div>
                     )}
                     <div className="text-[1rem] flex ml-4 text-[#737373]">
-                        <img
-                            src={process.env.PUBLIC_URL + `/img/locate.png`}
-                            alt=""
-                            className="mr-1"
-                        />
+                        <div
+                            onClick={handleCopyCurrentPath}
+                            style={{ cursor: 'pointer' }}
+                        >
+                            <img
+                                src={process.env.PUBLIC_URL + `/img/locate.png`}
+                                alt=""
+                                className="mr-1"
+                            />
+                        </div>
                         {farm.farmAddress}
                     </div>
                 </div>
@@ -264,7 +284,7 @@ export default function FarmRead({ farmNo }) {
                 )}
             </div>
 
-            <div className="fixed bottom-0 left-0 w-full bg-[#80BCBD] px-2.5 py-1.5 text-base font-semibold text-white p-3 flex justify-center text-[20px]">
+            <div className="rounded-lg mt-5 bottom-0 w-full bg-[#80BCBD] p-3 text-base font-semibold text-white  flex justify-center text-[20px]">
                 <button onClick={() => moveToPay(farmNo)}>농장 신청하기</button>
             </div>
         </>

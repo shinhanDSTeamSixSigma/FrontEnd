@@ -174,7 +174,7 @@ const FarmerInquiryDetailPage = () => {
                     {commentList.map((comment, index) => (
                         <InquiryItem key={index}>
                             <CommentElse>
-                                {comment && comment.memberId}
+                                {comment && comment.nickname}
                             </CommentElse>
                             <CommentContent>
                                 {comment && comment.commentContent}
@@ -250,7 +250,7 @@ const FarmerInquiryDetailPage = () => {
                 <BackButton onClick={handleBack} size="20" />
                 <Title>{inquiryDetail && inquiryDetail.title}</Title>
                 <FlexRowGap>
-                    <div>{inquiryDetail && inquiryDetail.memberId}</div>
+                    <div>{inquiryDetail && inquiryDetail.nickname}</div>
                     <div>{inquiryDetail && inquiryDetail.formattedDate}</div>
                     <ViewsContainer>
                         <MdVisibility style={{ marginRight: '0.5rem' }} />{' '}

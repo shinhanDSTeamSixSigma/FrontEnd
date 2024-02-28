@@ -76,6 +76,26 @@ const ReviewListPage = () => {
     };
     console.log(baseUrl);
     useEffect(() => {
+        // 서버에서 사용자 정보 가져오기
+        getMemberNo()
+            .then((res) => {
+                setMemberData(res);
+                setNickname(res.nickname); // 닉네임 설정
+                console.log(res);
+
+                console.log('멤버데이터 ', JSON.stringify(res.memberNo));
+                // if (res.role !== 'FARMER') {
+                //     console.log(res.role);
+                //     alert('농부만 들어갈 수 있는 페이지 입니다!');
+                //     window.location.href = '/';
+                // }
+            })
+            .catch((error) => {
+                console.log('데이터 안옴!!!!!!');
+                console.error(error);
+            });
+    }, []);
+    useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(
@@ -110,26 +130,7 @@ const ReviewListPage = () => {
         fetchData(); // 데이터 가져오기 함수 호출
     }, [memberData]);
 
-    useEffect(() => {
-        // 서버에서 사용자 정보 가져오기
-        getMemberNo()
-            .then((res) => {
-                setMemberData(res);
-                setNickname(res.nickname); // 닉네임 설정
-                console.log(res);
-
-                console.log('멤버데이터 ', JSON.stringify(res.memberNo));
-                // if (res.role !== 'FARMER') {
-                //     console.log(res.role);
-                //     alert('농부만 들어갈 수 있는 페이지 입니다!');
-                //     window.location.href = '/';
-                // }
-            })
-            .catch((error) => {
-                console.log('데이터 안옴!!!!!!');
-                console.error(error);
-            });
-    }, []);
+   
 
     return (
         <>
@@ -151,14 +152,14 @@ const ReviewListPage = () => {
                     reviews.map((review, index) => (
                         <Link to={`/review/${review.reviewNo}/detail`}>
                             <InquiryItem key={index}>
-                                <FarmName>{review.farmId}네 농장</FarmName>
+                                <FarmName>{review.farmName}</FarmName>
                                 <StarRating
                                     rating={review.rating}
                                     size="1rem"
                                 />
                                 <Content>{review.reviewContent}</Content>
                                 <FlexRowGap>
-                                    <div>{review.memberId}</div>
+                                    <div>{review.nickname}</div>
                                     <div>{review.createdDate}</div>
                                 </FlexRowGap>
                             </InquiryItem>

@@ -262,12 +262,11 @@ export default function FarmRead({ farmNo }) {
                         {selectComponent[content]}
                     </div>
                 )}
-            </div>
-
-            <div className="fixed bottom-0 left-0 w-full bg-[#80BCBD] px-2.5 py-1.5 text-base font-semibold text-white p-3 flex justify-center text-[20px]">
-                <button onClick={() => moveToModify(farmNo)}>
-                    농장 수정하기
-                </button>
+                <div className="rounded-lg mt-5 bottom-0 w-full bg-[#80BCBD] p-3 text-base font-semibold text-white  flex justify-center text-[20px]">
+                    <button onClick={() => moveToModify(farmNo)}>
+                        농장 수정하기
+                    </button>
+                </div>
             </div>
         </>
     );
