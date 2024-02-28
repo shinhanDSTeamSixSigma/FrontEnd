@@ -70,6 +70,7 @@ export default function DiaryTitle({ memberNo, cropNo, baseUrl }) {
             })
             .then((res) => {
                 setCropData(res.data);
+                console.log('res.data : : : ', res.data);
             })
             .catch((error) => {
                 console.log(error);
