@@ -8,6 +8,7 @@ import TitleDivisionLine from '../../../../components/TitleDivisionLine';
 import axios from 'axios';
 
 const baseUrl = process.env.REACT_APP_BASE_URL;
+var streamingaddr = '';
 
 const calculateDaysSince = (startDate) => {
     const oneDay = 24 * 60 * 60 * 1000;
@@ -25,13 +26,14 @@ function streamingCaptureBtnOnclicked() {
     let context = canvas.getContext('2d');
     let captureBtn = document.getElementById('captureBtn');
     let streamingImg = document.getElementById('streamingImg');
+    let hiidenbtn = document.getElementById('hiddenBtn');
     streamingImg.crossOrigin = 'Anonymous';
     try {
         context.drawImage(streamingImg, 0, 0);
         let dataURL = canvas.toDataURL('image/jpeg');
-        captureBtn.href = dataURL;
+        hiidenbtn.href = dataURL;
         let d = new Date();
-        captureBtn.download =
+        hiidenbtn.download =
             d.getFullYear() +
             ('0' + (d.getMonth() + 1)).slice(-2) +
             ('0' + d.getDate()).slice(-2) +
@@ -46,6 +48,13 @@ function streamingCaptureBtnOnclicked() {
     canvas.parentNode.removeChild(canvas);
 }
 
+function waterSignal() {
+    fetch(streamingaddr + ':82/water', { method: 'POST', body: 'WATER' })
+        .then((response) => console.log('response:', response))
+        .catch((error) => console.log('error:', error));
+    alert('물 시그널 전송');
+}
+
 export default function CropStreamingPage({}) {
     const location = useLocation();
     const crop = location.state.crop;
@@ -54,7 +63,6 @@ export default function CropStreamingPage({}) {
     const [cropData, setCropData] = useState([]);
     let cropNicknameData = '';
     let cropBuyDate = '';
-    let streamingaddr = '';
     let cropNo = 0;
     if (crop != null) {
         cropNicknameData = crop.cropNickname;
@@ -116,12 +124,17 @@ export default function CropStreamingPage({}) {
             <TitleDivisionLine />
             <div style={{ marginBottom: '5rem' }}></div>
             <StyledBody>
-                <div className="h-72 border">
+                <div
+                    className="d-flex h-72"
+                    style={{ justifyContent: 'center' }}
+                >
                     <img
                         id="streamingImg"
                         src={streamingaddr + `:81/stream`}
                         alt="streaming"
                         crossOrigin="anonymous"
+                        className="center"
+                        width={'450rem'}
                     ></img>
                 </div>
                 <div className="flex justify-evenly mt-8 ">
@@ -172,7 +185,9 @@ export default function CropStreamingPage({}) {
                         className="d-flex justify-content-center mt-8"
                         name={'물주기'}
                         widthHeight={'w-40 h-11'}
+                        captureButtonEffect={() => waterSignal()}
                     />
+                    <button id="hiddenBtn" width="0rem" height="0rem" />
                 </section>
             </StyledBody>
         </>
