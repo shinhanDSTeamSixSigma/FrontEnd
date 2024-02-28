@@ -58,7 +58,7 @@ export default function AlbumPage() {
                 style={{
                     color: 'black',
                     fontSize: '0.8em',
-                    margin: 'auto 1.5rem auto',
+                    margin: '1.5rem 2rem auto',
                 }}
             >
                 <DiaryTitle
