@@ -26,8 +26,15 @@ export default function Search({ isModalOpen, handleCloseModal }) {
         // 농장 상세 페이지로 이동
         navigate(`/farm/read/${farmNo}`);
         // 모달 닫기
+        handleModalClose();
+    };
+
+    const handleModalClose = () => {
+        setSearchTerm(''); // 모달이 닫힐 때 searchTerm 초기화
         handleCloseModal();
     };
+
+    const [imagePaths, setImagePaths] = useState({});
 
     return (
         <>
@@ -40,6 +47,7 @@ export default function Search({ isModalOpen, handleCloseModal }) {
                             className="block w-10/12 pl-4 pr-4 border-none text-sm rounded-lg bg-[#D9D9D9]  focus:outline-none dark:text-[#878787] ml-auto mr-3 "
                             placeholder="농장을 검색하세요..."
                             required
+                            value={searchTerm}
                             onChange={(e) => {
                                 setSearchTerm(e.target.value);
                             }}
@@ -53,71 +61,84 @@ export default function Search({ isModalOpen, handleCloseModal }) {
                     {error && <p>Error: {error.message}</p>}
                     {Array.isArray(searchResult) && searchResult.length > 0 ? (
                         <div>
-                            <h3 style={{ paddingTop: '2rem' }}>검색 결과:</h3>
-                            <ul className="divide-y divide-gray-200">
-                                {searchResult.map((result) => (
-                                    <li key={result.farmNo} className="py-4 ">
-                                        <div
-                                            className="w-full flex"
-                                            onClick={() =>
-                                                handleFarmItemClick(
-                                                    result.farmNo,
-                                                )
-                                            } // 농장 클릭 이벤트 추가
-                                            style={{ cursor: 'pointer' }}
-                                        >
-                                            <div className="d-flex shadow border rounded w-full">
-                                                <div className="ml-3">
-                                                    <div>
-                                                        <h2 className="text-xl font-bold text-gray-900">
-                                                            {result.farmName}
-                                                        </h2>
-                                                    </div>
-                                                    <div className="d-flex bd-highlight mt-1">
-                                                        <p className="text-lg">
-                                                            ⭐
-                                                        </p>
-                                                        <p className="mt-1 font-bold">
-                                                            {result.farmRating}
-                                                        </p>{' '}
-                                                        <p className="mt-2 ml-1 text-sm">
-                                                            (
-                                                            {
-                                                                result.farmOrderNum
-                                                            }
-                                                            )
-                                                        </p>
-                                                        <p className="ml-2 mr-2 mt-1 text-sm">
-                                                            |
-                                                        </p>
-                                                        <p className="mt-1 text-sm">
-                                                            경력{' '}
-                                                            {result.farmCareer}
-                                                            년
-                                                        </p>
-                                                        <p className="ml-2 mr-2 mt-1 text-sm">
-                                                            |
-                                                        </p>
-                                                        <p className="mt-1 text-sm">
-                                                            {result.farmAddress}
-                                                        </p>
-                                                    </div>
-                                                    <div>
-                                                        <p className="text-sm text-gray-500 mt-3">
-                                                            {result.farmContent}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <img
-                                                    className="w-25 h-25 rounded flex-shrink-1 bd-highlight ms-auto shadows mt-2 mb-2 mr-2 ml-2"
-                                                    src={result.image}
-                                                    alt=""
-                                                />
+                            <h2
+                                style={{
+                                    paddingTop: '2rem',
+                                    fontStyle: 'bold',
+                                }}
+                            >
+                                검색 결과
+                            </h2>
+                            <div>
+                                {searchResult.map((farm) => (
+                                    <div
+                                        key={farm.farmNo}
+                                        className="shadow-xl h-28   mt-2 mb-1 rounded-2xl flex cursor-pointer justify-between"
+                                        onClick={() =>
+                                            handleFarmItemClick(farm.farmNo)
+                                        }
+                                    >
+                                        <div className="mt-auto mb-auto ml-5 ">
+                                            <div className="text-[1.1rem] font-semibold mt-1">
+                                                {farm.farmName}
                                             </div>
+                                            <div className="flex text-[0.7rem] mb-1">
+                                                <div className="text-[0.7rem] font-semibold flex justify-center items-center">
+                                                    <img
+                                                        src={`${process.env.PUBLIC_URL}/img/star.png`}
+                                                        alt=""
+                                                        className="mr-1 w-4 h-4"
+                                                    />
+                                                    <span>
+                                                        {farm.farmRating.toFixed(
+                                                            1,
+                                                        )}
+                                                    </span>
+                                                    <span className="text-[0.7rem] ml-1">
+                                                        ({farm.reviewCnt})
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <span className="ml-1">
+                                                        | 경력 {farm.farmCareer}
+                                                        년
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <span className="ml-1">
+                                                        |{' '}
+                                                        {farm.farmAddress.replace(
+                                                            / .*/,
+                                                            '',
+                                                        )}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <p className="text-xs text-gray-500">
+                                                {farm.farmContent}
+                                            </p>
                                         </div>
-                                    </li>
+                                        <div className=" rounded-2xl w-20 h-20 flex justify-center items-center mr-3">
+                                            {/* {imagePaths &&
+                                                imagePaths[farm.farmNo] && (
+                                                    <img
+                                                        key={0}
+                                                        src={`${
+                                                            process.env
+                                                                .PUBLIC_URL
+                                                        }/${
+                                                            imagePaths[
+                                                                farm.farmNo
+                                                            ][0]
+                                                        }`}
+                                                        alt={`image ${0}`}
+                                                        className="h-full rounded-2xl shadow-xl mt-[2rem] "
+                                                    />
+                                                )} */}
+                                        </div>
+                                    </div>
                                 ))}
-                            </ul>
+                            </div>
                         </div>
                     ) : null}
                 </StyledHeader>

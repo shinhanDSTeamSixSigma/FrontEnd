@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-
 const FlexRow = styled.div`
     // row로 붙여주는 느낌
     width: 100%;
@@ -11,11 +10,16 @@ const FlexRow = styled.div`
     align-items: center;
     border-radius: 0.8rem; //모서리 둥글게
 `;
-const Row = styled.div`
+const FlexRowGap = styled.div`
+    background-color: #aad9bb;
     display: flex;
     flex-direction: row;
     align-items: center;
+    gap: 0.5rem;
+    border-radius: 0.8rem; //모서리 둥글게
+    margin-right: 0.5rem;
 `;
+
 const FlexRowBasic = styled.div`
     // row로 붙여주는 느낌
     display: flex;
@@ -53,7 +57,11 @@ const Nowing = ({ crops }) => {
     const handleClickDiary = (crop) => {
         const memberNo = crop.memberEntity.memberNo;
         const cropNo = crop.cropNo;
-        navigate('/diary/calendar', { state: { memberNo, cropNo } });
+        const cropNickname = crop.cropNickname;
+        const buyDate = crop.buyDate;
+        navigate('/diary/calendar', {
+            state: { memberNo, cropNo, cropNickname, buyDate },
+        });
     };
 
     return (
@@ -86,48 +94,82 @@ const Nowing = ({ crops }) => {
                                           '/img/memberMypage/4step.png'
                                         : null // 또는 다른 이미지 경로 또는 값
                                 }
-                                style={{ width: '5rem', height: '5rem' }}
+                                style={{
+                                    width: '5rem',
+                                    height: '5rem',
+                                    marginLeft: '0.5rem',
+                                }}
                             />
                         </Box>
 
-                        <div style={{ marginLeft: '1rem' }}>
-                            <div>{crop.cropNickname}</div>
+                        <div style={{ marginLeft: '0.5rem' }}>
+                            <div
+                                style={{
+                                    fontWeight: 'bold',
+                                    fontSize: '1.1rem',
+                                }}
+                            >
+                                {crop.cropNickname}
+                            </div>
                             <FlexRowBasic>
                                 <div className="text-sm">D+</div>
                                 <div className="text-sm">
-                                    {calculateDaysSince(crop.createdDate)}
+                                    {calculateDaysSince(crop.buyDate)}
                                 </div>
                             </FlexRowBasic>
-                            <FlexRowBasic style={{ fontSize: '0.6rem' }}>
-                                <div>
-                                    {new Date(
-                                        crop.createdDate,
-                                    ).toLocaleDateString()}
-                                </div>
-                                <div> ~ 재배중</div>
-                            </FlexRowBasic>
+                            <div
+                                style={{ fontSize: '0.7rem', color: '#666666' }}
+                            >
+                                {new Date(crop.buyDate).toLocaleDateString(
+                                    undefined,
+                                    {
+                                        month: '2-digit',
+                                        day: '2-digit',
+                                    },
+                                )}
+                            </div>
+                            <div
+                                style={{ fontSize: '0.7rem', color: '#666666' }}
+                            >
+                                {crop.endDate === null
+                                    ? ' ~ 재배중'
+                                    : '재배 완료'}
+                            </div>
                         </div>
                     </FlexRow>
 
                     <div>
-                        <div>
+                        <FlexRowGap>
                             <button
                                 onClick={() => handleClickDiary(crop)}
-                                className="flex-none rounded-md ml-2 bg-[#D5F0C1] px-2 py-1 text-xs shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 mt-2"
+                                className="ml-1 flex-none rounded-md bg-[#D5F0C1] text-sm shadow-sm hover:bg-[#73A9AD] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                                style={{ width: '4.5rem', height: '2.5rem' }}
                             >
                                 다이어리
                             </button>
                             <button
                                 onClick={() => handleClick(crop)}
-                                className="flex-none rounded-md ml-2 bg-[#D5F0C1] px-2 py-1 text-xs shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 mt-2"
+                                className="ml-1 mr-1 flex-none rounded-md bg-[#D5F0C1] text-sm shadow-sm hover:bg-[#73A9AD] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                                style={{ width: '4.5rem', height: '2.5rem' }}
                             >
                                 통계
                             </button>
-                        </div>
-                        <div key={crop.cropNo}>
+                        </FlexRowGap>
+
+                        <div
+                            style={{
+                                justifyContent: 'center',
+                                display: 'flex',
+                            }}
+                            key={crop.cropNo}
+                        >
                             <button
                                 onClick={() => handleClickStreaming(crop)}
-                                className="flex-none rounded-full bg-[#F5F0BB] px-3.5 py-2.5 text-base shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 mt-2"
+                                className="mt-1 ml-1 flex-none rounded-md bg-[#F5F0BB] text-sm shadow-sm hover:bg-[#F4A460] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                                style={{
+                                    width: '8rem',
+                                    height: '4rem',
+                                }}
                             >
                                 <b>{crop.cropNickname}</b>
                                 (이)는 지금?

@@ -5,20 +5,23 @@ import styled from 'styled-components';
 import DiaryTitle from '../../../../components/diary/DiaryTitle';
 import DiaryCalendar from '../../../../components/diary/DiaryCalendar';
 import CalendarIcon from '../../../../components/diary/CalendarIcon';
-
 const baseUrl = process.env.REACT_APP_BASE_URL;
 
 const StyledContainer = styled.div`
     color: black;
     font-size: 0.8em;
     margin: auto 1.5rem auto;
+    margin-top: 2rem;
 `;
 
 const DiaryCalendarPage = () => {
     const [memberData, setMemberData] = useState(null); // 농부의 memberNo
 
     const location = useLocation(); // 현재 위치
-    const { cropNo } = location.state;
+    const { cropNo, cropNickname, buyDate } = location.state;
+
+    console.log(cropNickname);
+    console.log(buyDate);
 
     useEffect(() => {
         // 서버에서 사용자 정보 가져오기
@@ -31,6 +34,7 @@ const DiaryCalendarPage = () => {
                 console.error(error);
             });
     }, [memberData]);
+
     return (
         <>
             <StyledContainer>
@@ -43,6 +47,8 @@ const DiaryCalendarPage = () => {
                     memberNo={memberData}
                     cropNo={cropNo}
                     baseUrl={baseUrl}
+                    cropNickname={cropNickname}
+                    buyDate={buyDate}
                 />
             </StyledContainer>
             <CalendarIcon />
