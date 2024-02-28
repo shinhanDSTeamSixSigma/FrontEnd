@@ -15,7 +15,7 @@ const StyledContainer = styled.div`
 `;
 
 const Title=styled.div`
-    font-size:1.2rem;
+    font-size:1rem;
     font-weight: 600;
     margin:1rem;
     margin-top:1.5rem;
@@ -27,6 +27,7 @@ const FlexRowGap=styled.div`
     gap:2rem;
     margin:1rem;
     color:#878787;
+    font-size:0.8rem;
 `;
 
 const Buttons=styled.div`
@@ -50,7 +51,7 @@ const DivLine=styled.div`
 `;
 
 const Content=styled.div`
-    font-size : 1rem;
+    font-size : 0.8rem;
     margin:2rem 0 2rem 1rem;   
     height: 15rem;
 `;
@@ -67,13 +68,13 @@ const InquiryItem=styled.div`
 `;
 
 const InquiryTitle = styled.h3`
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: bold;
     margin-left: 1rem;
 `;
 
 const CommentContent=styled.div`
-    font-size : 1.1rem;
+    font-size : 0.8rem;
     margin: 1rem 0 1rem 1rem;   
     height: 5rem;
 `;
@@ -81,11 +82,12 @@ const CommentContent=styled.div`
 const CommentElse=styled.div`
     margin:0.5rem 0 1rem 1rem;
     color:#878787;
+    font-size: 0.8rem;
 `;
 
 const NoComment=styled.div`
     color: #4F6F52;
-    font-size : 1.1rem;
+    font-size : 1rem;
     font-weight: 600;
     text-align: center;
     margin:4rem 0 4rem 0;
@@ -142,7 +144,7 @@ const InquiryDetailPage =()=>{
             <ul>
               {commentList.map((comment, index) => (
                 <InquiryItem key={index}>                 
-                    <CommentElse>{comment && comment.memberId}</CommentElse>    
+                    <CommentElse>{comment && comment.nickname}</CommentElse>    
                     <CommentContent>{comment && comment.commentContent}</CommentContent> 
                     <CommentElse>{comment && comment.formattedDate}</CommentElse>            
                 </InquiryItem>             
@@ -204,7 +206,7 @@ const InquiryDetailPage =()=>{
             <BackButton onClick={handleBack} size="20" />
             <Title>{inquiryDetail && inquiryDetail.title}</Title>
             <FlexRowGap>
-                <div>{inquiryDetail && inquiryDetail.memberId}</div>
+                <div>{inquiryDetail && inquiryDetail.nickname}</div>
                 <div>{inquiryDetail && inquiryDetail.formattedDate}</div>
                 <ViewsContainer>
                     <MdVisibility style={{ marginRight: '0.5rem' }} /> {/* Icon component */}
@@ -218,10 +220,10 @@ const InquiryDetailPage =()=>{
             <Buttons>
                 <button 
                     onClick={handleEdit}
-                    className="block rounded-md bg-[#80BCBD] text-white text-lg py-1.5 px-3">수정</button>
+                    className="block rounded-md bg-[#80BCBD] text-white text-lg py-1 px-2.5">수정</button>
                 <button 
                     onClick={handleDelete}
-                    className="block rounded-md bg-[#D9D9D9] text-white text-lg py-1.5 px-3">삭제</button>
+                    className="block rounded-md bg-[#D9D9D9] text-white text-lg py-1 px-2.5">삭제</button>
             </Buttons>
 
             {isCommentListEmpty ? (

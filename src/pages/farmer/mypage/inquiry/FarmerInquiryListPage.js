@@ -19,7 +19,7 @@ const FlexRow = styled.div`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    margin: 0.5rem 1rem 1rem 0;
+    margin: 0.5rem 0 1rem 0;
 `;
 const FlexRowGap = styled.div`
     display: flex;
@@ -34,7 +34,7 @@ const Title = styled.div`
     font-weight: 600;
 `;
 const Totalcnt = styled.div`
-    font-size: 0.8rem;
+    font-size: 0.6rem;
     font-weight: 500;
     color: #878787;
     margin: 0.5rem 0 0 0.8rem;
@@ -162,7 +162,7 @@ const FarmerInquiryListPage = ({ farm }) => {
                                 </FlexRow>
                                 <Content>{inquiry.boardContent}</Content>
                                 <FlexRowGap>
-                                    <div>{inquiry.memberId}</div>
+                                    <div>{inquiry.nickname}</div>
                                     <div>{inquiry.createdDate}</div>
                                     <ViewsContainer>
                                         <MdVisibility
