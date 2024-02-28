@@ -26,6 +26,7 @@ const LoginPage = () => {
             const token = response.data.token;
             console.log(token);
 
+            // 제발요
             document.cookie =
                 'auth=' + token + '; path=/; domain=mam675.synology.me';
 
