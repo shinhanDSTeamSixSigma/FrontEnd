@@ -22,6 +22,7 @@ export default function AlbumPage() {
 
     console.log('앨범 페이지' + memberData);
     console.log('앨범 페이지' + cropNo);
+    //console.log('빌드')
 
     useEffect(() => {
         const fetchData = async () => {
@@ -58,7 +59,7 @@ export default function AlbumPage() {
                 style={{
                     color: 'black',
                     fontSize: '0.8em',
-                    margin: 'auto 1.5rem auto',
+                    margin: '1.5rem 2rem auto',
                 }}
             >
                 <DiaryTitle

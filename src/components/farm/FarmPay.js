@@ -93,7 +93,7 @@ export function FarmPay() {
                         fontWeight: 'bold',
                         textAlign: 'center',
                         paddingBottom: '1rem',
-                        fontSize: '1.5rem',
+                        fontSize: '1.2rem',
                     }}
                 >
                     {myFarm.farmName}
@@ -129,16 +129,16 @@ export function FarmPay() {
                     <label htmlFor="menu2">비료 - 5,000원</label> */}
 
                 <div>
-                    <FlexRow style={{ fontWeight: 'bold' }}>
+                    <FlexRow style={{ fontWeight: 'bold', fontSize: '1rem' }}>
                         {myCrop && <div>작물 - {myCrop.cropName}</div>}
                     </FlexRow>
                     {/* 메뉴 목록 */}
                     <div className="menuList">
-                        <div className="text-xl mt-2 mb-3">농장 평수</div>
+                        <div className="text-sm mt-2 mb-3">농장 평수</div>
                         {/* 여기에 메뉴 목록을 표시하는 코드 추가 */}
                         <div
-                            className="menu border-2  mb-1"
-                            style={{ borderRadius: '8px' }}
+                            className="menu border-2 mb-1 p-1"
+                            style={{ borderRadius: '8px', fontSize: '0.9rem' }}
                         >
                             <input
                                 type="checkbox"
@@ -147,7 +147,12 @@ export function FarmPay() {
                                     handleCheckboxChange(event, 1, '1평', 50000)
                                 }
                             />
-                            <label htmlFor="menu1">1평 - 50,000원</label>
+                            <label
+                                htmlFor="menu1"
+                                style={{ marginLeft: '0.5rem' }}
+                            >
+                                1평 - 50,000원
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -157,16 +162,17 @@ export function FarmPay() {
 
             {/* 장바구니 내용 표시 */}
             <div id="rightmenus">
-                <div className="text-2xl mt-4 mb-3">장바구니</div>
+                <div className="text-base font-bold mt-4 mb-3">장바구니</div>
                 {cartItems.map((item) => (
                     <div
                         key={item.name}
                         className="rightmenu border-2 mb-2"
                         data-menu-name={item.name}
+                        style={{ borderRadius: '1rem', padding: '1rem' }}
                     >
                         <input type="hidden" value={item.menuUrl} />
-                        <div>{item.name}</div>
-                        <div className="">
+                        <div className="text-sm">{item.name}</div>
+                        <div className="text-sm">
                             수량:{' '}
                             <input
                                 type="number"
@@ -178,21 +184,24 @@ export function FarmPay() {
                             />
                         </div>
                         <div>
-                            <span>{item.price * item.quantity}원</span>
+                            <span className="text-sm">
+                                {item.price * item.quantity}원
+                            </span>
                         </div>
                     </div>
                 ))}
             </div>
 
             {/* 총 금액 표시 */}
-            <div className="flex justify-end  bottom-10">
-                <div className="sumAmount text-right mr-4">
+            <div className="flex justify-end text-base font-bold bottom-10">
+                <div className="sumAmount text-right mt-1 mr-4">
                     총 금액: {totalPrice}원
                 </div>
                 <div>
                     <button
                         onClick={handlePayment}
-                        className="w-20 bg-[#80BCBD] block rounded-md "
+                        className="w-20 bg-[#80BCBD] block rounded-md p-1 "
+                        style={{ color: 'white' }}
                     >
                         결제하기
                     </button>

@@ -17,7 +17,7 @@ const FlexRow = styled.div`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    margin: 0.5rem 1rem 1rem 0;
+    margin: 0.5rem 0 1rem 0;
 `;
 
 const FlexRowGap = styled.div`
@@ -120,20 +120,20 @@ const FarmerReviewListPage = ({
         <>
             <StyledContainer>
                 <FlexRow>
-                    <FlexRow style={{ marginRight: '1rem' }}>
+                    <FlexRow style={{ marginRight: '0.5rem' }}>
                         <TitleContainer>
                             <BoardTitle name="농부 리뷰" />
                         </TitleContainer>
                         <AvgRating>{averageRating.toFixed(1)}</AvgRating>
                         <StarRating
                             rating={averageRating.toFixed(1)}
-                            size="1.5rem"
+                            size="1rem"
                         ></StarRating>
 
                         <Totalcnt>({totalReviews})</Totalcnt>
                     </FlexRow>
                     <Link to={`/farm/review/${farmNo}/regist`}>
-                        <Button name="리뷰하기" widthHeight="w-18 h-10" />
+                        <Button name="작성" widthHeight="w-16 h-8" />
                     </Link>
                 </FlexRow>
 
@@ -149,7 +149,7 @@ const FarmerReviewListPage = ({
                                 />
                                 <Content>{review.reviewContent}</Content>
                                 <FlexRowGap>
-                                    <div>{review.memberId}</div>
+                                    <div>{review.nickname}</div>
                                     <div>{review.createdDate}</div>
                                 </FlexRowGap>
                             </InquiryItem>

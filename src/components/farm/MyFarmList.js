@@ -179,9 +179,23 @@ export default function MyFarmList({ numberOfItems }) {
         <>
             <StyledBody>
                 <div className="flex justify-end text-[1rem] text-[#4F6F52]">
-                    <div>
+                    <div
+                        style={{
+                            borderRadius: '10px',
+                            overflow: 'hidden',
+                            backgroundColor: '#D5F0C1',
+                        }}
+                    >
                         <select
                             onChange={(e) => handleSortChange(e.target.value)}
+                            style={{
+                                border: 'none',
+                                outline: 'none',
+                                padding: '0.5rem',
+                                fontSize: '0.9rem',
+                                backgroundColor: 'inherit',
+                                cursor: 'pointer',
+                            }}
                         >
                             <option value="default">기본순</option>
                             <option value="review">리뷰 많은 순</option>
@@ -195,7 +209,7 @@ export default function MyFarmList({ numberOfItems }) {
                                 className="shadow-xl h-28   mt-2 mb-1 rounded-2xl flex cursor-pointer justify-between"
                                 onClick={() => handleFarmItemClick(key.farmNo)}
                             >
-                                <div className="mt-auto mb-auto ml-6 ">
+                                <div className="mt-auto mb-auto ml-5 ">
                                     <div className="text-[1.1rem] font-semibold mt-1">
                                         {key.farmName}
                                     </div>
@@ -213,8 +227,8 @@ export default function MyFarmList({ numberOfItems }) {
                                                 전문 농장
                                             </p>
                                         )}
-                                    <div className="flex text-[0.79rem] mb-1">
-                                        <div className="text-[0.79rem] font-semibold flex justify-center items-center">
+                                    <div className="flex text-[0.7rem] mb-1">
+                                        <div className="text-[0.7rem] font-semibold flex justify-center items-center">
                                             <img
                                                 src={
                                                     process.env.PUBLIC_URL +
