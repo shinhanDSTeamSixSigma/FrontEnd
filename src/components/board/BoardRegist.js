@@ -128,11 +128,11 @@ const BoardRegist = ({ title: initialTitle, content: initialContent, boardNo, is
             if (isEdit) {
                 // 수정된 경우 ResultModal을 통해 메시지 표시
                 setResponse({ message: "문의가 수정되었습니다." });
-                navigate(`/inquiry/${memberNo}`);
+                //navigate(`/inquiry/${memberNo}`);
             } else {
                 // 등록된 경우 ResultModal을 통해 메시지 표시
                 setResponse({ message: "문의가 등록되었습니다."});
-                navigate(`/farm/member/read/${farmNo}`);
+                //navigate(`/farm/member/read/${farmNo}`);
             }
         }).catch((error) => {
             console.error(isEdit ? "Error occured while updating the board:" : "Error occured while registering the board:", error);
