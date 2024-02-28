@@ -3,7 +3,6 @@ import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 
 const FabCss = styled.div`
-    position: fixed;
     bottom: 20px;
     right: 20px;
 `;
