@@ -57,7 +57,7 @@ export default function Header({ handleModalToggle }) {
                   href: '/mypage',
                   current: selectedIndex === 3,
               },
-              { name: '로그아웃', href: '/?login=0' }, // 로그아웃 상태에서는 로그아웃 링크를 표시
+              //   { name: '로그아웃', href: '/?login=0' }, // 로그아웃 상태에서는 로그아웃 링크를 표시
           ]
         : [
               { name: '로그인', href: '/login', current: selectedIndex === 3 }, // 로그아웃 상태에서는 로그인 링크를 표시
