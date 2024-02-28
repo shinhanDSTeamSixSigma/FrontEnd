@@ -141,7 +141,7 @@ const ReviewDetail =()=>{
         <StyledContainer>
             <BackButton onClick={handleBack} size="20" />
             
-            <Writer>{reviewDetail && reviewDetail.farmId}네 농장</Writer>
+            <Writer>{reviewDetail && reviewDetail.farmName}</Writer>
             <FlexRowGap>
                 <StarRating rating={reviewDetail && reviewDetail.rating} size='1rem'/>
                 <TextRating>{reviewDetail && reviewDetail.rating.toFixed(1)}</TextRating>                

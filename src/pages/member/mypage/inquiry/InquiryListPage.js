@@ -174,7 +174,7 @@ const InquiryListPage = () => {
                                 </FlexRow>
                                 <Content>{inquiry.boardContent}</Content>
                                 <FlexRowGap>
-                                    <div>{inquiry.memberId}</div>
+                                    <div>{inquiry.nickname}</div>
                                     <div>{inquiry.createdDate}</div>
                                     <ViewsContainer>
                                         <MdVisibility
