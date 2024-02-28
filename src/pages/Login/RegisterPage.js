@@ -10,7 +10,8 @@ const RegisterPage = () => {
         axios
             .post(`${baseUrl}/register`, formData)
             .then((response) => {
-                document.cookie = 'auth=1; path=/; domain=43.201.105.68';
+                // test
+                document.cookie = 'auth=1; path=/; domain=mam675.synology.me';
 
                 console.log('Registration successful:', response.data);
 

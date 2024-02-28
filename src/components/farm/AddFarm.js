@@ -74,6 +74,7 @@ export default function AddFarm() {
     }, [memberData]);
 
     const handleChangeFarmCrop = (e) => {
+        //aa
         const { name, value } = e.target;
         //aaaa
         setCrop({ ...crop, [name]: value });
