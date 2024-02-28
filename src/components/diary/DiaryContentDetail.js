@@ -25,7 +25,7 @@ const Picture = styled.img`
     background-color: #d9d9d9;
     border-radius: 0.8rem;
     margin-bottom: 1rem;
-    height: 8rem;
+    height: 20rem;
     width: 100%;
 `;
 const Height = styled.div`
@@ -81,6 +81,7 @@ const DiaryContentDetail = ({ memberNo, cropNo, baseUrl }) => {
                 );
 
                 setDiaryList(diaryListWithDateDiff);
+                console.log(diaryList);
             })
             .catch((error) => {
                 console.log(error);
@@ -188,7 +189,7 @@ const DiaryContentDetail = ({ memberNo, cropNo, baseUrl }) => {
                     <DiaryBlank />
                 </Height>
             )}
-             {resultMessage && (
+            {resultMessage && (
                 <ResultModal
                     title={resultMessage.title}
                     content={resultMessage.content}

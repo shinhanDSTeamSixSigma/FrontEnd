@@ -46,8 +46,8 @@ const DivLine = styled.div`
     margin-top: 1.5rem;
 `;
 const ImageContainer = styled.div`
-    width: 35vw; /* viewport 너비의 28% */
-    height: 35vw; /* viewport 너비의 28% */
+    width: 40vw; /* viewport 너비의 28% */
+    height: 40vw; /* viewport 너비의 28% */
     max-width: 200px; /* 최대 너비 */
     max-height: 200px; /* 최대 높이 */
     box-sizing: border-box;
