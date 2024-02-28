@@ -93,7 +93,7 @@ const DiaryEdit = ({ memberNo, cropNo, baseUrl }) => {
 
     const handleConfirm = async () => {
         setShowConfirmModal(false); // ConfirmModal을 닫습니다.
-        
+
         try {
             const diaryDto = {
                 diaryNo: diaryDetail.diaryNo,
@@ -118,7 +118,6 @@ const DiaryEdit = ({ memberNo, cropNo, baseUrl }) => {
                 content: '수정되었습니다.',
                 type: 'success',
             });
-            
         } catch (error) {
             console.error('Error modifying diary:', error);
         }
