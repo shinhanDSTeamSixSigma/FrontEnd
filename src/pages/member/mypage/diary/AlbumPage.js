@@ -22,6 +22,7 @@ export default function AlbumPage() {
 
     console.log('앨범 페이지' + memberData);
     console.log('앨범 페이지' + cropNo);
+    //console.log('빌드')
 
     useEffect(() => {
         const fetchData = async () => {
