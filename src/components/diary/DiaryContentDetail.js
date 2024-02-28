@@ -81,6 +81,7 @@ const DiaryContentDetail = ({ memberNo, cropNo, baseUrl }) => {
                 );
 
                 setDiaryList(diaryListWithDateDiff);
+                console.log(diaryList);
             })
             .catch((error) => {
                 console.log(error);
@@ -188,7 +189,7 @@ const DiaryContentDetail = ({ memberNo, cropNo, baseUrl }) => {
                     <DiaryBlank />
                 </Height>
             )}
-             {resultMessage && (
+            {resultMessage && (
                 <ResultModal
                     title={resultMessage.title}
                     content={resultMessage.content}
