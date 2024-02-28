@@ -10,7 +10,8 @@ const RegisterPage = () => {
         axios
             .post(`${baseUrl}/register`, formData)
             .then((response) => {
-                document.cookie = 'auth = 1; path = /';
+                document.cookie = 'auth=1; path=/; domain=43.201.105.68';
+
                 console.log('Registration successful:', response.data);
 
                 window.location.href = '/login'; // Redirect 방식

@@ -12,6 +12,7 @@ const MainPage = () => {
         //setMemberData(null);
     };
     useEffect(() => {
+        // 테스트
         // 현재 페이지의 쿼리 문자열 가져오기
         const queryString = window.location.search;
 
