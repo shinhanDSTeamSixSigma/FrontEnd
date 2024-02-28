@@ -39,10 +39,11 @@ const MainPage = () => {
                         style={{
                             justifyContent: 'center',
                             display: 'flex',
-                            fontStyle: 'bold',
+                            fontWeight: '1000',
+                            marginTop: '1rem',
                         }}
                     >
-                        농장 최신순 , 리뷰 많은 순
+                        대표 농장
                     </div>{' '}
                     <MyFarmList numberOfItems={3} />
                 </div>
@@ -50,6 +51,11 @@ const MainPage = () => {
                 <img
                     src={process.env.PUBLIC_URL + `/img/banner.png`}
                     alt="배너사진"
+                    style={{
+                        marginTop: '2rem',
+                        marginBottom: '2rem',
+                        borderRadius: '3rem',
+                    }}
                 />
             </StyledBody>
         </div>

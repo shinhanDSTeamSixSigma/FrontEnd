@@ -5,6 +5,8 @@ export default function Button({
     moveToModifyFunc,
     handlePayment,
     handlePayment2,
+    captureButtonEffect,
+    href,
 }) {
     return (
         <>
@@ -15,7 +17,8 @@ export default function Button({
                     moveToListFunc ||
                     moveToModifyFunc ||
                     handlePayment ||
-                    handlePayment2
+                    handlePayment2 ||
+                    captureButtonEffect
                 }
             >
                 {name}
