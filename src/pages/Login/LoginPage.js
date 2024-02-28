@@ -18,9 +18,7 @@ const LoginPage = () => {
 
         try {
             const response = await axios.get(
-
                 `${baseUrl}/login?email=${email}&password=${password}`,
-
             );
 
             console.log('Authentication successful:', response);
@@ -28,7 +26,8 @@ const LoginPage = () => {
             const token = response.data.token;
             console.log(token);
 
-            document.cookie = 'auth=' + token + ';' + 'path=/';
+            document.cookie =
+                'auth=' + token + '; path=/; domain=mam675.synology.me';
 
             window.location.href = '/'; // Redirect 방식
         } catch (error) {
