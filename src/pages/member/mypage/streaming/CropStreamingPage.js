@@ -16,6 +16,36 @@ const calculateDaysSince = (startDate) => {
     return daysDiff;
 };
 
+function streamingCaptureBtnOnclicked() {
+    console.log('capture activate');
+    let canvas = document.createElement('canvas');
+    canvas.width = 600;
+    canvas.height = 800;
+    document.body.appendChild(canvas);
+    let context = canvas.getContext('2d');
+    let captureBtn = document.getElementById('captureBtn');
+    let streamingImg = document.getElementById('streamingImg');
+    streamingImg.crossOrigin = 'Anonymous';
+    try {
+        context.drawImage(streamingImg, 0, 0);
+        let dataURL = canvas.toDataURL('image/jpeg');
+        captureBtn.href = dataURL;
+        let d = new Date();
+        captureBtn.download =
+            d.getFullYear() +
+            ('0' + (d.getMonth() + 1)).slice(-2) +
+            ('0' + d.getDate()).slice(-2) +
+            ('0' + d.getHours()).slice(-2) +
+            ('0' + d.getMinutes()).slice(-2) +
+            ('0' + d.getSeconds()).slice(-2) +
+            '.jpg';
+    } catch (e) {
+        console.error(e);
+        alert('캡쳐에 문제가 발생했습니다!');
+    }
+    canvas.parentNode.removeChild(canvas);
+}
+
 export default function CropStreamingPage({}) {
     const location = useLocation();
     const crop = location.state.crop;
@@ -88,12 +118,17 @@ export default function CropStreamingPage({}) {
             <StyledBody>
                 <div className="h-72 border">
                     <img
+                        id="streamingImg"
                         src={streamingaddr + `:81/stream`}
                         alt="streaming"
+                        crossOrigin="anonymous"
                     ></img>
                 </div>
                 <div className="flex justify-evenly mt-8 ">
-                    <div className=" text-center flex items-center">
+                    <div
+                        id="streaming_section"
+                        className=" text-center flex items-center"
+                    >
                         <img
                             src={process.env.PUBLIC_URL + `/img/Ellipse1.png`}
                             alt=""
@@ -117,9 +152,13 @@ export default function CropStreamingPage({}) {
                 </div>
                 <section className="d-flex justify-content-center mt-8">
                     <Button
+                        id="captureBtn"
                         className="d-flex justify-content-center mt-8"
                         name={'캡쳐하기'}
                         widthHeight={'w-40 h-11'}
+                        captureButtonEffect={() =>
+                            streamingCaptureBtnOnclicked()
+                        }
                     />
                     <div style={{ width: '2rem' }}></div>
                     {/* <Button
