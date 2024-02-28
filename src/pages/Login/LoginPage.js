@@ -27,7 +27,7 @@ const LoginPage = () => {
             console.log(token);
 
             document.cookie =
-                'auth=' + token + '; path=/; domain=43.201.105.68';
+                'auth=' + token + '; path=/; domain=mam675.synology.me';
 
             window.location.href = '/'; // Redirect 방식
         } catch (error) {
