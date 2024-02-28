@@ -19,7 +19,7 @@ const DiaryContent = ({ memberNo, cropNo, baseUrl }) => {
 
     useEffect(() => {
         diaryListData();
-    }, [diaryDate]);
+    }, [diaryDate, memberNo, cropNo]);
 
     const diaryListData = () => {
         const today = new Date();

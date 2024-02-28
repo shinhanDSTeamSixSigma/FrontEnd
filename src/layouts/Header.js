@@ -10,8 +10,8 @@ import Search from '../components/Search';
 import ReactDOM from 'react-dom';
 
 const user = {
-    name: '토심이',
-    email: 'tom@kky.com',
+    name: '문의 이메일',
+    email: 'greenwave@google.com',
     imageUrl:
         'https://ilovecharacter.com/news/data/20230731/p1065542571400847_461_thum.jpg',
 };
@@ -23,14 +23,6 @@ function classNames(...classes) {
 export default function Header({ handleModalToggle }) {
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [memberData, setMemberData] = useState(null); // 농부의 memberNo
-
-    const handleLogout = () => {
-        console.log('로그아웃 함수가 호출되었습니다.');
-        // 쿠키 만료
-        document.cookie = 'auth=; max-age=0; path=/;';
-        setMemberData(null); // memberData 상태를 초기화하여 로그아웃 상태로 변경
-        setSelectedIndex(3); // "로그인" 항목을 선택되도록 설정
-    };
 
     useEffect(() => {
         // 서버에서 사용자 정보 가져오기
@@ -65,7 +57,7 @@ export default function Header({ handleModalToggle }) {
                   href: '/mypage',
                   current: selectedIndex === 3,
               },
-              { name: '로그아웃', href: '/', onClick: () => handleLogout() }, // 로그아웃 상태에서는 로그아웃 링크를 표시
+              { name: '로그아웃', href: '/?login=0' }, // 로그아웃 상태에서는 로그아웃 링크를 표시
           ]
         : [
               { name: '로그인', href: '/login', current: selectedIndex === 3 }, // 로그아웃 상태에서는 로그인 링크를 표시
@@ -73,6 +65,11 @@ export default function Header({ handleModalToggle }) {
 
     const handleItemClick = (index) => {
         setSelectedIndex(index); // 항목을 클릭하면 해당 인덱스를 선택된 인덱스로 업데이트
+    };
+
+    const handleMobileItemClick = (index) => {
+        setSelectedIndex(index);
+        handleModalToggle(); // 모바일에서 항목을 클릭하면 네비게이션 바 닫기
     };
 
     return (
