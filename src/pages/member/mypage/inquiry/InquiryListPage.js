@@ -46,14 +46,17 @@ const RepliedFont = styled.div`
     ${(props) =>
         props.isReplied &&
         css`
-            color: #90c8ac;
+            color: #4f6f52;
+            font-size: 0.8rem;
+
             font-weight: 600;
         `}
 
     ${(props) =>
         !props.isReplied &&
         css`
-            color: #4f6f52;
+            color: #90c8ac;
+            font-size: 0.8rem;
             font-weight: 600;
         `}
 `;
@@ -168,8 +171,11 @@ const InquiryListPage = () => {
                             <InquiryItem key={index}>
                                 <FlexRow>
                                     <Title>{inquiry.title}</Title>
-                                    <RepliedFont>
-                                        {inquiry.isReplied}
+                                    <RepliedFont isReplied={inquiry.replied}>
+                                        {' '}
+                                        {inquiry.replied
+                                            ? '답변완료'
+                                            : '미답변'}
                                     </RepliedFont>
                                 </FlexRow>
                                 <Content>{inquiry.boardContent}</Content>
