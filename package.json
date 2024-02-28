@@ -45,7 +45,8 @@
     "proxy": "http://mam675.synology.me:49575",
     "scripts": {
         "start": "react-scripts start",
-        "build": "GENERATE_SOURCEMAP=false npx react-scripts build",
+        "winstart": "set \"GENERATE_SOURCEMAP=false\" && react-scripts start",
+        "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject"
     },
